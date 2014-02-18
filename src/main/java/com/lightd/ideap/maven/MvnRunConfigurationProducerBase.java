@@ -14,6 +14,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
 import org.jetbrains.idea.maven.execution.MavenRunConfigurationType;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
+import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 
@@ -30,6 +31,7 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
     protected static final String MVN_EXEC_MAIN = "-Dexec.mainClass=";
     protected static final String MVN_EXEC_TEST_CLASSPATH = "-Dexec.classpathScope=test";
 
+    protected MavenProject mavenProject;
     protected PsiPackage psiPackage;
     protected PsiClass psiClass;
     protected PsiMethod psiMethod;
@@ -64,13 +66,17 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
     protected MavenRunnerParameters createBuildParameters(Location l, DataContext dataContext) {
         if (l instanceof PsiLocation) {
             Collection<String> profiles = MavenActionUtil.getProjectsManager(dataContext).getExplicitProfiles();
-            return new MavenRunnerParameters(true, l.getProject().getBasePath(), null, profiles);
+            return new MavenRunnerParameters(true, mavenProject.getDirectory(), null, profiles);
         }
 
         return null;
     }
 
     protected boolean initPsiContext(ConfigurationContext context) {
+        mavenProject = MavenActionUtil.getMavenProject(context.getDataContext());
+        if (mavenProject == null) {
+            return false;
+        }
         Project project = context.getProject();
         PsiElement psiElement = context.getPsiLocation();
         if (psiElement == null) {
@@ -103,9 +109,4 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
         }
         return psiClass.getName() + "." + psiMethod.getName();
     }
-
-//    @Override
-//    public boolean isPreferredConfiguration(ConfigurationFromContext self, ConfigurationFromContext other) {
-//        return true;
-//    }
 }
