@@ -1,0 +1,31 @@
+<idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
+    <id>MvnRunner</id>
+    <name>Maven Runner</name>
+    <version>0.1.0</version>
+    <vendor email="XueShuiliang@gmail.com" url="http://github.com/shlXue">idle loafer</vendor>
+
+    <description><![CDATA[
+      Run or Debug maven module by mvn.<br>
+      ]]>
+    </description>
+
+    <change-notes><![CDATA[
+      0.1 - support invoke by mvn:<br>
+        test single method.<br>
+        test single class.<br>
+        test single package.<br>
+        run main method.<br>
+      ]]>
+    </change-notes>
+
+    <idea-version since-build="107.105"/>
+
+    <depends>org.jetbrains.idea.maven</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <runConfigurationProducer
+                implementation="com.lightd.ideap.maven.MvnRunConfigurationProducer"/>
+        <runConfigurationProducer
+                implementation="com.lightd.ideap.maven.MvnTestConfigurationProducer"/>
+    </extensions>
+</idea-plugin>

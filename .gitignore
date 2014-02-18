@@ -1,3 +1,7 @@
+# Mac OS X
+.DS_Store
+
+target/
 *.class
 
 # Package Files #
