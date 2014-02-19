@@ -9,6 +9,7 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.Ref;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
@@ -36,6 +37,7 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
     protected PsiClass psiClass;
     protected PsiMethod psiMethod;
     protected boolean isTestScope;
+    protected boolean isTestAll;
 
     protected MvnRunConfigurationProducerBase() {
         super(MavenRunConfigurationType.getInstance());
@@ -82,10 +84,14 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
         if (psiElement == null) {
             return false;
         }
+        psiPackage = null;
+        psiClass = null;
+        isTestAll = false;
         if (psiElement instanceof PsiDirectory) {
             psiPackage = JavaDirectoryService.getInstance().getPackage((PsiDirectory) psiElement);
+            isTestAll = psiPackage == null || StringUtil.isEmpty(psiPackage.getQualifiedName());
             isTestScope = true;
-        } else if (psiElement.getContainingFile() != null) {
+        } else if (psiElement.getContainingFile() instanceof PsiJavaFile) {
             PsiJavaFile psiJavaFile = (PsiJavaFile) psiElement.getContainingFile();
             String name = psiJavaFile.getPackageName() + "." + psiJavaFile.getName();
             if (name.endsWith(".java")) {

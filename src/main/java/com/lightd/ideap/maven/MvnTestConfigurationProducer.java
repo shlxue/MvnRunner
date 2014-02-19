@@ -4,7 +4,10 @@ import com.intellij.execution.PsiLocation;
 import com.intellij.execution.actions.ConfigurationContext;
 import com.intellij.execution.junit.JUnitUtil;
 import com.intellij.openapi.util.Comparing;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiJavaFile;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiPackage;
 import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
 
 import java.util.ArrayList;
@@ -28,7 +31,8 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
 
     @Override
     protected boolean initPsiContext(ConfigurationContext context) {
-        return super.initPsiContext(context) && isTestScope && (psiPackage == null || hasTestClass(psiPackage));
+        return super.initPsiContext(context) && isTestScope &&
+                (isTestAll || psiPackage == null || hasTestClass(psiPackage));
     }
 
     @Override
@@ -43,6 +47,9 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
 
     @Override
     protected String getName(PsiClass psiClass, PsiMethod psiMethod) {
+        if (isTestAll) {
+            return "All in " + mavenProject.getDisplayName();
+        }
         if (psiPackage != null) {
             return psiPackage.getQualifiedName();
         }
@@ -54,18 +61,20 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
         testParameters.add(MVN_TEST_COMPILE);
         testParameters.add(MVN_TEST);
 
-        String mvnTestParam;
-        if (psiPackage != null) {
-            mvnTestParam = psiPackage.getQualifiedName() + ".**.*";
-        } else {
-            PsiJavaFile psiJavaFile = (PsiJavaFile) psiClass.getScope();
-            mvnTestParam = psiJavaFile.getPackageName() + "." + psiClass.getName();
-            if (psiMethod != null) {
-                mvnTestParam += "#" + psiMethod.getName();
+        if (!isTestAll) {
+            String mvnTestParam;
+            if (psiPackage != null) {
+                mvnTestParam = psiPackage.getQualifiedName() + ".**.*";
+            } else {
+                PsiJavaFile psiJavaFile = (PsiJavaFile) psiClass.getScope();
+                mvnTestParam = psiJavaFile.getPackageName() + "." + psiClass.getName();
+                if (psiMethod != null) {
+                    mvnTestParam += "#" + psiMethod.getName();
+                }
             }
+            testParameters.add(MVN_TEST_PARAM + mvnTestParam);
         }
 
-        testParameters.add(MVN_TEST_PARAM + mvnTestParam);
         return testParameters;
     }
 
