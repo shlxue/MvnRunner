@@ -49,7 +49,7 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
     @Override
     protected String getName(PsiClass psiClass, PsiMethod psiMethod) {
         if (isTestAll) {
-            return "All in " + mavenProject.getDisplayName();
+            return "All Tests in " + mavenProject.getDisplayName();
         }
         if (psiPackage != null) {
             return psiPackage.getQualifiedName();
