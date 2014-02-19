@@ -22,6 +22,7 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
             String name = getName(psiClass, psiMethod);
             if (Comparing.strEqual(configuration.getName(), name)) {
                 Collection<String> testParameters = generateMvnParameters();
+                testParameters.removeAll(MVN_OPTION_PARAMS);
                 return Comparing.haveEqualElements(configuration.getRunnerParameters().getGoals(), testParameters);
             }
             return configuration.getName() != null && Comparing.strEqual(configuration.getName(), name);
@@ -74,6 +75,7 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
             }
             testParameters.add(MVN_TEST_PARAM + mvnTestParam);
         }
+        testParameters.add(MVN_TEST_SKIP);
 
         return testParameters;
     }

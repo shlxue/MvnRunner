@@ -19,6 +19,7 @@ import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,9 +29,11 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
     protected static final String MVN_TEST_COMPILE = "test-compile";
     protected static final String MVN_TEST = "surefire:test";
     protected static final String MVN_TEST_PARAM = "-Dtest=";
+    protected static final String MVN_TEST_SKIP = "-Dmaven.test.skip=false";
     protected static final String MVN_EXEC_JAVA = "exec:java";
     protected static final String MVN_EXEC_MAIN = "-Dexec.mainClass=";
     protected static final String MVN_EXEC_TEST_CLASSPATH = "-Dexec.classpathScope=test";
+    protected static final Collection<String> MVN_OPTION_PARAMS = Arrays.asList(MVN_TEST_SKIP);
 
     protected MavenProject mavenProject;
     protected PsiPackage psiPackage;
