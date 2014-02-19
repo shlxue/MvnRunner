@@ -18,9 +18,8 @@ public class MvnRunConfigurationProducer extends MvnRunConfigurationProducerBase
             if (Comparing.strEqual(name, configuration.getName())) {
                 Collection<String> mvnParameters = configuration.getRunnerParameters().getGoals();
                 Collection<String> parameters = generateMvnParameters();
-                if (!parameters.isEmpty()) {
-                    return Comparing.haveEqualElements(mvnParameters, parameters);
-                }
+                parameters.removeAll(MVN_OPTION_PARAMS);
+                return mvnParameters.containsAll(parameters);
             }
         }
         return false;

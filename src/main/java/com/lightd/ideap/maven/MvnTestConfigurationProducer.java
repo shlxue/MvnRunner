@@ -23,7 +23,7 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
             if (Comparing.strEqual(configuration.getName(), name)) {
                 Collection<String> testParameters = generateMvnParameters();
                 testParameters.removeAll(MVN_OPTION_PARAMS);
-                return Comparing.haveEqualElements(configuration.getRunnerParameters().getGoals(), testParameters);
+                return configuration.getRunnerParameters().getGoals().containsAll(testParameters);
             }
             return configuration.getName() != null && Comparing.strEqual(configuration.getName(), name);
         }
