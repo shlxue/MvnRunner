@@ -4,9 +4,7 @@ import com.intellij.execution.PsiLocation;
 import com.intellij.execution.actions.ConfigurationContext;
 import com.intellij.execution.junit.JUnitUtil;
 import com.intellij.openapi.util.Comparing;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiJavaFile;
-import com.intellij.psi.PsiMethod;
+import com.intellij.psi.*;
 import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
 
 import java.util.ArrayList;
@@ -26,6 +24,11 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
             return configuration.getName() != null && Comparing.strEqual(configuration.getName(), name);
         }
         return false;
+    }
+
+    @Override
+    protected boolean initPsiContext(ConfigurationContext context) {
+        return super.initPsiContext(context) && isTestScope && (psiPackage == null || hasTestClass(psiPackage));
     }
 
     @Override
@@ -66,5 +69,17 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
         return testParameters;
     }
 
-
+    private boolean hasTestClass(PsiPackage pack) {
+        for (PsiClass aClass : pack.getClasses()) {
+            if (JUnitUtil.isTestClass(aClass)) {
+                return true;
+            }
+        }
+        for (PsiPackage aPackage : pack.getSubPackages()) {
+            if (hasTestClass(aPackage)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
