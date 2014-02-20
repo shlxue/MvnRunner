@@ -89,6 +89,7 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
         }
         psiPackage = null;
         psiClass = null;
+        psiMethod = null;
         isTestAll = false;
         if (psiElement instanceof PsiDirectory) {
             psiPackage = JavaDirectoryService.getInstance().getPackage((PsiDirectory) psiElement);
