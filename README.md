@@ -27,9 +27,9 @@ FAQ
 ----
 1. 为什么要替换这些菜单项的处理方式？
 	* IntelliJ 默认的处理方式无法正确的处理 maven 的级联依赖 jar 包。
-	* 部分 maven 插件依赖运行期读取信息无法正确处理。
+	* 部分 maven 插件依赖运行期读取信息的情况 IntelliJ 默认执行方式无法正确处理。
 2. 为什么需要这个插件？
-	* 你不用再为了运行单元测试而去修改 pom.xml。
+	* 你不用再为了运行单元测试而去修改 pom.xml，让 pom 每天都保持清爽吧。
 	* IntelliJ 平台为 maven 项目提供更完美的支持。
 3. 类似插件: [MavenRunHelper](https://github.com/krasa/MavenRunHelper)
     * 该插件新增了 Maven 常用操作的菜单项。
