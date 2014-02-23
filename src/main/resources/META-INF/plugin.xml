@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <vendor email="XueShuiliang@gmail.com" url="http://github.com/shlXue">idle loafer</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,10 @@
     </description>
 
     <change-notes><![CDATA[
+        <strong>0.1.2</strong>
+        <ul>
+            <li>default run configuration by mvn(from Settings/Maven/Importing)</li>
+        </ul>
         <strong>0.1</strong>
         <ul>
             <li>test single method</li>
@@ -25,8 +29,12 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <runConfigurationProducer
-                implementation="com.lightd.ideap.maven.MvnRunConfigurationProducer"/>
+                implementation="com.lightd.ideap.maven.execution.MvnRunConfigurationProducer"/>
         <runConfigurationProducer
-                implementation="com.lightd.ideap.maven.MvnTestConfigurationProducer"/>
+                implementation="com.lightd.ideap.maven.execution.MvnTestConfigurationProducer"/>
+    </extensions>
+    <extensions defaultExtensionNs="org.jetbrains.idea.maven">
+        <additional.importing.settings id="mvnRunConfiguration"
+                                       implementation="com.lightd.ideap.maven.settings.MvnRunConfigurable"/>
     </extensions>
 </idea-plugin>

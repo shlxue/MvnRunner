@@ -1,4 +1,4 @@
-package com.lightd.ideap.maven;
+package com.lightd.ideap.maven.execution;
 
 import com.intellij.execution.PsiLocation;
 import com.intellij.execution.actions.ConfigurationContext;
@@ -8,6 +8,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiPackage;
+import com.lightd.ideap.maven.MvnBundle;
 import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
     @Override
     protected String getName(PsiClass psiClass, PsiMethod psiMethod) {
         if (isTestAll) {
-            return "All Tests in " + mavenProject.getDisplayName();
+            return MvnBundle.message("all.tests.scope.text", mavenProject.getDisplayName());
         }
         if (psiPackage != null) {
             return psiPackage.getQualifiedName();
@@ -65,12 +66,12 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
         if (!isTestAll) {
             String mvnTestParam;
             if (psiPackage != null) {
-                mvnTestParam = psiPackage.getQualifiedName() + ".**.*";
+                mvnTestParam = MvnBundle.message("test.in.package.param", psiPackage.getQualifiedName());
             } else {
                 PsiJavaFile psiJavaFile = (PsiJavaFile) psiClass.getScope();
-                mvnTestParam = psiJavaFile.getPackageName() + "." + psiClass.getName();
+                mvnTestParam = MvnBundle.message("java.class.name", psiJavaFile.getPackageName(), psiClass.getName());
                 if (psiMethod != null) {
-                    mvnTestParam += "#" + psiMethod.getName();
+                    mvnTestParam = MvnBundle.message("test.in.method.param", mvnTestParam, psiMethod.getName());
                 }
             }
             testParameters.add(MVN_TEST_PARAM + mvnTestParam);

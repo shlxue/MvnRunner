@@ -1,8 +1,9 @@
-package com.lightd.ideap.maven;
+package com.lightd.ideap.maven.execution;
 
 import com.intellij.execution.Location;
 import com.intellij.execution.PsiLocation;
 import com.intellij.execution.actions.ConfigurationContext;
+import com.intellij.execution.actions.ConfigurationFromContext;
 import com.intellij.execution.actions.RunConfigurationProducer;
 import com.intellij.execution.junit.JUnitUtil;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -12,6 +13,9 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.lightd.ideap.maven.MvnBundle;
+import com.lightd.ideap.maven.settings.MvnRunConfigurationSettings;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
 import org.jetbrains.idea.maven.execution.MavenRunConfigurationType;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
@@ -49,6 +53,19 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
     @Override
     public boolean isConfigurationFromContext(MavenRunConfiguration configuration, ConfigurationContext context) {
         return initPsiContext(context) && MavenProjectsManager.getInstance(context.getProject()).isMavenizedProject();
+    }
+
+    @Nullable
+    @Override
+    public ConfigurationFromContext createConfigurationFromContext(ConfigurationContext context) {
+        ConfigurationFromContext config = super.createConfigurationFromContext(context);
+        if (config != null) {
+            MvnRunConfigurationSettings settings = new MvnRunConfigurationSettings(true);
+            if (settings.isSetupOnlyBy()) {
+                return new MvnConfigurationFromContextWrapper(this, config);
+            }
+        }
+        return config;
     }
 
     @Override
@@ -97,7 +114,7 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
             isTestScope = true;
         } else if (psiElement.getContainingFile() instanceof PsiJavaFile) {
             PsiJavaFile psiJavaFile = (PsiJavaFile) psiElement.getContainingFile();
-            String name = psiJavaFile.getPackageName() + "." + psiJavaFile.getName();
+            String name = MvnBundle.message("java.class.name", psiJavaFile.getPackageName(), psiJavaFile.getName());
             if (name.endsWith(".java")) {
                 name = name.substring(0, name.length() - 5);
             }

@@ -1,4 +1,4 @@
-package com.lightd.ideap.maven;
+package com.lightd.ideap.maven.execution;
 
 import com.intellij.execution.actions.ConfigurationContext;
 import com.intellij.openapi.util.Comparing;
