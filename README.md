@@ -13,7 +13,7 @@ IntelliJ 13 及更高版本
 
 安装
 ----
-1. 下载编译好的压缩包: [MvnRunner.tar.gz](https://github.com/ShlXue/MvnRunner/releases/download/v0.1/MvnRunner_v0.1.1.tar.gz)
+1. 下载编译好的压缩包: [MvnRunner.tar.gz](https://github.com/ShlXue/MvnRunner/releases/download/v0.1/MvnRunner_v0.1.2.tar.gz)
 2. 解压后得到插件 jar 包，在 IDE 中选择: Plugins --> Install plugin from disk...
 
 功能
