@@ -1,9 +1,11 @@
 package com.lightd.ideap.maven;
 
 import com.intellij.CommonBundle;
+import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.PropertyKey;
 
+import javax.swing.*;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.util.ResourceBundle;
@@ -13,6 +15,7 @@ public class MvnBundle {
 
     @NonNls
     private static final String PATH_TO_BUNDLE = "messages.MvnBundle";
+    public static final Icon MAVEN_RUN_ICON = load("/images/mvn_run.png");
 
     private MvnBundle() {
     }
@@ -29,5 +32,9 @@ public class MvnBundle {
             ourBundle = new SoftReference<ResourceBundle>(bundle);
         }
         return bundle;
+    }
+
+    private static Icon load(String path) {
+        return IconLoader.getIcon(path, MvnBundle.class);
     }
 }

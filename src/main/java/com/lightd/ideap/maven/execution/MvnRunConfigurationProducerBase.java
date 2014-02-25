@@ -14,10 +14,11 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.lightd.ideap.maven.MvnBundle;
+import com.lightd.ideap.maven.MvnRunConfiguration;
+import com.lightd.ideap.maven.MvnRunConfigurationType;
 import com.lightd.ideap.maven.settings.MvnRunConfigurationSettings;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
-import org.jetbrains.idea.maven.execution.MavenRunConfigurationType;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
@@ -27,17 +28,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class MvnRunConfigurationProducerBase extends RunConfigurationProducer<MavenRunConfiguration> {
+public abstract class MvnRunConfigurationProducerBase extends RunConfigurationProducer<MvnRunConfiguration> {
 
-    protected static final String MVN_COMPILE = "compile";
-    protected static final String MVN_TEST_COMPILE = "test-compile";
-    protected static final String MVN_TEST = "surefire:test";
-    protected static final String MVN_TEST_PARAM = "-Dtest=";
-    protected static final String MVN_TEST_SKIP = "-Dmaven.test.skip=false";
-    protected static final String MVN_EXEC_JAVA = "exec:java";
-    protected static final String MVN_EXEC_MAIN = "-Dexec.mainClass=";
-    protected static final String MVN_EXEC_TEST_CLASSPATH = "-Dexec.classpathScope=test";
-    protected static final Collection<String> MVN_OPTION_PARAMS = Arrays.asList(MVN_TEST_SKIP);
+    private static final Collection<String> MVN_OPTION_PARAMS;
+
+    static {
+        MVN_OPTION_PARAMS = Arrays.asList(MvnBundle.message("mvn.param.skip"));
+    }
 
     protected MavenProject mavenProject;
     protected PsiPackage psiPackage;
@@ -47,12 +44,21 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
     protected boolean isTestAll;
 
     protected MvnRunConfigurationProducerBase() {
-        super(MavenRunConfigurationType.getInstance());
+        super(MvnRunConfigurationType.getInstance());
     }
 
     @Override
-    public boolean isConfigurationFromContext(MavenRunConfiguration configuration, ConfigurationContext context) {
-        return initPsiContext(context) && MavenProjectsManager.getInstance(context.getProject()).isMavenizedProject();
+    public boolean isConfigurationFromContext(MvnRunConfiguration configuration, ConfigurationContext context) {
+        if (initPsiContext(context)) {
+            MavenRunnerParameters parameters = configuration.getRunnerParameters();
+            if (Comparing.strEqual(mavenProject.getDirectory(), parameters.getWorkingDirPath())) {
+                List<String> testParameters = generateMvnParameters();
+                testParameters.removeAll(MVN_OPTION_PARAMS);
+                return parameters.getGoals().containsAll(testParameters) &&
+                        isSameParameters(testParameters, parameters.getGoals());
+            }
+        }
+        return false;
     }
 
     @Nullable
@@ -69,7 +75,7 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
     }
 
     @Override
-    protected boolean setupConfigurationFromContext(MavenRunConfiguration configuration, ConfigurationContext context, Ref<PsiElement> elementRef) {
+    protected boolean setupConfigurationFromContext(MvnRunConfiguration configuration, ConfigurationContext context, Ref<PsiElement> elementRef) {
         if (context == null || !initPsiContext(context)) return false;
 
         final MavenRunnerParameters params = createBuildParameters(context.getLocation(), context.getDataContext());
@@ -83,7 +89,7 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
 
     protected abstract boolean setupMavenContext(MavenRunConfiguration config, List<String> goals);
 
-    protected abstract Collection<String> generateMvnParameters();
+    protected abstract List<String> generateMvnParameters();
 
     protected MavenRunnerParameters createBuildParameters(Location l, DataContext dataContext) {
         if (l instanceof PsiLocation) {
@@ -96,9 +102,10 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
 
     protected boolean initPsiContext(ConfigurationContext context) {
         mavenProject = MavenActionUtil.getMavenProject(context.getDataContext());
-        if (mavenProject == null) {
-            return false;
-        }
+        if (mavenProject == null) return false;
+        MavenProjectsManager projectsManager = MavenProjectsManager.getInstance(context.getProject());
+        if (!projectsManager.isMavenizedModule(context.getModule())) return false;
+
         Project project = context.getProject();
         PsiElement psiElement = context.getPsiLocation();
         if (psiElement == null) {
@@ -130,10 +137,15 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
         return true;
     }
 
-    protected String getName(PsiClass psiClass, PsiMethod psiMethod) {
-        if (psiMethod == null || Comparing.strEqual(psiMethod.getName(), "main")) {
-            return psiClass.getName();
+    protected String generateName(PsiClass psiClass, PsiMethod psiMethod) {
+        String name = psiClass.getName();
+        if (psiMethod != null) {
+            name += "." + psiMethod.getName();
         }
-        return psiClass.getName() + "." + psiMethod.getName();
+        return name;
+    }
+
+    protected boolean isSameParameters(List<String> paramters, List<String> configParameters) {
+        return true;
     }
 }

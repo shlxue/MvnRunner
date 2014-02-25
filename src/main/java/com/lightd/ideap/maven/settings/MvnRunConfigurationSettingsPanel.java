@@ -16,7 +16,7 @@ class MvnRunConfigurationSettingsPanel extends JPanel {
     private void initComponents() {
         this.setLayout(new GridLayout());
         cbSetupOnlyMvn = new JCheckBox();
-        cbSetupOnlyMvn.setText(MvnBundle.message("panel.setupOnlyMaven.text"));
+        cbSetupOnlyMvn.setText(MvnBundle.message("panel.only.mvn.text"));
         add(cbSetupOnlyMvn);
     }
 

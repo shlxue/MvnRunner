@@ -4,7 +4,7 @@ import com.intellij.ide.util.PropertiesComponent;
 import com.lightd.ideap.maven.MvnBundle;
 
 public class MvnRunConfigurationSettings implements Cloneable {
-    private static final String SETUP_ONLY_BY_MVN = MvnBundle.message("settings.key.setupOnlyByMvn");
+    private static final String SETUP_ONLY_BY_MVN = MvnBundle.message("settings.key.only.mvn");
     private final PropertiesComponent component;
     private boolean setupOnlyByMvn;
 

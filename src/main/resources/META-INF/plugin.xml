@@ -28,6 +28,7 @@
     <depends>org.jetbrains.idea.maven</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <configurationType implementation="com.lightd.ideap.maven.MvnRunConfigurationType"/>
         <runConfigurationProducer
                 implementation="com.lightd.ideap.maven.execution.MvnRunConfigurationProducer"/>
         <runConfigurationProducer

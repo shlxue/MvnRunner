@@ -1,34 +1,19 @@
 package com.lightd.ideap.maven.execution;
 
 import com.intellij.execution.actions.ConfigurationContext;
-import com.intellij.openapi.util.Comparing;
 import com.intellij.psi.util.PsiMethodUtil;
+import com.lightd.ideap.maven.MvnBundle;
 import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class MvnRunConfigurationProducer extends MvnRunConfigurationProducerBase {
 
     @Override
-    public boolean isConfigurationFromContext(MavenRunConfiguration configuration, ConfigurationContext context) {
-        if (super.isConfigurationFromContext(configuration, context)) {
-            String name = getName(psiClass, psiMethod);
-            if (Comparing.strEqual(name, configuration.getName())) {
-                Collection<String> mvnParameters = configuration.getRunnerParameters().getGoals();
-                Collection<String> parameters = generateMvnParameters();
-                parameters.removeAll(MVN_OPTION_PARAMS);
-                return mvnParameters.containsAll(parameters);
-            }
-        }
-        return false;
-    }
-
-    @Override
     protected boolean setupMavenContext(MavenRunConfiguration config, List<String> goals) {
         if (psiMethod != null && PsiMethodUtil.isMainMethod(psiMethod)) {
-            config.setName(getName(psiClass, psiMethod));
+            config.setName(generateName(psiClass, psiMethod));
             goals.addAll(generateMvnParameters());
             return true;
         }
@@ -44,14 +29,16 @@ public class MvnRunConfigurationProducer extends MvnRunConfigurationProducerBase
         return false;
     }
 
-    protected Collection<String> generateMvnParameters() {
-        Collection<String> parameters = new ArrayList<String>(3);
-        parameters.add(isTestScope ? MVN_TEST_COMPILE : MVN_COMPILE);
-        parameters.add(MVN_EXEC_JAVA);
-        parameters.add(MVN_EXEC_MAIN + psiClass.getQualifiedName());
-        if (isTestScope) {
-            parameters.add(MVN_EXEC_TEST_CLASSPATH);
-        }
+    protected List<String> generateMvnParameters() {
+        List<String> parameters = new ArrayList<String>(3);
+        if (isTestScope)
+            parameters.add(MvnBundle.message("mvn.param.test.compile"));
+        else
+            parameters.add(MvnBundle.message("mvn.param.compile"));
+        parameters.add(MvnBundle.message("mvn.param.exec"));
+        parameters.add(MvnBundle.message("mvn.param.exec.main", psiClass.getQualifiedName()));
+        if (isTestScope)
+            parameters.add(MvnBundle.message("mvn.param.test.classpath.scope"));
         return parameters;
     }
 }
