@@ -46,7 +46,7 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
 
     @Override
     protected String generateName(PsiClass psiClass, PsiMethod psiMethod) {
-        String moduleName = mavenProject.getDisplayName();
+        String moduleName = mavenProject.getName();
         if (isTestAll) {
             return MvnBundle.message("action.all.tests.text", moduleName);
         }

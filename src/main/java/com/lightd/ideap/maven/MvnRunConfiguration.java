@@ -2,8 +2,11 @@ package com.lightd.ideap.maven;
 
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
+import org.jetbrains.idea.maven.project.MavenProject;
+import org.jetbrains.idea.maven.project.MavenProjectsManager;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +38,14 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
     }
 
     private String getModuleName() {
-        return getProject().getName();
+        MavenProjectsManager projectsManager = MavenProjectsManager.getInstance(getProject());
+        String workingDirPath = getRunnerParameters().getWorkingDirPath();
+        for (MavenProject mavenProject : projectsManager.getProjects()) {
+            if (StringUtil.equals(workingDirPath, mavenProject.getDirectory())) {
+                return mavenProject.getName();
+            }
+        }
+        return null;
     }
 
     private String getPackageName() {
