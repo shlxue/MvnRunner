@@ -57,7 +57,7 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
     }
 
     protected List<String> generateMvnParameters() {
-        List<String> testParameters = new ArrayList<String>(4);
+        List<String> testParameters = new ArrayList<String>();
         testParameters.add(MvnBundle.message("mvn.param.test.compile"));
         testParameters.add(MvnBundle.message("mvn.param.test"));
 
@@ -75,6 +75,7 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
             testParameters.add(MvnBundle.message("mvn.param.test.object", mvnTestParam));
         }
         testParameters.add(MvnBundle.message("mvn.param.skip"));
+        testParameters.add(MvnBundle.message("mvn.param.fork.mode"));
 
         return testParameters;
     }

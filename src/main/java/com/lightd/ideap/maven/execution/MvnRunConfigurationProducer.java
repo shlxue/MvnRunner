@@ -30,7 +30,7 @@ public class MvnRunConfigurationProducer extends MvnRunConfigurationProducerBase
     }
 
     protected List<String> generateMvnParameters() {
-        List<String> parameters = new ArrayList<String>(3);
+        List<String> parameters = new ArrayList<String>();
         if (isTestScope)
             parameters.add(MvnBundle.message("mvn.param.test.compile"));
         else
