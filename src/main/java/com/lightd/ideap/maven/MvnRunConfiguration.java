@@ -42,7 +42,7 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
         String workingDirPath = getRunnerParameters().getWorkingDirPath();
         for (MavenProject mavenProject : projectsManager.getProjects()) {
             if (StringUtil.equals(workingDirPath, mavenProject.getDirectory())) {
-                return mavenProject.getName();
+                return mavenProject.getDisplayName();
             }
         }
         return null;

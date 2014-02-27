@@ -41,4 +41,15 @@ public class MvnRunConfigurationProducer extends MvnRunConfigurationProducerBase
             parameters.add(MvnBundle.message("mvn.param.test.classpath.scope"));
         return parameters;
     }
+
+    @Override
+    protected boolean isSameParameters(List<String> parameters, List<String> configParameters) {
+        String mvnExec = MvnBundle.message("mvn.param.exec");
+        if (parameters.contains(mvnExec) && configParameters.contains(mvnExec)) {
+            String prefix = MvnBundle.message("mvn.param.exec.main", "");
+            String param = findByPrefix(parameters, prefix);
+            return param.length() > 0 && param.equals(findByPrefix(configParameters, prefix));
+        }
+        return false;
+    }
 }

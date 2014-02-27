@@ -16,6 +16,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.lightd.ideap.maven.MvnBundle;
 import com.lightd.ideap.maven.MvnRunConfiguration;
 import com.lightd.ideap.maven.MvnRunConfigurationType;
+import com.lightd.ideap.maven.settings.MvnRunConfigurable;
 import com.lightd.ideap.maven.settings.MvnRunConfigurationSettings;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
@@ -24,17 +25,10 @@ import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 public abstract class MvnRunConfigurationProducerBase extends RunConfigurationProducer<MvnRunConfiguration> {
-
-    private static final Collection<String> MVN_OPTION_PARAMS;
-
-    static {
-        MVN_OPTION_PARAMS = Arrays.asList(MvnBundle.message("mvn.param.skip"));
-    }
 
     protected MavenProject mavenProject;
     protected PsiPackage psiPackage;
@@ -53,9 +47,7 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
             MavenRunnerParameters parameters = configuration.getRunnerParameters();
             if (Comparing.strEqual(mavenProject.getDirectory(), parameters.getWorkingDirPath())) {
                 List<String> testParameters = generateMvnParameters();
-                testParameters.removeAll(MVN_OPTION_PARAMS);
-                return parameters.getGoals().containsAll(testParameters) &&
-                        isSameParameters(testParameters, parameters.getGoals());
+                return isSameParameters(testParameters, parameters.getGoals());
             }
         }
         return false;
@@ -66,7 +58,7 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
     public ConfigurationFromContext createConfigurationFromContext(ConfigurationContext context) {
         ConfigurationFromContext config = super.createConfigurationFromContext(context);
         if (config != null) {
-            MvnRunConfigurationSettings settings = new MvnRunConfigurationSettings(true);
+            MvnRunConfigurationSettings settings = MvnRunConfigurable.getInstance().getSettings();
             if (settings.isSetupOnlyBy()) {
                 return new MvnConfigurationFromContextWrapper(this, config);
             }
@@ -145,7 +137,14 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
         return name;
     }
 
-    protected boolean isSameParameters(List<String> paramters, List<String> configParameters) {
-        return true;
+    protected abstract boolean isSameParameters(List<String> parameters, List<String> configParameters);
+
+    protected final String findByPrefix(Collection<String> collection, String prefix) {
+        for (String parameter : collection) {
+            if (parameter.startsWith(prefix)) {
+                return parameter;
+            }
+        }
+        return "";
     }
 }

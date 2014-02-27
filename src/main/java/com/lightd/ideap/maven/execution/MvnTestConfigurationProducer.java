@@ -7,6 +7,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiPackage;
+import com.intellij.util.text.VersionComparatorUtil;
 import com.lightd.ideap.maven.MvnBundle;
 import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
 
@@ -22,16 +23,13 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
     }
 
     @Override
-    protected boolean isSameParameters(List<String> paramters, List<String> configParameters) {
-        if (isTestAll) {
+    protected boolean isSameParameters(List<String> parameters, List<String> configParameters) {
+        String mvnTest = MvnBundle.message("mvn.param.test");
+        if (parameters.contains(mvnTest) && configParameters.contains(mvnTest)) {
             String prefix = MvnBundle.message("mvn.param.test.object", "");
-            for (String parameter : configParameters) {
-                if (parameter.startsWith(prefix)) {
-                    return false;
-                }
-            }
+            return findByPrefix(parameters, prefix).equals(findByPrefix(configParameters, prefix));
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -46,7 +44,7 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
 
     @Override
     protected String generateName(PsiClass psiClass, PsiMethod psiMethod) {
-        String moduleName = mavenProject.getName();
+        String moduleName = mavenProject.getDisplayName();
         if (isTestAll) {
             return MvnBundle.message("action.all.tests.text", moduleName);
         }
@@ -75,7 +73,12 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
             testParameters.add(MvnBundle.message("mvn.param.test.object", mvnTestParam));
         }
         testParameters.add(MvnBundle.message("mvn.param.skip"));
-        testParameters.add(MvnBundle.message("mvn.param.fork.mode"));
+        if (isForking()) {
+            testParameters.add(MvnBundle.message("mvn.param.fork.count"));
+            testParameters.add(MvnBundle.message("mvn.param.reuse.forks"));
+        } else {
+            testParameters.add(MvnBundle.message("mvn.param.fork.mode"));
+        }
 
         return testParameters;
     }
@@ -89,6 +92,15 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
         for (PsiPackage aPackage : pack.getSubPackages()) {
             if (hasTestClass(aPackage)) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isForking() {
+        for (org.jetbrains.idea.maven.model.MavenPlugin plugin : mavenProject.getPlugins()) {
+            if (plugin.getMavenId().equals("org.apache.maven.plugins", "maven-surefire-plugin")) {
+                return "2.14".equals(VersionComparatorUtil.min(plugin.getVersion(), "2.14"));
             }
         }
         return false;

@@ -23,6 +23,7 @@ IntelliJ 13 及更高版本
 3. 支持包的单元测试。
 4. 支持 main 方法的运行。
 5. maven 启动方式是否优先可配置(Settings/Maven/Importing)
+6. 允许配置 fork 模式
 
 FAQ
 ----
@@ -34,3 +35,19 @@ FAQ
 	* IntelliJ 平台为 maven 项目提供更完美的支持。
 3. 类似插件: [MavenRunHelper](https://github.com/krasa/MavenRunHelper)
     * 该插件新增了 Maven 常用操作的菜单项。
+
+Screen Snapshot
+----
+
+1. All Tests
+	
+	![All_tests_popup_menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/all_tests_popup_menu.png)
+2. Test package
+
+	![Test_package_popup_menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/test_package_popup_menu.png)
+3. Run/Debug Configurations
+
+	![Run_Configurations](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/run_configurations.png)
+4. Preferences
+
+	![Preferences](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/Preferences.png)

@@ -14,8 +14,24 @@ import javax.swing.*;
 
 public class MvnRunConfigurable implements AdditionalMavenImportingSettings, SearchableConfigurable {
 
-    private final MvnRunConfigurationSettings mySettings = new MvnRunConfigurationSettings(true);
-    private final MvnRunConfigurationSettingsPanel settingsPanel = new MvnRunConfigurationSettingsPanel();
+    private static MvnRunConfigurable instance;
+    private final MvnRunConfigurationSettings settings = new MvnRunConfigurationSettings();
+    private MvnRunConfigurationSettingsPanel settingsPanel;
+
+    public MvnRunConfigurable() {
+        settings.readSettings();
+    }
+
+    public static MvnRunConfigurable getInstance() {
+        if (instance == null) {
+            instance = new MvnRunConfigurable();
+        }
+        return instance;
+    }
+
+    public MvnRunConfigurationSettings getSettings() {
+        return settings;
+    }
 
     @Nls
     @Override
@@ -26,32 +42,39 @@ public class MvnRunConfigurable implements AdditionalMavenImportingSettings, Sea
     @Nullable
     @Override
     public String getHelpTopic() {
-        return null;
+        return getId();
     }
 
     @Nullable
     @Override
     public JComponent createComponent() {
+        settingsPanel = new MvnRunConfigurationSettingsPanel(settings);
         return settingsPanel;
     }
 
     @Override
     public boolean isModified() {
-        return settingsPanel.isModified(mySettings);
+        return settingsPanel != null && settingsPanel.isModified();
     }
 
     @Override
     public void apply() throws ConfigurationException {
-        settingsPanel.getData(mySettings);
+        if (settingsPanel != null) {
+            settingsPanel.apply();
+            settings.saveSettings();
+        }
     }
 
     @Override
     public void reset() {
-        settingsPanel.setData(mySettings);
+        if (settingsPanel != null) {
+            settingsPanel.reset();
+        }
     }
 
     @Override
     public void disposeUIResources() {
+        settingsPanel = null;
     }
 
     @Nullable
