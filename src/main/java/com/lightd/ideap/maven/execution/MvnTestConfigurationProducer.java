@@ -9,6 +9,8 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiPackage;
 import com.intellij.util.text.VersionComparatorUtil;
 import com.lightd.ideap.maven.MvnBundle;
+import com.lightd.ideap.maven.settings.MvnRunConfigurable;
+import com.lightd.ideap.maven.settings.MvnRunConfigurationSettings;
 import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
 
 import java.util.ArrayList;
@@ -73,11 +75,13 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
             testParameters.add(MvnBundle.message("mvn.param.test.object", mvnTestParam));
         }
         testParameters.add(MvnBundle.message("mvn.param.skip"));
+        MvnRunConfigurationSettings settings = MvnRunConfigurable.getInstance().getSettings();
         if (isForking()) {
-            testParameters.add(MvnBundle.message("mvn.param.fork.count"));
-            testParameters.add(MvnBundle.message("mvn.param.reuse.forks"));
+            testParameters.add(MvnBundle.message("mvn.param.fork.count", settings.getForkCount()));
+            testParameters.add(MvnBundle.message("mvn.param.reuse.forks", settings.isReuseForks()));
         } else {
-            testParameters.add(MvnBundle.message("mvn.param.fork.mode"));
+            testParameters.add(MvnBundle.message("mvn.param.fork.mode",
+                    getForkMode(settings.getForkCount(), settings.isReuseForks())));
         }
 
         return testParameters;
@@ -104,5 +108,12 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
             }
         }
         return false;
+    }
+
+    private String getForkMode(int forkCount, boolean reuseForks) {
+        if (forkCount <= 1) {
+            return reuseForks ? "once" : "always";
+        }
+        return forkCount == 0 ? "never" : MvnBundle.message("mvn.param.fork.thread", forkCount) ;
     }
 }
