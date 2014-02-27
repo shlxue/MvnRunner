@@ -1,22 +1,22 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.1.3</version>
-    <vendor email="XueShuiliang@gmail.com" url="http://github.com/shlXue">idle loafer</vendor>
+    <version>0.1.4</version>
+    <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
-      Run maven module by mvn.<br>
+      Run/Debug maven module by mvn.<br>
       ]]>
     </description>
 
     <change-notes><![CDATA[
-        <strong>0.1</strong>
+        <strong>0.1 Run/Debug by mvn</strong>
         <ul>
             <li>test single method</li>
             <li>test single class</li>
             <li>test single package</li>
             <li>run main method</li>
-            <li>default run configuration by mvn(from Settings/Maven/Importing)</li>
+            <li>add a option: default run configuration by mvn(from Preferences/Maven/Importing)</li>
             <li>allow config fork mode</li>
         </ul>]]>
     </change-notes>

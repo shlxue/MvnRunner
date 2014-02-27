@@ -22,7 +22,7 @@ IntelliJ 13 及更高版本
 2. 支持单个方法及单个类的单元测试。
 3. 支持包的单元测试。
 4. 支持 main 方法的运行。
-5. maven 启动方式是否优先可配置(Settings/Maven/Importing)
+5. maven 启动方式是否优先可配置(Preferences/Maven/Importing)
 6. 允许配置 fork 模式
 
 FAQ
