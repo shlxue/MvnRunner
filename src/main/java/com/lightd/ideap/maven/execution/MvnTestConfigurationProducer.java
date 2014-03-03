@@ -67,7 +67,7 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
                 mvnTestParam = MvnBundle.message("mvn.package.test.suffix", psiPackage.getQualifiedName());
             } else {
                 PsiJavaFile psiJavaFile = (PsiJavaFile) psiClass.getScope();
-                mvnTestParam = MvnBundle.message("java.class.name", psiJavaFile.getPackageName(), psiClass.getName());
+                mvnTestParam = getJavaClassName(psiJavaFile.getPackageName(), psiClass.getName());
                 if (psiMethod != null) {
                     mvnTestParam = MvnBundle.message("mvn.method.test.suffix", mvnTestParam, psiMethod.getName());
                 }

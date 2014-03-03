@@ -113,10 +113,7 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
             isTestScope = true;
         } else if (psiElement.getContainingFile() instanceof PsiJavaFile) {
             PsiJavaFile psiJavaFile = (PsiJavaFile) psiElement.getContainingFile();
-            String name = MvnBundle.message("java.class.name", psiJavaFile.getPackageName(), psiJavaFile.getName());
-            if (name.endsWith(".java")) {
-                name = name.substring(0, name.length() - 5);
-            }
+            String name = getJavaClassName(psiJavaFile.getPackageName(), psiJavaFile.getName());
             psiClass = JavaPsiFacade.getInstance(project).findClass(name, GlobalSearchScope.projectScope(project));
             isTestScope = psiClass != null && JUnitUtil.isTestClass(psiClass);
             if (isTestScope) {
@@ -146,5 +143,14 @@ public abstract class MvnRunConfigurationProducerBase extends RunConfigurationPr
             }
         }
         return "";
+    }
+
+    protected String getJavaClassName(String packageName, String className) {
+        String name = MvnBundle.message("java.class.name", packageName, className);
+        if (name.startsWith(".")) name = name.substring(1);
+        if (name.endsWith(".java")) {
+            name = name.substring(0, name.length() - 5);
+        }
+        return name;
     }
 }
