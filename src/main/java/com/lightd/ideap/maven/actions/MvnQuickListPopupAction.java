@@ -12,9 +12,9 @@ import org.jetbrains.idea.maven.model.MavenConstants;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 
-public class MavenQuickListPopupAction extends QuickSwitchSchemeAction implements DumbAware {
+public class MvnQuickListPopupAction extends QuickSwitchSchemeAction implements DumbAware {
 
-    public MavenQuickListPopupAction() {
+    public MvnQuickListPopupAction() {
         super.myActionPlace = "MavenBuildGroup";
     }
 
@@ -25,7 +25,7 @@ public class MavenQuickListPopupAction extends QuickSwitchSchemeAction implement
 
     @Override
     protected String getPopupTitle(AnActionEvent e) {
-        MavenProject mavenProject = MavenExecuteAction.getProject(e.getDataContext());
+        MavenProject mavenProject = MvnExecuteAction.getProject(e.getDataContext());
         if (mavenProject == null) return null;
         String moduleName = mavenProject.getMavenId().getArtifactId();
         if (moduleName != null && moduleName.length() > 20)
@@ -36,7 +36,7 @@ public class MavenQuickListPopupAction extends QuickSwitchSchemeAction implement
     @Override
     protected void fillActions(Project project, @NotNull DefaultActionGroup group, @NotNull DataContext dataContext) {
         if (project == null || !MavenActionUtil.hasProject(dataContext) ||
-                MavenExecuteAction.getProject(dataContext) == null) {
+                MvnExecuteAction.getProject(dataContext) == null) {
             return;
         }
         addLifecycleActions(group);
@@ -67,8 +67,8 @@ public class MavenQuickListPopupAction extends QuickSwitchSchemeAction implement
 
         if (action != null) {
             toGroup.add(action);
-            if (phase != null && action instanceof MavenExecuteAction) {
-                ((MavenExecuteAction) action).setPhase(phase);
+            if (phase != null && action instanceof MvnExecuteAction) {
+                ((MvnExecuteAction) action).setPhase(phase);
             }
         }
     }

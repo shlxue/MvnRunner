@@ -17,7 +17,7 @@ import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 
-public class MavenExecuteAction extends MavenAction {
+public class MvnExecuteAction extends MavenAction {
     private String phase;
 
     public void setPhase(String phase) {

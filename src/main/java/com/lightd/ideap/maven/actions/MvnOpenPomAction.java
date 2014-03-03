@@ -18,7 +18,7 @@ public class MvnOpenPomAction extends BaseNavigateToSourceAction {
 
     @Override
     public void actionPerformed(AnActionEvent event) {
-        MavenProject project = MavenExecuteAction.getProject(event.getDataContext());
+        MavenProject project = MvnExecuteAction.getProject(event.getDataContext());
         VirtualFile pomFile = LocalFileSystem.getInstance().findFileByPath(project.getDirectory() + "/pom.xml");
         OpenSourceUtil.navigate(true, MavenNavigationUtil.createNavigatableForPom(event.getProject(), pomFile));
     }
@@ -29,6 +29,6 @@ public class MvnOpenPomAction extends BaseNavigateToSourceAction {
         Presentation presentation = event.getPresentation();
         presentation.setIcon(MavenIcons.MavenLogo);
         presentation.setText("Open");
-        presentation.setEnabled(MavenExecuteAction.getProject(event.getDataContext()) != null);
+        presentation.setEnabled(MvnExecuteAction.getProject(event.getDataContext()) != null);
     }
 }

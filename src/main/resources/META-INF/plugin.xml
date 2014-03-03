@@ -42,30 +42,31 @@
         <group id="MavenBuildGroup" class="org.jetbrains.idea.maven.utils.actions.MavenActionGroup"
                popup="true">
             <action id="Maven.QuickListPopupAction"
-                    class="com.lightd.ideap.maven.actions.MavenQuickListPopupAction">
+                    class="com.lightd.ideap.maven.actions.MvnQuickListPopupAction">
                 <keyboard-shortcut first-keystroke="meta M" keymap="$default"/>
                 <keyboard-shortcut first-keystroke="meta M" keymap="Mac OS X"/>
             </action>
-            <action id="Maven.Clean" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+            <action id="Maven.Clean" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                     text="Clean" icon="/images/phase_clean.png"/>
-            <action id="Maven.Validate" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+            <action id="Maven.Validate" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                     text="Validate"/>
-            <action id="Maven.Compile" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+            <action id="Maven.Compile" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                     text="Compile" icon="/images/phase_compile.png"/>
-            <action id="Maven.Test" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+            <action id="Maven.Test" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                     text="Test" icon="/images/phase_test.png"/>
-            <action id="Maven.Package" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+            <action id="Maven.Package" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                     text="Package" icon="/images/phase_package.png"/>
-            <action id="Maven.Verify" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+            <action id="Maven.Verify" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                     text="Verify"/>
-            <action id="Maven.Install" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+            <action id="Maven.Install" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                     text="Install" icon="/images/phase_install.png"/>
-            <action id="Maven.Site" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+            <action id="Maven.Site" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                     text="Site"/>
-            <action id="Maven.Deploy" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+            <action id="Maven.Deploy" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                     text="Deploy" icon="/images/phase_deploy.png"/>
             <separator/>
             <action id="Maven.Pom.Open" class="com.lightd.ideap.maven.actions.MvnOpenPomAction"/>
+            <add-to-group group-id="Project"/>
         </group>
 
     </actions>
