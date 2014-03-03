@@ -24,6 +24,7 @@ IntelliJ 13 及更高版本
 4. 支持 main 方法的运行。
 5. maven 启动方式是否优先可配置(Preferences/Maven/Importing)
 6. 允许配置 fork 模式
+7. 为 maven 构建添加 Quick switch popup menu
 
 FAQ
 ----
@@ -51,3 +52,6 @@ Screen Snapshot
 4. Preferences
 
 	![Preferences](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/Preferences.png)
+5. Quick switch popup menu
+
+    ![Quick switch popup menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/quick_switch_popup_menu.png)

@@ -2,19 +2,28 @@ package com.lightd.ideap.maven;
 
 import com.intellij.compiler.options.CompileStepBeforeRun;
 import com.intellij.compiler.options.CompileStepBeforeRunNoErrorCheck;
-import com.intellij.execution.BeforeRunTask;
-import com.intellij.execution.RunManager;
+import com.intellij.execution.*;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
+import com.intellij.execution.configurations.ConfigurationTypeUtil;
 import com.intellij.execution.configurations.RunConfiguration;
+import com.intellij.execution.executors.DefaultRunExecutor;
+import com.intellij.execution.impl.DefaultJavaProgramRunner;
+import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
+import org.jetbrains.idea.maven.execution.MavenRunnerSettings;
+import org.jetbrains.idea.maven.project.MavenGeneralSettings;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
+import org.jetbrains.idea.maven.utils.MavenUtil;
 
 import javax.swing.*;
 import java.util.List;
@@ -31,6 +40,57 @@ public class MvnRunConfigurationType implements ConfigurationType {
             }
         }
         return null;
+    }
+
+    public static void runConfiguration(Project project,
+                                        @NotNull MavenRunnerParameters params,
+                                        @Nullable MavenGeneralSettings settings,
+                                        @Nullable MavenRunnerSettings runnerSettings) {
+        RunnerAndConfigurationSettings configSettings = createRunnerAndConfigurationSettings(settings,
+                runnerSettings,
+                params,
+                project);
+
+        ProgramRunner runner = DefaultJavaProgramRunner.getInstance();
+        Executor executor = DefaultRunExecutor.getRunExecutorInstance();
+        ExecutionEnvironment env = new ExecutionEnvironment(executor, runner, configSettings, project);
+
+        try {
+            runner.execute(env);
+        }
+        catch (ExecutionException e) {
+            MavenUtil.showError(project, "Failed to execute Maven goal", e);
+        }
+    }
+
+    private static RunnerAndConfigurationSettings createRunnerAndConfigurationSettings(@Nullable MavenGeneralSettings generalSettings,
+                                                                                      @Nullable MavenRunnerSettings runnerSettings,
+                                                                                      MavenRunnerParameters params,
+                                                                                      Project project) {
+        MvnRunConfigurationType type = ConfigurationTypeUtil.findConfigurationType(MvnRunConfigurationType.class);
+        final RunnerAndConfigurationSettings settings = RunManagerEx.getInstanceEx(project).createRunConfiguration(generateName(project, params), type.myFactory);
+        MvnRunConfiguration runConfiguration = (MvnRunConfiguration)settings.getConfiguration();
+        runConfiguration.setRunnerParameters(params);
+        runConfiguration.setGeneralSettings(generalSettings);
+        runConfiguration.setRunnerSettings(runnerSettings);
+        return settings;
+    }
+
+    private static String generateName(Project project, MavenRunnerParameters runnerParameters) {
+        String name = "";
+        for (MavenProject mavenProject : MavenProjectsManager.getInstance(project).getProjects()) {
+            if (project.getBasePath().equals(mavenProject.getDirectory())) {
+                name = mavenProject.getMavenId().getArtifactId();
+                break;
+            }
+        }
+        StringBuilder param = new StringBuilder();
+        for (String s : runnerParameters.getGoals()) {
+            param.append(s).append(",");
+        }
+        if (param.length() > 40) param.setLength(37);
+        if (param.charAt(param.length() - 1) == ',') param.setLength(param.length() - 1);
+        return MvnBundle.message("mvn.build.name", name, param);
     }
 
     private MvnRunConfigurationType() {

@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.1.4</version>
+    <version>0.1.5</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
@@ -18,6 +18,7 @@
             <li>run main method</li>
             <li>add a option: default run configuration by mvn(from Preferences/Maven/Importing)</li>
             <li>allow config fork mode</li>
+            <li>add a quick switch popup menu for maven build</li>
         </ul>]]>
     </change-notes>
 
@@ -36,4 +37,36 @@
         <additional.importing.settings id="mvnRunConfiguration"
                                        implementation="com.lightd.ideap.maven.settings.MvnRunConfigurable"/>
     </extensions>
+
+    <actions>
+        <group id="MavenBuildGroup" class="org.jetbrains.idea.maven.utils.actions.MavenActionGroup"
+               popup="true">
+            <action id="Maven.QuickListPopupAction"
+                    class="com.lightd.ideap.maven.actions.MavenQuickListPopupAction">
+                <keyboard-shortcut first-keystroke="meta M" keymap="$default"/>
+                <keyboard-shortcut first-keystroke="meta M" keymap="Mac OS X"/>
+            </action>
+            <action id="Maven.Clean" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+                    text="Clean" icon="/images/phase_clean.png"/>
+            <action id="Maven.Validate" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+                    text="Validate"/>
+            <action id="Maven.Compile" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+                    text="Compile" icon="/images/phase_compile.png"/>
+            <action id="Maven.Test" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+                    text="Test" icon="/images/phase_test.png"/>
+            <action id="Maven.Package" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+                    text="Package" icon="/images/phase_package.png"/>
+            <action id="Maven.Verify" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+                    text="Verify"/>
+            <action id="Maven.Install" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+                    text="Install" icon="/images/phase_install.png"/>
+            <action id="Maven.Site" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+                    text="Site"/>
+            <action id="Maven.Deploy" class="com.lightd.ideap.maven.actions.MavenExecuteAction"
+                    text="Deploy" icon="/images/phase_deploy.png"/>
+            <separator/>
+            <action id="Maven.Pom.Open" class="com.lightd.ideap.maven.actions.MvnOpenPomAction"/>
+        </group>
+
+    </actions>
 </idea-plugin>
