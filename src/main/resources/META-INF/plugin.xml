@@ -18,7 +18,7 @@
             <li>run main method</li>
             <li>add a option: default run configuration by mvn(from Preferences/Maven/Importing)</li>
             <li>allow config fork mode</li>
-            <li>add a quick switch popup menu for maven build</li>
+            <li>add a quick switch popup menu for maven build(shortcut: ^M)</li>
         </ul>]]>
     </change-notes>
 
