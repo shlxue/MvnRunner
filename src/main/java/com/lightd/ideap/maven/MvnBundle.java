@@ -15,7 +15,7 @@ public class MvnBundle {
 
     @NonNls
     private static final String PATH_TO_BUNDLE = "messages.MvnBundle";
-    public static final Icon MAVEN_RUN_ICON = load("/images/mvn_run.png");
+    public static final Icon MAVEN_RUN_ICON = IconLoader.getIcon("/images/mvn_run.png");
 
     private MvnBundle() {
     }
@@ -32,9 +32,5 @@ public class MvnBundle {
             ourBundle = new SoftReference<ResourceBundle>(bundle);
         }
         return bundle;
-    }
-
-    private static Icon load(String path) {
-        return IconLoader.getIcon(path, MvnBundle.class);
     }
 }
