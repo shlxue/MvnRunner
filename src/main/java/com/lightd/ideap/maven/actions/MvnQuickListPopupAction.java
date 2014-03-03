@@ -25,7 +25,7 @@ public class MvnQuickListPopupAction extends QuickSwitchSchemeAction implements 
 
     @Override
     protected String getPopupTitle(AnActionEvent e) {
-        MavenProject mavenProject = MvnExecuteAction.getProject(e.getDataContext());
+        MavenProject mavenProject = MvnModuleContextAction.getProject(e.getDataContext());
         if (mavenProject == null) return null;
         String moduleName = mavenProject.getMavenId().getArtifactId();
         if (moduleName != null && moduleName.length() > 20)
@@ -36,7 +36,7 @@ public class MvnQuickListPopupAction extends QuickSwitchSchemeAction implements 
     @Override
     protected void fillActions(Project project, @NotNull DefaultActionGroup group, @NotNull DataContext dataContext) {
         if (project == null || !MavenActionUtil.hasProject(dataContext) ||
-                MvnExecuteAction.getProject(dataContext) == null) {
+                MvnModuleContextAction.getProject(dataContext) == null) {
             return;
         }
         addLifecycleActions(group);

@@ -66,7 +66,6 @@
                     text="Deploy" icon="/images/phase_deploy.png"/>
             <separator/>
             <action id="Maven.Pom.Open" class="com.lightd.ideap.maven.actions.MvnOpenPomAction"/>
-            <add-to-group group-id="Project"/>
         </group>
 
     </actions>
