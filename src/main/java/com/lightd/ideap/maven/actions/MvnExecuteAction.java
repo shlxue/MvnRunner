@@ -17,8 +17,11 @@ import java.util.LinkedHashMap;
 public class MvnExecuteAction extends MvnModuleContextAction {
     private String phase;
 
-    public void setPhase(String phase) {
-        this.phase = phase;
+    public String getPhase() {
+        if (phase == null && getTemplatePresentation().getText() != null) {
+            phase = getTemplatePresentation().getText().toLowerCase();
+        }
+        return phase;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class MvnExecuteAction extends MvnModuleContextAction {
     }
 
     private MavenRunnerParameters createParameters(MavenProject project) {
-        return new MavenRunnerParameters(true, project.getDirectory(), Arrays.asList(phase), null);
+        return new MavenRunnerParameters(true, project.getDirectory(), Arrays.asList(getPhase()), null);
     }
 
     private MavenGeneralSettings getGeneralSettings(Project project) {

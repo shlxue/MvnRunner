@@ -1,7 +1,7 @@
 MvnRunner
 =========
 
-a IntelliJ plugin for maven module, run unit testing or main method, by mvn.
+a IntelliJ plugin for maven module, run unit testing and main method, by mvn.
 
 插件做了什么？
 ---------
@@ -23,8 +23,9 @@ IntelliJ 13 及更高版本
 3. 支持包的单元测试。
 4. 支持 main 方法的运行。
 5. maven 启动方式是否优先可配置(Preferences/Maven/Importing)
-6. 允许配置 fork 模式
+6. 允许配置 fork 模式(配置均属 application level)
 7. 为 maven 构建添加 Quick switch popup menu(shortcut: ^M)
+8. maven 构建菜单添加到 Build main menu 中
 
 FAQ
 ----
@@ -55,3 +56,6 @@ Screen Snapshot
 5. Quick switch popup menu
 
     ![Quick switch popup menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/quick_switch_popup_menu.png)
+6. Build menu
+
+    ![Build menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/maven_build_menu.png)

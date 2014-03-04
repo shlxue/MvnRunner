@@ -26,10 +26,13 @@ public class MvnQuickListPopupAction extends QuickSwitchSchemeAction implements 
     @Override
     protected String getPopupTitle(AnActionEvent e) {
         MavenProject mavenProject = MvnModuleContextAction.getProject(e.getDataContext());
-        if (mavenProject == null) return null;
-        String moduleName = mavenProject.getMavenId().getArtifactId();
-        if (moduleName != null && moduleName.length() > 20)
-            moduleName = moduleName.substring(0, 17) + "...";
+        String moduleName = "";
+        if (mavenProject != null) {
+            moduleName = mavenProject.getMavenId().getArtifactId();
+            if (moduleName != null && moduleName.length() > 20)
+                moduleName = moduleName.substring(0, 17) + "...";
+        }
+        if (StringUtil.isEmptyOrSpaces(moduleName)) moduleName = "...";
         return MvnBundle.message("maven.quick.list.popup.title", moduleName);
     }
 
@@ -47,7 +50,7 @@ public class MvnQuickListPopupAction extends QuickSwitchSchemeAction implements 
         addSeparator(group, null);
         addSeparator(group, MvnBundle.message("maven.quick.list.popup.lifecycle"));
         for (String phase : MavenConstants.BASIC_PHASES) {
-            addAction("Maven." + StringUtil.wordsToBeginFromUpperCase(phase), group, phase);
+            addAction("Maven." + StringUtil.wordsToBeginFromUpperCase(phase), group);
         }
     }
 
@@ -59,18 +62,10 @@ public class MvnQuickListPopupAction extends QuickSwitchSchemeAction implements 
     }
 
     private void addAction(final String actionId, final DefaultActionGroup toGroup) {
-        addAction(actionId, toGroup, null);
-    }
-
-    private void addAction(final String actionId, final DefaultActionGroup toGroup, String phase) {
         final AnAction action = ActionManager.getInstance().getAction(actionId);
 
-        if (action != null) {
+        if (action != null)
             toGroup.add(action);
-            if (phase != null && action instanceof MvnExecuteAction) {
-                ((MvnExecuteAction) action).setPhase(phase);
-            }
-        }
     }
 
     private void addSeparator(final DefaultActionGroup toGroup, @Nullable final String title) {
