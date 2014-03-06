@@ -1,11 +1,11 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.1.6</version>
+    <version>0.1.7</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
-      Run/Debug maven module by mvn.<br>
+      Building, Run/Debug maven module by mvn.<br>
       ]]>
     </description>
 
@@ -76,7 +76,7 @@
         <action id="Maven.Pom.Open" class="com.lightd.ideap.maven.actions.MvnOpenPomAction"
                 icon="MavenIcons.MavenLogo"/>
         <action id="Maven.Pom.Diagram" class="com.lightd.ideap.maven.actions.MvnDiagramAction"
-                text="Show Module Diagram..." icon="/images/mvn_diagram.png">
+                text="Show Diagram Popup..." icon="/images/mvn_diagram.png">
             <keyboard-shortcut first-keystroke="ctrl meta U" keymap="$default"/>
         </action>
 
