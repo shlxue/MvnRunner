@@ -19,13 +19,15 @@
             <li>add a option: default run configuration by mvn(from Preferences/Maven/Importing)</li>
             <li>allow config fork mode</li>
             <li>add a quick switch popup menu for maven build(shortcut: ^M)</li>
-            <li><u>add maven build menu to Build main menu</u></li>
+            <li>add maven build menu to Build main menu</li>
+            <li><u>show module dependencies by Show Diagram Popup</u></li>
         </ul>]]>
     </change-notes>
 
     <idea-version since-build="130.754"/>
 
     <depends>org.jetbrains.idea.maven</depends>
+    <depends optional="true">com.intellij.diagram</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <configurationType implementation="com.lightd.ideap.maven.MvnRunConfigurationType"/>
@@ -72,7 +74,11 @@
         <action id="Maven.Deploy" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Deploy" icon="/images/phase_deploy.png"/>
         <action id="Maven.Pom.Open" class="com.lightd.ideap.maven.actions.MvnOpenPomAction"
-                text="Open pom.xml" icon="MavenIcons.MavenLogo"/>
+                icon="MavenIcons.MavenLogo"/>
+        <action id="Maven.Pom.Diagram" class="com.lightd.ideap.maven.actions.MvnDiagramAction"
+                text="Show Module Diagram..." icon="/images/mvn_diagram.png">
+            <keyboard-shortcut first-keystroke="ctrl meta U" keymap="$default"/>
+        </action>
 
         <group id="MavenBuildGroup" class="com.lightd.ideap.maven.actions.MvnActionGroup">
             <add-to-group group-id="BuildMenu" relative-to-action="GenerateAntBuild" anchor="before"/>
@@ -84,6 +90,7 @@
             <reference ref="Maven.Install"/>
             <reference ref="Maven.Deploy"/>
             <reference ref="Maven.Pom.Open"/>
+            <reference ref="Maven.Pom.Diagram"/>
             <separator/>
         </group>
     </actions>

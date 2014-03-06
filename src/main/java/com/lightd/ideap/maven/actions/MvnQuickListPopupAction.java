@@ -59,6 +59,7 @@ public class MvnQuickListPopupAction extends QuickSwitchSchemeAction implements 
         addSeparator(group, "POM");
 
         addAction("Maven.Pom.Open", group);
+        addAction("Maven.Pom.Diagram", group);
     }
 
     private void addAction(final String actionId, final DefaultActionGroup toGroup) {
