@@ -20,7 +20,7 @@
             <li>allow config fork mode</li>
             <li>add a quick switch popup menu for maven build(shortcut: ^M)</li>
             <li>add maven build menu to Build main menu</li>
-            <li><u>show module dependencies by Show Diagram Popup</u></li>
+            <li><u>add actions: show dependencies by Show Diagram Popup</u></li>
         </ul>]]>
     </change-notes>
 
@@ -28,6 +28,7 @@
 
     <depends>org.jetbrains.idea.maven</depends>
     <depends optional="true">com.intellij.diagram</depends>
+    <depends optional="true">org.jetbrains.idea.maven.ext</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <configurationType implementation="com.lightd.ideap.maven.MvnRunConfigurationType"/>
@@ -75,8 +76,8 @@
                 text="Deploy" icon="/images/phase_deploy.png"/>
         <action id="Maven.Pom.Open" class="com.lightd.ideap.maven.actions.MvnOpenPomAction"
                 icon="MavenIcons.MavenLogo"/>
-        <action id="Maven.Pom.Diagram" class="com.lightd.ideap.maven.actions.MvnDiagramAction"
-                text="Show Diagram Popup..." icon="/images/mvn_diagram.png">
+        <action id="Maven.Pom.Diagram" class="com.lightd.ideap.maven.actions.MvnDependencyAction"
+                text="Show Dependencies..." icon="/images/mvn_diagram.png">
             <keyboard-shortcut first-keystroke="ctrl meta U" keymap="$default"/>
         </action>
 

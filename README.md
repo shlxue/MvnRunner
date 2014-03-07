@@ -26,7 +26,7 @@ IntelliJ 13 及更高版本
 6. 允许配置 fork 模式(配置均属 application level)
 7. 为 maven 构建添加 Quick switch popup menu(shortcut: ^M)
 8. maven 构建菜单添加到 Build main menu 中
-9. 支持快速查看 module 依赖
+9. 支持快速查看 module 依赖(在 pom.xml 或 maven 项目列表上显示所有依赖，否则只显示模块依赖)
 
 FAQ
 ----
