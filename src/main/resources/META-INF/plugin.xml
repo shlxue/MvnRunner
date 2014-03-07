@@ -20,7 +20,7 @@
             <li>allow config fork mode</li>
             <li>add a quick switch popup menu for maven build(shortcut: ^M)</li>
             <li>add maven build menu to Build main menu</li>
-            <li><u>add actions: show dependencies by Show Diagram Popup</u></li>
+            <li><u>show all dependencies at pom file, otherwise only module dependencies</u></li>
         </ul>]]>
     </change-notes>
 
