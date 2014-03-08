@@ -11,10 +11,17 @@ a IntelliJ plugin for maven module, building, run unit testing and main method, 
 ----
 IntelliJ 13 及更高版本
 
+依赖插件(__粗体__为必选插件):
+
+* __Maven Integration__
+* UML Support
+* Maven Integration Extension
+
 安装
 ----
-1. 下载编译好的压缩包: [MvnRunner.tar.gz](https://github.com/ShlXue/MvnRunner/releases/download/v0.1.rc1/MvnRunner_v0.1.3.tar.gz)
-2. 解压后得到插件 jar 包，在 IDE 中选择: Plugins --> Install plugin from disk...
+* 插件仓库安装：菜单中选择 Preferences/Plugins/Browser repositories, 查找 Maven Runner 并安装
+* 磁盘安装：[插件下载地址](http://plugins.jetbrains.com/plugin/7409)
+
 
 功能
 ----
@@ -33,10 +40,13 @@ FAQ
 1. 为什么要为这些菜单项增加 maven 的处理方式？
 	* IntelliJ 默认的处理方式无法正确的处理 maven 的级联依赖 jar 包。
 	* 部分 maven 插件依赖运行期读取信息的情况 IntelliJ 默认执行方式无法正确处理。
-2. 为什么需要这个插件？
+* 添加 maven 构建菜单的目的？
+	* 根据当前编辑或选择的上下文，自动选择当前 module 并构建。
+	* Maven projects 构建操作达不到快捷的目标。
+* 为什么需要这个插件？
 	* 你不用再为了运行单元测试而去修改 pom.xml，让 pom 每天都保持清爽吧。
 	* IntelliJ 平台为 maven 项目提供更完美的支持。
-3. 类似插件: [MavenRunHelper](https://github.com/krasa/MavenRunHelper)
+* 类似插件: [MavenRunHelper](https://github.com/krasa/MavenRunHelper)
     * 该插件新增了 Maven 常用操作的菜单项。
 
 Screen Snapshot

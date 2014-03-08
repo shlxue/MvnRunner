@@ -4,6 +4,7 @@ import com.intellij.ide.actions.QuickSwitchSchemeAction;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.util.text.StringUtil;
 import com.lightd.ideap.maven.MvnBundle;
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +45,11 @@ public class MvnQuickListPopupAction extends QuickSwitchSchemeAction implements 
         }
         addLifecycleActions(group);
         addPomActions(group);
+    }
+
+    @Override
+    protected JBPopupFactory.ActionSelectionAid getAidMethod() {
+        return JBPopupFactory.ActionSelectionAid.ALPHA_NUMBERING;
     }
 
     private void addLifecycleActions(DefaultActionGroup group) {
