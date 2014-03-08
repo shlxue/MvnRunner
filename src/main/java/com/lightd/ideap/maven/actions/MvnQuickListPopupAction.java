@@ -6,14 +6,11 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import com.lightd.ideap.maven.MvnBundle;
-import com.sun.jna.platform.WindowUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.model.MavenConstants;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
-
-import java.awt.*;
 
 public class MvnQuickListPopupAction extends QuickSwitchSchemeAction implements DumbAware {
 
@@ -45,7 +42,6 @@ public class MvnQuickListPopupAction extends QuickSwitchSchemeAction implements 
                 MvnModuleContextAction.getProject(dataContext) == null) {
             return;
         }
-        group.removeAll();
         addLifecycleActions(group);
         addPomActions(group);
     }
