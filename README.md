@@ -32,8 +32,9 @@ IntelliJ 13 及更高版本
 5. maven 启动方式是否优先可配置(Preferences/Maven/Importing)
 6. 允许配置 fork 模式(配置均属 application level)
 7. 为 maven 构建添加 Quick switch popup menu(shortcut: ^M)
-8. maven 构建菜单添加到 Build main menu 中
-9. 支持快速查看 module 依赖(在 pom.xml 或 maven 项目列表上显示所有依赖，否则只显示模块依赖)
+8. maven 构建菜单添加到 Build main menu 中(shortcut: ^⌘+ C/P/T/I)
+9. 支持快速查看 module 依赖(在 pom.xml 或 maven 项目列表上显示所有依赖，否则只显示模块依赖。 shortcut: ^⌘U)
+10. 通过 maven 坐标快速打开 POM 文件(shortcut: ^⌘M)
 
 FAQ
 ----
@@ -42,7 +43,7 @@ FAQ
 	* 部分 maven 插件依赖运行期读取信息的情况 IntelliJ 默认执行方式无法正确处理。
 * 添加 maven 构建菜单的目的？
 	* 根据当前编辑或选择的上下文，自动选择当前 module 并构建。
-	* Maven projects 构建操作达不到快捷的目标。
+	* Maven projects 上的构建操作达不到快捷的目标。
 * 为什么需要这个插件？
 	* 你不用再为了运行单元测试而去修改 pom.xml，让 pom 每天都保持清爽吧。
 	* IntelliJ 平台为 maven 项目提供更完美的支持。
@@ -70,3 +71,6 @@ Screen Snapshot
 6. Build menu
 
     ![Build menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/maven_build_menu.png)
+7. Quick open pom
+
+    ![Quick open pom](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/quick_open_pom.png)
