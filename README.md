@@ -26,15 +26,14 @@ IntelliJ 13 及更高版本
 功能
 ----
 1. 新增 Run 及 Debug 两个菜单项的处理方式，以原生的 mvn 命令来执行相同的操作。
-2. 支持单个方法及单个类的单元测试。
-3. 支持包的单元测试。
-4. 支持 main 方法的运行。
-5. maven 启动方式是否优先可配置(Preferences/Maven/Importing)
-6. 允许配置 fork 模式(配置均属 application level)
-7. 为 maven 构建添加 Quick switch popup menu(shortcut: ^M)
-8. maven 构建菜单添加到 Build main menu 中(shortcut: ^⌘+ C/P/T/I)
-9. 支持快速查看 module 依赖(在 pom.xml 或 maven 项目列表上显示所有依赖，否则只显示模块依赖。 shortcut: ^⌘U)
-10. 通过 maven 坐标快速打开 POM 文件(shortcut: ^⌘M)
+* 支持单个方法、类、包及整个模块的单元测试。
+* 支持 main 方法的运行。
+* maven 启动方式是否优先可配置(Preferences/Maven/Importing)
+* 允许配置 fork 模式(配置均属 application level)
+* 为 maven 构建添加 Quick switch popup menu(shortcut: ^M)
+* maven 构建菜单添加到 Build main menu 中(shortcut: ^⌘+ C/P/T/I)
+* 支持快速查看 module 依赖(在 pom.xml 或 maven 项目列表上显示所有依赖，否则只显示模块依赖。 shortcut: ^⌘U)
+* 通过 maven 坐标快速打开 POM 文件(shortcut: ^⌘M)
 
 FAQ
 ----
