@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.2.0</version>
+    <version>0.2.2</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
@@ -22,6 +22,7 @@
         <strong>0.2 maven helper</strong>
         <ul>
             <li>quick open pom file by maven artifact</li>
+            <li><u>include non project pom files</u></li>
         </ul>]]>
     </change-notes>
 
