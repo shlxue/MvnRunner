@@ -31,7 +31,7 @@ public class GotoPomAction extends GotoActionBase {
     public void update(AnActionEvent e) {
         super.update(e);
         Presentation presentation = e.getPresentation();
-        presentation.setEnabled(MavenActionUtil.hasProject(e.getDataContext()));
+        presentation.setEnabled(MavenActionUtil.getMavenProject(e.getDataContext()) != null);
     }
 
     class GotoPomActionCallback extends GotoActionCallback<FileType> {
