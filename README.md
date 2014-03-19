@@ -40,7 +40,7 @@ FAQ
 1. 为什么要为这些菜单项增加 maven 的处理方式？
 	* IntelliJ 默认的处理方式无法正确的处理 maven 的级联依赖 jar 包。
 	* 部分 maven 插件依赖运行期读取信息的情况 IntelliJ 默认执行方式无法正确处理。
-* Jetty 或 Tomcat 如果调试运行?
+* 如何配置让 Jetty 或 Tomcat 可以调试运行?
     * 在 pom 文件中配置 jetty-maven-plugin 或 tomcat6/7-maven-plugin。
     * 两者的启动配置完全依赖于 pom 文件中上述两个 maven 构建插件的配置。
 * 添加 maven 构建菜单的目的？
@@ -76,6 +76,6 @@ Screen Snapshot
 * Build menu
 
     ![Build menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/maven_build_menu.png)
-7. Quick open pom
+* Quick open pom
 
     ![Quick open pom](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/quick_open_pom.png)
