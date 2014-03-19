@@ -3,7 +3,6 @@ package com.lightd.ideap.maven.execution;
 import com.intellij.execution.Location;
 import com.intellij.execution.PsiLocation;
 import com.intellij.execution.actions.ConfigurationContext;
-import com.intellij.execution.actions.ConfigurationFromContext;
 import com.intellij.execution.actions.RunConfigurationProducer;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -14,9 +13,6 @@ import com.intellij.psi.PsiFile;
 import com.lightd.ideap.maven.MvnRunConfiguration;
 import com.lightd.ideap.maven.MvnRunConfigurationType;
 import com.lightd.ideap.maven.RunType;
-import com.lightd.ideap.maven.settings.MvnRunConfigurable;
-import com.lightd.ideap.maven.settings.MvnRunConfigurationSettings;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
@@ -47,19 +43,6 @@ public abstract class MavenModuleConfigurationProducer extends RunConfigurationP
             }
         }
         return false;
-    }
-
-    @Nullable
-    @Override
-    public ConfigurationFromContext createConfigurationFromContext(ConfigurationContext context) {
-        ConfigurationFromContext config = super.createConfigurationFromContext(context);
-        if (config != null) {
-            MvnRunConfigurationSettings settings = MvnRunConfigurable.getInstance().getSettings();
-            if (settings.isSetupOnlyBy()) {
-                return new MvnConfigurationFromContextWrapper(this, config);
-            }
-        }
-        return config;
     }
 
     @Override

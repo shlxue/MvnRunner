@@ -9,8 +9,7 @@
         <ul>
             <li>test class, method, package and module</li>
             <li>run main method</li>
-            <li>add a option: default run configuration by mvn(from Preferences/Maven/Importing)</li>
-            <li>allow config fork mode</li>
+            <li>add option: config fork mode(from Preferences/Maven/Importing)</li>
             <li>add a quick switch popup menu for maven build(shortcut: <u>^M</u>)</li>
             <li>add maven build menu to Build main menu(shortcut: <u>^⌘ + C/T/P/I</u>)</li>
             <li>show all dependencies at pom file, otherwise only module dependencies(shortcut: <u>^⌘U</u>)</li>
@@ -56,7 +55,7 @@
         <action id="Maven.Clean" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Clean" icon="/images/phase_clean.png">
             <keyboard-shortcut first-keystroke="ctrl meta C" keymap="$default"/>
-                </action>
+        </action>
         <action id="Maven.Validate" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Validate"/>
         <action id="Maven.Compile" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
@@ -64,17 +63,17 @@
         <action id="Maven.Test" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Test" icon="/images/phase_test.png">
             <keyboard-shortcut first-keystroke="ctrl meta T" keymap="$default"/>
-                </action>
+        </action>
         <action id="Maven.Package" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Package" icon="/images/phase_package.png">
             <keyboard-shortcut first-keystroke="ctrl meta P" keymap="$default"/>
-                </action>
+        </action>
         <action id="Maven.Verify" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Verify"/>
         <action id="Maven.Install" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Install" icon="/images/phase_install.png">
             <keyboard-shortcut first-keystroke="ctrl meta I" keymap="$default"/>
-                </action>
+        </action>
         <action id="Maven.Site" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Site"/>
         <action id="Maven.Deploy" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
