@@ -28,8 +28,8 @@ IntelliJ 13 及更高版本
 1. 新增 Run 及 Debug 两个菜单项的处理方式，以原生的 mvn 命令来执行相同的操作。
 * 支持单个方法、类、包及整个模块的单元测试。
 * 支持 main 方法的运行。
-* maven 启动方式是否优先可配置(Preferences/Maven/Importing)
-* 允许配置 fork 模式(配置均属 application level)
+* 支持 jetty 及 tomcat 运行，如果配置 jetty-maven-plugin 或 tomcat6/7-maven-plugin。
+* 允许配置 fork 模式(配置均属 application level, Preferences/Maven/Importing)
 * 为 maven 构建添加 Quick switch popup menu(shortcut: ^M)
 * maven 构建菜单添加到 Build main menu 中(shortcut: ^⌘+ C/P/T/I)
 * 支持快速查看 module 依赖(在 pom.xml 或 maven 项目列表上显示所有依赖，否则只显示模块依赖。 shortcut: ^⌘U)
@@ -40,6 +40,9 @@ FAQ
 1. 为什么要为这些菜单项增加 maven 的处理方式？
 	* IntelliJ 默认的处理方式无法正确的处理 maven 的级联依赖 jar 包。
 	* 部分 maven 插件依赖运行期读取信息的情况 IntelliJ 默认执行方式无法正确处理。
+* Jetty 或 Tomcat 如果调试运行?
+    * 在 pom 文件中配置 jetty-maven-plugin 或 tomcat6/7-maven-plugin。
+    * 两者的启动配置完全依赖于 pom 文件中上述两个 maven 构建插件的配置。
 * 添加 maven 构建菜单的目的？
 	* 根据当前编辑或选择的上下文，自动选择当前 module 并构建。
 	* Maven projects 上的构建操作达不到快捷的目标。
@@ -55,19 +58,22 @@ Screen Snapshot
 1. All Tests
 	
 	![All_tests_popup_menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/all_tests_popup_menu.png)
-2. Test package
+* Test package
 
 	![Test_package_popup_menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/test_package_popup_menu.png)
-3. Run/Debug Configurations
+* Run/Debug Configurations
 
 	![Run_Configurations](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/run_configurations.png)
-4. Preferences
+* Run Jetty or Tomcat
+
+	![Run_Jetty_Tomcat](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/run_jetty_tomcat.png)
+* Preferences
 
 	![Preferences](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/Preferences.png)
-5. Quick switch popup menu
+* Quick switch popup menu
 
     ![Quick switch popup menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/quick_switch_popup_menu.png)
-6. Build menu
+* Build menu
 
     ![Build menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/maven_build_menu.png)
 7. Quick open pom

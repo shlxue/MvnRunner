@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.2.2</version>
+    <version>0.2.3</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
@@ -9,6 +9,7 @@
         <ul>
             <li>test class, method, package and module</li>
             <li>run main method</li>
+            <li>run application server: jetty or tomcat, if pom file is selected</li>
             <li>add option: config fork mode(from Preferences/Maven/Importing)</li>
             <li>add a quick switch popup menu for maven build(shortcut: <u>^M</u>)</li>
             <li>add maven build menu to Build main menu(shortcut: <u>^⌘ + C/T/P/I</u>)</li>
@@ -21,7 +22,8 @@
         <strong>0.2 maven helper</strong>
         <ul>
             <li>quick open pom file by maven artifact</li>
-            <li><u>include non project pom files</u></li>
+            <li>include non project pom files</li>
+            <li><u>run application server: jetty or tomcat(jetty-maven-plugin/tomcatx-maven-plugin)</u></li>
         </ul>]]>
     </change-notes>
 
