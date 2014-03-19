@@ -40,7 +40,7 @@ class MvnConfigurationFromContextWrapper extends ConfigurationFromContext {
 
     @Override
     public boolean isProducedBy(Class<? extends RunConfigurationProducer> producerClass) {
-        return MvnRunConfigurationProducerBase.class.isInstance(configurationProducer);
+        return MavenModuleConfigurationProducer.class.isInstance(configurationProducer);
     }
 
     @Override

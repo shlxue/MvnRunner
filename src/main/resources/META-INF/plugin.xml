@@ -38,6 +38,10 @@
                 implementation="com.lightd.ideap.maven.execution.MvnRunConfigurationProducer"/>
         <runConfigurationProducer
                 implementation="com.lightd.ideap.maven.execution.MvnTestConfigurationProducer"/>
+        <runConfigurationProducer
+                implementation="com.lightd.ideap.maven.execution.server.MvnJettyConfigurationProducer"/>
+        <runConfigurationProducer
+                implementation="com.lightd.ideap.maven.execution.server.MvnTomcatConfigurationProducer"/>
     </extensions>
     <extensions defaultExtensionNs="org.jetbrains.idea.maven">
         <additional.importing.settings id="mvnRunConfiguration"
@@ -48,7 +52,6 @@
         <action id="Maven.QuickListPopupAction" text="Maven Build Popup..."
                 class="com.lightd.ideap.maven.actions.MvnQuickListPopupAction">
             <keyboard-shortcut first-keystroke="meta M" keymap="$default"/>
-            <keyboard-shortcut first-keystroke="meta M" keymap="Mac OS X"/>
         </action>
         <action id="Maven.Clean" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Clean" icon="/images/phase_clean.png">

@@ -46,6 +46,14 @@ public class MvnRunConfigurationType implements ConfigurationType {
                                         @NotNull MavenRunnerParameters params,
                                         @Nullable MavenGeneralSettings settings,
                                         @Nullable MavenRunnerSettings runnerSettings) {
+        runConfiguration(project, params, settings, runnerSettings, null);
+    }
+
+    public static void runConfiguration(Project project,
+                                        @NotNull MavenRunnerParameters params,
+                                        @Nullable MavenGeneralSettings settings,
+                                        @Nullable MavenRunnerSettings runnerSettings,
+                                        @Nullable ProgramRunner.Callback callback) {
         RunnerAndConfigurationSettings configSettings = createRunnerAndConfigurationSettings(settings,
                 runnerSettings,
                 params,
@@ -56,7 +64,7 @@ public class MvnRunConfigurationType implements ConfigurationType {
         ExecutionEnvironment env = new ExecutionEnvironment(executor, runner, configSettings, project);
 
         try {
-            runner.execute(env);
+           runner.execute(env, callback);
         }
         catch (ExecutionException e) {
             MavenUtil.showError(project, "Failed to execute Maven goal", e);
@@ -157,6 +165,11 @@ public class MvnRunConfigurationType implements ConfigurationType {
             cfg.getRunnerParameters().setWorkingDirPath(directory.getPath());
 
             return cfg;
+        }
+
+        @Override
+        public Icon getIcon(@NotNull RunConfiguration config) {
+            return config.getIcon();
         }
 
         @Override

@@ -1,34 +1,43 @@
 package com.lightd.ideap.maven.execution;
 
 import com.intellij.execution.actions.ConfigurationContext;
+import com.intellij.execution.junit.JUnitUtil;
 import com.intellij.psi.util.PsiMethodUtil;
 import com.lightd.ideap.maven.MvnBundle;
-import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
+import com.lightd.ideap.maven.RunType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MvnRunConfigurationProducer extends MvnRunConfigurationProducerBase {
+public class MvnRunConfigurationProducer extends JavaElementConfigurationProducer {
+    protected boolean isTestScope;
 
     @Override
-    protected boolean setupMavenContext(MavenRunConfiguration config, List<String> goals) {
-        if (psiMethod != null && PsiMethodUtil.isMainMethod(psiMethod)) {
-            config.setName(generateName(psiClass, psiMethod));
-            goals.addAll(generateMvnParameters());
+    protected boolean initContext(ConfigurationContext context) {
+        isTestScope = true;
+        if (super.initContext(context)) {
+            isTestScope = psiClass != null && JUnitUtil.isTestClass(psiClass);
             return true;
         }
         return false;
     }
 
     @Override
-    protected boolean initPsiContext(ConfigurationContext context) {
-        if (super.initPsiContext(context) && !isTestScope) {
-            psiMethod = PsiMethodUtil.findMainMethod(psiClass);
-            return psiMethod != null;
-        }
-        return false;
+    protected boolean isContext(ConfigurationContext context) {
+        return super.isContext(context) && psiClass != null && PsiMethodUtil.hasMainMethod(psiClass) && !isTestScope;
     }
 
+    @Override
+    protected String generateName() {
+        return super.generateName() + ".main";
+    }
+
+    @Override
+    protected RunType getRunType() {
+        return RunType.Main;
+    }
+
+    @Override
     protected List<String> generateMvnParameters() {
         List<String> parameters = new ArrayList<String>();
         if (isTestScope)

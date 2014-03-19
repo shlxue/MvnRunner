@@ -1,27 +1,66 @@
 package com.lightd.ideap.maven.execution;
 
-import com.intellij.execution.PsiLocation;
 import com.intellij.execution.actions.ConfigurationContext;
 import com.intellij.execution.junit.JUnitUtil;
-import com.intellij.psi.PsiClass;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiPackage;
 import com.intellij.util.text.VersionComparatorUtil;
 import com.lightd.ideap.maven.MvnBundle;
+import com.lightd.ideap.maven.MvnRunConfiguration;
+import com.lightd.ideap.maven.RunType;
 import com.lightd.ideap.maven.settings.MvnRunConfigurable;
 import com.lightd.ideap.maven.settings.MvnRunConfigurationSettings;
-import org.jetbrains.idea.maven.execution.MavenRunConfiguration;
+import org.jetbrains.idea.maven.model.MavenConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBase {
+public class MvnTestConfigurationProducer extends JavaElementConfigurationProducer {
+
+    protected PsiMethod psiMethod;
+    protected boolean isTestAll;
 
     @Override
-    protected boolean initPsiContext(ConfigurationContext context) {
-        return super.initPsiContext(context) && isTestScope &&
-                (isTestAll || psiPackage == null || hasTestClass(psiPackage));
+    protected RunType getRunType() {
+        return RunType.Test;
+    }
+
+    @Override
+    protected boolean setupMavenContext(MvnRunConfiguration config, List<String> goals) {
+        boolean setup = super.setupMavenContext(config, goals);
+        if (config.getRunnerSettings() != null) {
+            config.getRunnerSettings().setSkipTests(false);
+        }
+        return setup;
+    }
+
+    @Override
+    protected boolean initContext(ConfigurationContext context) {
+        psiMethod = null;
+        isTestAll = false;
+        if (super.initContext(context)) {
+            isTestAll = psiClass == null && psiPackage == null;
+            isTestAll |= psiPackage != null && StringUtil.isEmpty(psiPackage.getQualifiedName());
+            if (psiClass != null)
+                psiMethod = JUnitUtil.getTestMethod(context.getPsiLocation());
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isPom(){
+        return psiFile != null && MavenConstants.POM_XML.equals(psiFile.getName());
+    }
+
+
+    @Override
+    protected boolean isContext(ConfigurationContext context) {
+        if (super.isContext(context) && (isTestAll || psiPackage != null || psiClass != null)) {
+            isPom();
+            return !(psiClass != null && !JUnitUtil.isTestClass(psiClass)) && !isPom();
+        }
+        return false;
     }
 
     @Override
@@ -35,25 +74,18 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
     }
 
     @Override
-    protected boolean setupMavenContext(MavenRunConfiguration configuration, List<String> goals) {
-        if (isTestScope && (psiMethod == null || JUnitUtil.isTestMethod(PsiLocation.fromPsiElement(psiMethod)))) {
-            configuration.setName(generateName(psiClass, psiMethod));
-            goals.addAll(generateMvnParameters());
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    protected String generateName(PsiClass psiClass, PsiMethod psiMethod) {
-        String moduleName = mavenProject.getDisplayName();
+    protected String generateName() {
+        String moduleName = mavenProject.getMavenId().getArtifactId();
         if (isTestAll) {
             return MvnBundle.message("action.all.tests.text", moduleName);
         }
         if (psiPackage != null) {
             return MvnBundle.message("mvn.config.in.package.name", psiPackage.getQualifiedName(), moduleName);
         }
-        return super.generateName(psiClass, psiMethod);
+        String name = super.generateName();
+        if (psiMethod != null)
+            name += "." + psiMethod.getName();
+        return name;
     }
 
     protected List<String> generateMvnParameters() {
@@ -74,31 +106,25 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
             }
             testParameters.add(MvnBundle.message("mvn.param.test.object", mvnTestParam));
         }
-        testParameters.add(MvnBundle.message("mvn.param.skip"));
-        MvnRunConfigurationSettings settings = MvnRunConfigurable.getInstance().getSettings();
-        if (isForking()) {
-            testParameters.add(MvnBundle.message("mvn.param.fork.count", settings.getForkCount()));
-            testParameters.add(MvnBundle.message("mvn.param.reuse.forks", settings.isReuseForks()));
-        } else {
-            testParameters.add(MvnBundle.message("mvn.param.fork.mode",
-                    getForkMode(settings.getForkCount(), settings.isReuseForks())));
+
+        if (Boolean.valueOf(mavenProject.getProperties().getProperty("maven.test.skip", "false")))
+            testParameters.add(MvnBundle.message("mvn.param.skip"));
+        if (psiMethod == null) {
+            MvnRunConfigurationSettings settings = MvnRunConfigurable.getInstance().getSettings();
+            if (isForking()) {
+                testParameters.add(MvnBundle.message("mvn.param.fork.count", settings.getForkCount()));
+                if (settings.getForkCount() == 1)
+                    testParameters.add(MvnBundle.message("mvn.param.reuse.forks", settings.isReuseForks()));
+            } else {
+                testParameters.add(MvnBundle.message("mvn.param.fork.mode",
+                        getForkMode(settings.getForkCount(), settings.isReuseForks())));
+                if (testParameters.get(testParameters.size() - 1).contains("perthread")) {
+                    testParameters.add(MvnBundle.message("mvn.param.fork.thread", settings.getForkCount()));
+                }
+            }
         }
 
         return testParameters;
-    }
-
-    private boolean hasTestClass(PsiPackage pack) {
-        for (PsiClass aClass : pack.getClasses()) {
-            if (JUnitUtil.isTestClass(aClass)) {
-                return true;
-            }
-        }
-        for (PsiPackage aPackage : pack.getSubPackages()) {
-            if (hasTestClass(aPackage)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private boolean isForking() {
@@ -114,6 +140,6 @@ public class MvnTestConfigurationProducer extends MvnRunConfigurationProducerBas
         if (forkCount <= 1) {
             return reuseForks ? "once" : "always";
         }
-        return forkCount == 0 ? "never" : MvnBundle.message("mvn.param.fork.thread", forkCount) ;
+        return forkCount == 0 ? "never" : "perthread";
     }
 }
