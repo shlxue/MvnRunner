@@ -12,13 +12,15 @@ import javax.swing.*;
 public class PomWrapper extends RenameableFakePsiElement {
     private final MavenCoordinate coordinate;
     private final String rootPath;
+    private final boolean showLocation;
     private final PsiFileSystemItem pomFile;
 
-    PomWrapper(PsiFileSystemItem pomFile, MavenCoordinate coordinate, String rootPath) {
+    PomWrapper(PsiFileSystemItem pomFile, MavenCoordinate coordinate, String rootPath, boolean showLocation) {
         super(pomFile.getParent());
         this.pomFile = pomFile;
         this.coordinate = coordinate;
         this.rootPath = rootPath;
+        this.showLocation = showLocation;
     }
 
     @Override
@@ -40,7 +42,7 @@ public class PomWrapper extends RenameableFakePsiElement {
     @Override
     public String getLocationString() {
         String localPath = null;
-        if (pomFile.getPresentation() != null) {
+        if (showLocation && pomFile.getPresentation() != null) {
             localPath = pomFile.getPresentation().getLocationString();
             if (localPath != null && localPath.length() > rootPath.length()) {
                 localPath = "." + localPath.substring(rootPath.length());

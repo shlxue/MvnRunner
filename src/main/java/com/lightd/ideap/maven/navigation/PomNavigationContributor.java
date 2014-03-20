@@ -1,5 +1,6 @@
 package com.lightd.ideap.maven.navigation;
 
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.navigation.ChooseByNameContributorEx;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.DumbAware;
@@ -29,10 +30,12 @@ import java.util.Map;
 
 public class PomNavigationContributor implements ChooseByNameContributorEx, DumbAware {
     private final Project project;
+    private final boolean showPomLocation;
     private MavenProjectsManager projectsManager;
 
     public PomNavigationContributor(Project project) {
         this.project = project;
+        showPomLocation = PropertiesComponent.getInstance().getBoolean("showPomLocation", false);
     }
 
     @Override
@@ -77,7 +80,7 @@ public class PomNavigationContributor implements ChooseByNameContributorEx, Dumb
             pomFile = notImportPoms.get(mavenId);
         }
         if (pomFile != null) {
-            PomWrapper pomWrapper = new PomWrapper(pomFile, mavenId, project.getBasePath());
+            PomWrapper pomWrapper = new PomWrapper(pomFile, mavenId, project.getBasePath(), showPomLocation);
             processor.process(pomWrapper);
         }
     }
