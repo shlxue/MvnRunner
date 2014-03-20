@@ -52,11 +52,13 @@
     <actions>
         <action id="Maven.QuickListPopupAction" text="Maven Build Popup..."
                 class="com.lightd.ideap.maven.actions.MvnQuickListPopupAction">
-            <keyboard-shortcut first-keystroke="meta M" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="ctrl shift M" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="control M" keymap="Mac OS X" replace-all="true"/>
         </action>
         <action id="Maven.Clean" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Clean" icon="/images/phase_clean.png">
-            <keyboard-shortcut first-keystroke="ctrl meta C" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="shift alt 1" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="control meta C" keymap="Mac OS X" replace-all="true"/>
         </action>
         <action id="Maven.Validate" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Validate"/>
@@ -64,17 +66,20 @@
                 text="Compile" icon="/images/phase_compile.png"/>
         <action id="Maven.Test" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Test" icon="/images/phase_test.png">
-            <keyboard-shortcut first-keystroke="ctrl meta T" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="shift alt 7" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="control meta T" keymap="Mac OS X" replace-all="true"/>
         </action>
         <action id="Maven.Package" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Package" icon="/images/phase_package.png">
-            <keyboard-shortcut first-keystroke="ctrl meta P" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="shift alt 9" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="control meta P" keymap="Mac OS X" replace-all="true"/>
         </action>
         <action id="Maven.Verify" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Verify"/>
         <action id="Maven.Install" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Install" icon="/images/phase_install.png">
-            <keyboard-shortcut first-keystroke="ctrl meta I" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="shift alt 0" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="control meta I" keymap="Mac OS X" replace-all="true"/>
         </action>
         <action id="Maven.Site" class="com.lightd.ideap.maven.actions.MvnExecuteAction"
                 text="Site"/>
@@ -84,7 +89,8 @@
                 icon="MavenIcons.MavenLogo"/>
         <action id="Maven.Pom.Diagram" class="com.lightd.ideap.maven.actions.MvnDependencyAction"
                 text="Show Dependencies..." icon="/images/mvn_diagram.png">
-            <keyboard-shortcut first-keystroke="ctrl meta U" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="ctrl alt U" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="control meta U" keymap="Mac OS X" replace-all="true"/>
         </action>
 
         <group id="MavenBuildGroup" class="com.lightd.ideap.maven.actions.MvnActionGroup">
@@ -101,7 +107,8 @@
             <separator/>
         </group>
         <action id="GotoPom" class="com.lightd.ideap.maven.navigation.actions.GotoPomAction" text="Pom...">
-            <keyboard-shortcut first-keystroke="ctrl meta M" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="shift alt P" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="control meta M" keymap="Mac OS X" replace-all="true"/>
             <add-to-group group-id="GoToTargetEx"/>
         </action>
     </actions>
