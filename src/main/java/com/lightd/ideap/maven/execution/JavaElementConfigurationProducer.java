@@ -20,7 +20,7 @@ public abstract class JavaElementConfigurationProducer extends MavenModuleConfig
     protected boolean initContext(ConfigurationContext context) {
         psiClass = null;
         psiPackage = null;
-        if (super.initContext(context)) {
+        if (super.initContext(context) && mavenProject!= null) {
             psiClass = getPsiClass();
             if (psiClass == null) {
                 psiPackage = getPsiPackage(context.getDataContext());

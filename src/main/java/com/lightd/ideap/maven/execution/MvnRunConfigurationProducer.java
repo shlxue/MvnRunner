@@ -15,8 +15,8 @@ public class MvnRunConfigurationProducer extends JavaElementConfigurationProduce
     @Override
     protected boolean initContext(ConfigurationContext context) {
         isTestScope = true;
-        if (super.initContext(context)) {
-            isTestScope = psiClass != null && JUnitUtil.isTestClass(psiClass);
+        if (super.initContext(context) && psiClass != null) {
+            isTestScope = JUnitUtil.isTestClass(psiClass);
             return true;
         }
         return false;
@@ -24,7 +24,7 @@ public class MvnRunConfigurationProducer extends JavaElementConfigurationProduce
 
     @Override
     protected boolean isContext(ConfigurationContext context) {
-        return super.isContext(context) && psiClass != null && PsiMethodUtil.hasMainMethod(psiClass) && !isTestScope;
+        return super.isContext(context) && PsiMethodUtil.hasMainMethod(psiClass) && !isTestScope;
     }
 
     @Override

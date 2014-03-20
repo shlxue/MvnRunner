@@ -32,7 +32,7 @@ public abstract class MvnServerConfigurationProducer extends MavenModuleConfigur
     @Override
     protected boolean initContext(ConfigurationContext context) {
         plugin = null;
-        if (super.initContext(context)) {
+        if (super.initContext(context) && mavenProject != null) {
             for (MavenId mavenId : getPluginMavenId()) {
                 plugin = mavenProject.findPlugin(mavenId.getGroupId(), mavenId.getArtifactId());
                 if (plugin != null)
