@@ -30,7 +30,10 @@ public class PomWrapper extends RenameableFakePsiElement {
 
     @Override
     public String getName() {
-        return coordinate.getGroupId() + ":" + coordinate.getArtifactId();
+        String artifact = coordinate.getArtifactId();
+        if (artifact.startsWith(coordinate.getGroupId()))
+            artifact = "." + artifact.substring(coordinate.getGroupId().length());
+        return coordinate.getGroupId() + ":" + artifact;
     }
 
     @Override
