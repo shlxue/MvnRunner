@@ -87,7 +87,7 @@ public class MvnRunConfigurationType implements ConfigurationType {
     private static String generateName(Project project, MavenRunnerParameters runnerParameters) {
         String name = "";
         for (MavenProject mavenProject : MavenProjectsManager.getInstance(project).getProjects()) {
-            if (project.getBasePath().equals(mavenProject.getDirectory())) {
+            if (runnerParameters.getWorkingDirPath().equals(mavenProject.getDirectory())) {
                 name = mavenProject.getMavenId().getArtifactId();
                 break;
             }
