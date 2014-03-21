@@ -1,14 +1,32 @@
 package com.lightd.ideap.maven.settings;
 
 import com.intellij.ide.util.PropertiesComponent;
-import com.lightd.ideap.maven.MvnBundle;
 
 public class MvnRunConfigurationSettings implements Cloneable {
 
-    private static final PropertiesComponent component = PropertiesComponent.getInstance();
+    public final String Key_ForkCount = "forkCount";
+    public final String Key_ReuseForks = "reuseForks";
+    public final String Key_ShowPomLocation = "showPomLocation";
+    public final String Key_WithPrefix = "withPrefix";
+    public final String Key_OnlyIgnoreCore = "onlyIgnoreCore";
+
+    private static MvnRunConfigurationSettings instance;
     private int forkCount;
     private boolean reuseForks;
     private boolean showPomLocation;
+    private boolean withPrefix;
+    private boolean onlyIgnoreCorePlugin;
+
+    public static MvnRunConfigurationSettings getInstance() {
+        if (instance == null) {
+            instance = new MvnRunConfigurationSettings();
+        }
+        instance.readSettings();
+        return instance;
+    }
+
+    MvnRunConfigurationSettings() {
+    }
 
     public int getForkCount() {
         return forkCount;
@@ -34,6 +52,22 @@ public class MvnRunConfigurationSettings implements Cloneable {
         this.showPomLocation = showPomLocation;
     }
 
+    public boolean isWithPrefix() {
+        return withPrefix;
+    }
+
+    public void setWithPrefix(boolean withPrefix) {
+        this.withPrefix = withPrefix;
+    }
+
+    public boolean isOnlyIgnoreCorePlugin() {
+        return onlyIgnoreCorePlugin;
+    }
+
+    public void setOnlyIgnoreCorePlugin(boolean onlyIgnoreCorePlugin) {
+        this.onlyIgnoreCorePlugin = onlyIgnoreCorePlugin;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof MvnRunConfigurationSettings) || getClass() != obj.getClass())
@@ -42,18 +76,26 @@ public class MvnRunConfigurationSettings implements Cloneable {
         final MvnRunConfigurationSettings settings = (MvnRunConfigurationSettings) obj;
         return settings.getForkCount() == getForkCount() &&
                 settings.isReuseForks() == isReuseForks() &&
-                settings.isShowPomLocation() == isShowPomLocation();
+                settings.isShowPomLocation() == isShowPomLocation() &&
+                settings.isWithPrefix() == isWithPrefix() &&
+                settings.isOnlyIgnoreCorePlugin() == isOnlyIgnoreCorePlugin();
     }
 
     public void readSettings() {
-        forkCount = (byte)component.getOrInitInt(MvnBundle.message("settings.key.fork.count"), Runtime.getRuntime().availableProcessors());
-        reuseForks = component.getBoolean(MvnBundle.message("settings.key.reuse.forks"), true);
-        showPomLocation = component.getBoolean(MvnBundle.message("settings.key.show.pom.location"), false);
+        final PropertiesComponent component = PropertiesComponent.getInstance();
+        forkCount = (byte)component.getOrInitInt(Key_ForkCount, Runtime.getRuntime().availableProcessors());
+        reuseForks = component.getBoolean(Key_ReuseForks, true);
+        showPomLocation = component.getBoolean(Key_ShowPomLocation, false);
+        withPrefix = component.getBoolean(Key_WithPrefix, false);
+        onlyIgnoreCorePlugin = component.getBoolean(Key_OnlyIgnoreCore, false);
     }
 
     protected void saveSettings() {
-        component.setValue(MvnBundle.message("settings.key.fork.count"), Integer.toString(forkCount));
-        component.setValue(MvnBundle.message("settings.key.reuse.forks"), Boolean.toString(reuseForks));
-        component.setValue(MvnBundle.message("settings.key.show.pom.location"), Boolean.toString(showPomLocation));
+        final PropertiesComponent component = PropertiesComponent.getInstance();
+        component.setValue(Key_ForkCount, Integer.toString(forkCount));
+        component.setValue(Key_ReuseForks, Boolean.toString(reuseForks));
+        component.setValue(Key_ShowPomLocation, Boolean.toString(showPomLocation));
+        component.setValue(Key_WithPrefix, Boolean.toString(withPrefix));
+        component.setValue(Key_OnlyIgnoreCore, Boolean.toString(onlyIgnoreCorePlugin));
     }
 }
