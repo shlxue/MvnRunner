@@ -1,82 +1,34 @@
 package com.lightd.ideap.maven.actions;
 
-import com.intellij.ide.actions.QuickSwitchSchemeAction;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.util.text.StringUtil;
 import com.lightd.ideap.maven.MvnBundle;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.model.MavenConstants;
 import org.jetbrains.idea.maven.project.MavenProject;
-import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 
-public class MvnQuickListPopupAction extends QuickSwitchSchemeAction implements DumbAware {
-
-    public MvnQuickListPopupAction() {
-        super.myActionPlace = "MavenBuildGroup";
-    }
+public class MvnQuickListPopupAction extends MvnQuickPopupAction {
 
     @Override
-    protected boolean isEnabled() {
-        return true;
-    }
-
-    @Override
-    protected String getPopupTitle(AnActionEvent e) {
-        MavenProject mavenProject = MvnModuleContextAction.getProject(e.getDataContext());
-        String moduleName = "";
-        if (mavenProject != null) {
-            moduleName = mavenProject.getMavenId().getArtifactId();
-            if (moduleName != null && moduleName.length() > 20)
-                moduleName = moduleName.substring(0, 17) + "...";
-        }
-        if (StringUtil.isEmptyOrSpaces(moduleName)) moduleName = "...";
+    protected String getPopupTitle(String moduleName) {
         return MvnBundle.message("maven.quick.list.popup.title", moduleName);
     }
 
     @Override
-    protected void fillActions(Project project, @NotNull DefaultActionGroup group, @NotNull DataContext dataContext) {
-        if (project == null || !MavenActionUtil.hasProject(dataContext) ||
-                MvnModuleContextAction.getProject(dataContext) == null) {
-            return;
+    protected void buildActions(DefaultActionGroup toGroup, MavenProject mavenProject) {
+        addLifecycleActions(toGroup);
+        addPomActions(toGroup);
+    }
+
+    private void addLifecycleActions(DefaultActionGroup toGroup) {
+        String groupName = MvnBundle.message("maven.quick.list.popup.lifecycle");
+        String[] actionIds = new String[MavenConstants.BASIC_PHASES.size()];
+        for (int i = 0; i < actionIds.length; i++) {
+            actionIds[i] = "Maven." + StringUtil.wordsToBeginFromUpperCase(MavenConstants.BASIC_PHASES.get(i));
         }
-        addLifecycleActions(group);
-        addPomActions(group);
+        addActionGroup(toGroup, groupName, actionIds);
     }
 
-    @Override
-    protected JBPopupFactory.ActionSelectionAid getAidMethod() {
-        return JBPopupFactory.ActionSelectionAid.ALPHA_NUMBERING;
-    }
-
-    private void addLifecycleActions(DefaultActionGroup group) {
-        addSeparator(group, null);
-        addSeparator(group, MvnBundle.message("maven.quick.list.popup.lifecycle"));
-        for (String phase : MavenConstants.BASIC_PHASES) {
-            addAction("Maven." + StringUtil.wordsToBeginFromUpperCase(phase), group);
-        }
-    }
-
-    private void addPomActions(DefaultActionGroup group) {
-        addSeparator(group, null);
-        addSeparator(group, "POM");
-
-        addAction("Maven.Pom.Open", group);
-        addAction("Maven.Pom.Diagram", group);
-    }
-
-    private void addAction(final String actionId, final DefaultActionGroup toGroup) {
-        final AnAction action = ActionManager.getInstance().getAction(actionId);
-
-        if (action != null)
-            toGroup.add(action);
-    }
-
-    private void addSeparator(final DefaultActionGroup toGroup, @Nullable final String title) {
-        final Separator separator = title == null ? new Separator() : new Separator(title);
-        toGroup.add(separator);
+    private void addPomActions(DefaultActionGroup toGroup) {
+        addActionGroup(toGroup, "POM", "Maven.Pom.Open", "Maven.Pom.Diagram");
     }
 }

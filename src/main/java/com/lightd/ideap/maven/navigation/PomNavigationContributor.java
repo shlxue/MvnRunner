@@ -1,6 +1,5 @@
 package com.lightd.ideap.maven.navigation;
 
-import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.navigation.ChooseByNameContributorEx;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.DumbAware;
@@ -18,6 +17,7 @@ import com.intellij.util.CommonProcessors;
 import com.intellij.util.Processor;
 import com.intellij.util.indexing.FindSymbolParameters;
 import com.intellij.util.indexing.IdFilter;
+import com.lightd.ideap.maven.settings.MvnRunConfigurationSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.maven.dom.MavenDomUtil;
 import org.jetbrains.idea.maven.model.MavenId;
@@ -35,7 +35,7 @@ public class PomNavigationContributor implements ChooseByNameContributorEx, Dumb
 
     public PomNavigationContributor(Project project) {
         this.project = project;
-        showPomLocation = PropertiesComponent.getInstance().getBoolean("showPomLocation", false);
+        showPomLocation = MvnRunConfigurationSettings.getInstance().isShowPomLocation();
     }
 
     @Override

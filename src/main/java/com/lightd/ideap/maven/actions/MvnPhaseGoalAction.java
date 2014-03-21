@@ -4,17 +4,14 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.lightd.ideap.maven.MvnRunConfigurationType;
-import org.jetbrains.idea.maven.execution.MavenRunner;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
 import org.jetbrains.idea.maven.execution.MavenRunnerSettings;
 import org.jetbrains.idea.maven.project.MavenGeneralSettings;
 import org.jetbrains.idea.maven.project.MavenProject;
-import org.jetbrains.idea.maven.project.MavenProjectsManager;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 
-public class MvnExecuteAction extends MvnModuleContextAction {
+public class MvnPhaseGoalAction extends MvnModuleContextAction {
     private String phase;
 
     public String getPhase() {
@@ -38,16 +35,4 @@ public class MvnExecuteAction extends MvnModuleContextAction {
     private MavenRunnerParameters createParameters(MavenProject project) {
         return new MavenRunnerParameters(true, project.getDirectory(), Arrays.asList(getPhase()), null);
     }
-
-    private MavenGeneralSettings getGeneralSettings(Project project) {
-        MavenProjectsManager projectsManager = MavenProjectsManager.getInstance(project);
-        return projectsManager.getGeneralSettings();
-    }
-
-    private MavenRunnerSettings createRunnerSettings(Project project) {
-        MavenRunnerSettings runnerSettings = MavenRunner.getInstance(project).getSettings().clone();
-        runnerSettings.setMavenProperties(new LinkedHashMap<String, String>());
-        return runnerSettings;
-    }
-
 }
