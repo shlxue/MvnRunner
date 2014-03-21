@@ -46,13 +46,14 @@ class MvnRunConfigurationSettingsPanel extends JPanel {
 
         gbc = new GridBagConstraints();
         gbc.gridy = 2;
+        gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.WEST;
         this.add(cbOnlyIgnoreCorePlugin, gbc);
 
         gbc = new GridBagConstraints();
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 28, 0, 0);
+        gbc.insets = new Insets(0, 26, 0, 0);
         this.add(label, gbc);
 
         gbc = new GridBagConstraints();
