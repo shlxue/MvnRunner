@@ -20,7 +20,7 @@ IntelliJ 13 及更高版本
 安装
 ----
 * 插件仓库安装：菜单中选择 Preferences/Plugins/Browser repositories, 查找 Maven Runner 并安装
-* 磁盘安装：[插件下载地址](http://plugins.jetbrains.com/plugin/7409)
+* 磁盘安装下载地址：[JetBrains Plugin Repository](http://plugins.jetbrains.com/plugin/7409)
 
 
 功能
@@ -32,6 +32,7 @@ IntelliJ 13 及更高版本
 * 允许配置 fork 模式(配置均属 application level, Preferences/Maven/Importing)
 * 为 maven 构建添加 Quick switch popup menu(shortcut: ^M)
 * maven 构建菜单添加到 Build main menu 中(shortcut: ^⌘+ C/P/T/I)
+* 通过 Quick switch popup menu 快速执行 plugin goals(shortcut: ^P)
 * 支持快速查看 module 依赖(在 pom.xml 或 maven 项目列表上显示所有依赖，否则只显示模块依赖。 shortcut: ^⌘U)
 * 通过 maven 坐标快速打开 POM 文件(shortcut: ^⌘M)
 
@@ -73,6 +74,9 @@ Screen Snapshot
 * Quick switch popup menu
 
     ![Quick switch popup menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/quick_switch_popup_menu.png)
+* Quick run plugin goals
+
+    ![Quick run plugin goals](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/quick_run_plugin_goals.png)
 * Build menu
 
     ![Build menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/maven_build_menu.png)
