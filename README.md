@@ -53,7 +53,7 @@ FAQ
 * 类似插件: [MavenRunHelper](https://github.com/krasa/MavenRunHelper)
     * 该插件新增了 Maven 常用操作的菜单项。
 
-Screen Snapshot
+Screenshot
 ----
 
 1. All Tests
