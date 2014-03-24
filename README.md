@@ -50,8 +50,6 @@ FAQ
 * 为什么需要这个插件？
 	* 你不用再为了运行单元测试而去修改 pom.xml，让 pom 每天都保持清爽吧。
 	* IntelliJ 平台为 maven 项目提供更完美的支持。
-* 类似插件: [MavenRunHelper](https://github.com/krasa/MavenRunHelper)
-    * 该插件新增了 Maven 常用操作的菜单项。
 
 Screenshot
 ----
