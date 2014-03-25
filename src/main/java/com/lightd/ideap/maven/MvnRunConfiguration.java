@@ -1,9 +1,8 @@
 package com.lightd.ideap.maven;
 
-import com.intellij.execution.ExecutionException;
-import com.intellij.execution.Executor;
-import com.intellij.execution.RunnerAndConfigurationSettings;
+import com.intellij.execution.*;
 import com.intellij.execution.configurations.ConfigurationFactory;
+import com.intellij.execution.configurations.JavaParameters;
 import com.intellij.execution.configurations.RunProfileState;
 import com.intellij.execution.executors.DefaultDebugExecutor;
 import com.intellij.execution.runners.ExecutionEnvironment;
@@ -30,6 +29,13 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
     private static final String PACKAGE_PATTERN = "\\.\\*\\*\\.\\*$";
     private RunType runType;
     private String stopGoal;
+
+    @Override
+    public JavaParameters createJavaParameters(@Nullable Project project) throws ExecutionException {
+        JavaParameters parameters = super.createJavaParameters(project);
+        foldMavenCommand(parameters);
+        return parameters;
+    }
 
     @Override
     public void readExternal(Element element) throws InvalidDataException {
@@ -182,5 +188,18 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
                 goals.add(s);
         }
         return changed ? bakGoals : null;
+    }
+
+    private void foldMavenCommand(JavaParameters params) {
+        for (ConsoleFolding consoleFolding : ConsoleFolding.EP_NAME.getExtensions()) {
+            if (!(consoleFolding instanceof MvnCommandFolding)) continue;
+            MvnCommandFolding folding = (MvnCommandFolding) consoleFolding;
+            try {
+                String jdkPath = params.getJdkPath();
+                folding.placeMaven(jdkPath, params.getMainClass(), params.getProgramParametersList().getParametersString());
+            } catch (CantRunException ignore) {
+            }
+            break;
+        }
     }
 }

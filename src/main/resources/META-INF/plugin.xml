@@ -48,6 +48,8 @@
                 implementation="com.lightd.ideap.maven.execution.server.MvnJettyConfigurationProducer"/>
         <runConfigurationProducer
                 implementation="com.lightd.ideap.maven.execution.server.MvnTomcatConfigurationProducer"/>
+        <console.folding
+                implementation="com.lightd.ideap.maven.execution.CommandLineFolding"/>
     </extensions>
     <extensions defaultExtensionNs="org.jetbrains.idea.maven">
         <additional.importing.settings id="mvnRunConfiguration"
