@@ -5,7 +5,13 @@ public enum RunType {
     Test("run_test"),
     Main("run_main"),
     Jetty("run_jetty"),
-    Tomcat("run_tomcat");
+    Tomcat("run_tomcat"),
+    PhaseClean("phase_clean"),
+    PhaseCompile("phase_compile"),
+    PhaseDeploy("phase_deploy"),
+    PhaseInstall("phase_install"),
+    PhasePackage("phase_package"),
+    PhaseTest("phase_test");
 
     private String value;
 
@@ -27,5 +33,9 @@ public enum RunType {
             if (type.getValue().equals(value)) return type;
         }
         return null;
+    }
+
+    public static RunType toPhase(String value) {
+        return to("phase_" + value);
     }
 }

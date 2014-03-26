@@ -78,10 +78,15 @@ public class MvnRunConfigurationType implements ConfigurationType {
         MvnRunConfigurationType type = ConfigurationTypeUtil.findConfigurationType(MvnRunConfigurationType.class);
         final RunnerAndConfigurationSettings settings = RunManagerEx.getInstanceEx(project).createRunConfiguration(generateName(project, params), type.myFactory);
         MvnRunConfiguration runConfiguration = (MvnRunConfiguration)settings.getConfiguration();
+        runConfiguration.setRunType(getPhaseRunType(params.getGoals()));
         runConfiguration.setRunnerParameters(params);
         runConfiguration.setGeneralSettings(generalSettings);
         runConfiguration.setRunnerSettings(runnerSettings);
         return settings;
+    }
+
+    private static RunType getPhaseRunType(List<String> goals) {
+        return goals.size() == 1 ? RunType.toPhase(goals.get(0)) : null;
     }
 
     private static String generateName(Project project, MavenRunnerParameters runnerParameters) {
