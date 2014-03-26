@@ -20,8 +20,8 @@ public class MvnRunConfigurationSettings implements Cloneable {
     public static MvnRunConfigurationSettings getInstance() {
         if (instance == null) {
             instance = new MvnRunConfigurationSettings();
+            instance.readSettings();
         }
-        instance.readSettings();
         return instance;
     }
 
@@ -97,5 +97,6 @@ public class MvnRunConfigurationSettings implements Cloneable {
         component.setValue(Key_ShowPomLocation, Boolean.toString(showPomLocation));
         component.setValue(Key_WithPrefix, Boolean.toString(withPrefix));
         component.setValue(Key_OnlyIgnoreCore, Boolean.toString(onlyIgnoreCorePlugin));
+        instance = null;
     }
 }

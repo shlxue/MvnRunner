@@ -9,7 +9,6 @@ import com.intellij.util.text.VersionComparatorUtil;
 import com.lightd.ideap.maven.MvnBundle;
 import com.lightd.ideap.maven.MvnRunConfiguration;
 import com.lightd.ideap.maven.RunType;
-import com.lightd.ideap.maven.settings.MvnRunConfigurable;
 import com.lightd.ideap.maven.settings.MvnRunConfigurationSettings;
 import org.jetbrains.idea.maven.model.MavenConstants;
 
@@ -110,7 +109,7 @@ public class MvnTestConfigurationProducer extends JavaElementConfigurationProduc
         if (Boolean.valueOf(mavenProject.getProperties().getProperty("maven.test.skip", "false")))
             testParameters.add(MvnBundle.message("mvn.param.skip"));
         if (psiMethod == null) {
-            MvnRunConfigurationSettings settings = MvnRunConfigurable.getInstance().getSettings();
+            MvnRunConfigurationSettings settings = MvnRunConfigurationSettings.getInstance();
             if (isForking()) {
                 testParameters.add(MvnBundle.message("mvn.param.fork.count", settings.getForkCount()));
                 if (settings.getForkCount() == 1)

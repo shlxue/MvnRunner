@@ -15,22 +15,14 @@ import javax.swing.*;
 public class MvnRunConfigurable implements AdditionalMavenImportingSettings, SearchableConfigurable {
 
     private static MvnRunConfigurable instance;
-    private final MvnRunConfigurationSettings settings = new MvnRunConfigurationSettings();
+    private MvnRunConfigurationSettings settings = new MvnRunConfigurationSettings();
     private MvnRunConfigurationSettingsPanel settingsPanel;
-
-    public MvnRunConfigurable() {
-        settings.readSettings();
-    }
 
     public static MvnRunConfigurable getInstance() {
         if (instance == null) {
             instance = new MvnRunConfigurable();
         }
         return instance;
-    }
-
-    public MvnRunConfigurationSettings getSettings() {
-        return settings;
     }
 
     @Nls
@@ -48,6 +40,7 @@ public class MvnRunConfigurable implements AdditionalMavenImportingSettings, Sea
     @Nullable
     @Override
     public JComponent createComponent() {
+        settings.readSettings();
         settingsPanel = new MvnRunConfigurationSettingsPanel(settings);
         return settingsPanel;
     }
