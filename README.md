@@ -39,8 +39,10 @@ IntelliJ 13 及更高版本
 FAQ
 ----
 1. 为什么要为这些菜单项增加 maven 的处理方式？
-	* IntelliJ 默认的处理方式无法正确的处理 maven 的级联依赖 jar 包。
+	* IntelliJ 默认的 Run/Debug 是解析本模块中 pom 依赖信息后，再生成 classpath 对应的列表，最终以 com.intellij 下面的 mainClass 来执行。
+	* 默认处理方式无法正确的处理 maven 的级联依赖 jar 包。
 	* 部分 maven 插件依赖运行期读取信息的情况 IntelliJ 默认执行方式无法正确处理。
+	* 增加的 maven 处理方式是直接调用 mvn 命令中的 mainClass 来执行相同的操作。
 * 如何配置让 Jetty 或 Tomcat 可以调试运行?
     * 在 pom 文件中配置 jetty-maven-plugin 或 tomcat6/7-maven-plugin。
     * 两者的启动配置完全依赖于 pom 文件中上述两个 maven 构建插件的配置。
