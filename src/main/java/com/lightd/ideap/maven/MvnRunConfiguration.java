@@ -11,6 +11,7 @@ import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.util.containers.ContainerUtil;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -191,15 +192,15 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
     }
 
     private void foldMavenCommand(JavaParameters params) {
-        for (ConsoleFolding consoleFolding : ConsoleFolding.EP_NAME.getExtensions()) {
-            if (!(consoleFolding instanceof MvnCommandFolding)) continue;
-            MvnCommandFolding folding = (MvnCommandFolding) consoleFolding;
-            try {
-                String jdkPath = params.getJdkPath();
-                folding.placeMaven(jdkPath, params.getMainClass(), params.getProgramParametersList().getParametersString());
-            } catch (CantRunException ignore) {
+        List<MvnCommandFolding> list = ContainerUtil.findAll(ConsoleFolding.EP_NAME.getExtensions(), MvnCommandFolding.class);
+        if (list.isEmpty()) return;
+        try {
+            String jdkPath = params.getJdkPath();
+            String goalStr = params.getProgramParametersList().getParametersString();
+            for (MvnCommandFolding folding : list) {
+                folding.placeMaven(jdkPath, params.getMainClass(), goalStr);
             }
-            break;
+        } catch (CantRunException ignore) {
         }
     }
 }
