@@ -34,7 +34,7 @@
         </ul>]]>
     </change-notes>
 
-    <idea-version since-build="130.754"/>
+    <idea-version since-build="134.0"/>
 
     <depends>org.jetbrains.idea.maven</depends>
     <depends optional="true">com.intellij.diagram</depends>
