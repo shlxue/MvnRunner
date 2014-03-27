@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.2.5</version>
+    <version>0.2.6</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
@@ -27,8 +27,10 @@
             <li>quick open pom file by maven artifact</li>
             <li>include non project pom files</li>
             <li>run application server: jetty or tomcat(jetty-maven-plugin/tomcatx-maven-plugin)</li>
-            <li><u>define shortcut for other platform(windows, linux)</u></li>
-            <li><u>run plugin goals by quick switch menu</u></li>
+            <li>define shortcut for other platform(windows, linux)</li>
+            <li>run plugin goals by quick switch menu</li>
+            <li><u>folding java command line using mvn command</u></li>
+            <li><u>fixed a few bugs</u></li>
         </ul>]]>
     </change-notes>
 

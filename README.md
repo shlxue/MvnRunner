@@ -62,6 +62,9 @@ Screenshot
 * Test package
 
 	![Test_package_popup_menu](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/test_package_popup_menu.png)
+* Folding java command
+
+	![Folding java command](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/folding_java_command.png)
 * Run/Debug Configurations
 
 	![Run_Configurations](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/run_configurations.png)
