@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.2.6</version>
+    <version>0.2.7</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
@@ -34,7 +34,7 @@
         </ul>]]>
     </change-notes>
 
-    <idea-version since-build="130.754"/>
+    <idea-version since-build="130.754" until-build="134.0"/>
 
     <depends>org.jetbrains.idea.maven</depends>
     <depends optional="true">com.intellij.diagram</depends>
