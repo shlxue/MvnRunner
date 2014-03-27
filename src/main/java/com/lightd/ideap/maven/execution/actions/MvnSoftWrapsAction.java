@@ -19,6 +19,15 @@ class MvnSoftWrapsAction extends ToggleUseSoftWrapsToolbarAction {
     }
 
     @Override
+    public boolean isSelected(AnActionEvent e) {
+        boolean selected = super.isSelected(e);
+        if (selected) {
+            setSelected(e, true);
+        }
+        return selected;
+    }
+
+    @Override
     public void setSelected(AnActionEvent event, final boolean state) {
         super.setSelected(event, state);
         Editor editor = getEditor(event);
