@@ -2,6 +2,7 @@ package com.lightd.ideap.maven.execution.actions;
 
 import com.intellij.execution.impl.EditorHyperlinkSupport;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.FoldRegion;
 import com.intellij.openapi.editor.FoldingModel;
@@ -21,7 +22,7 @@ class MvnSoftWrapsAction extends ToggleUseSoftWrapsToolbarAction {
     @Override
     public boolean isSelected(AnActionEvent e) {
         boolean selected = super.isSelected(e);
-        if (selected) {
+        if (selected  && !(getLastState(e.getPresentation()))) {
             setSelected(e, true);
         }
         return selected;
@@ -34,7 +35,7 @@ class MvnSoftWrapsAction extends ToggleUseSoftWrapsToolbarAction {
         if (editor == null) return;
 
         String text = EditorHyperlinkSupport.getLineText(editor.getDocument(), 0, false);
-        if (text == null) return;
+        if (state && text == null) return;
 
         final String placeholder = commandFolding.getPlaceHolder(text);
         final FoldingModel foldingModel = editor.getFoldingModel();
@@ -71,5 +72,12 @@ class MvnSoftWrapsAction extends ToggleUseSoftWrapsToolbarAction {
 
         if (foldTask != null)
             foldingModel.runBatchFoldingOperation(foldTask);
+    }
+
+    private boolean getLastState(Presentation presentation) {
+        Object rs = presentation.getClientProperty(SELECTED_PROPERTY);
+        if (rs instanceof Boolean)
+            return (Boolean)rs;
+        return false;
     }
 }
