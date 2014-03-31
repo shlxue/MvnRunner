@@ -42,7 +42,7 @@ public class MvnTestConfigurationProducer extends JavaElementConfigurationProduc
             isTestAll = psiClass == null && psiPackage == null;
             isTestAll |= psiPackage != null && StringUtil.isEmpty(psiPackage.getQualifiedName());
             if (psiClass != null)
-                psiMethod = JUnitUtil.getTestMethod(context.getPsiLocation());
+                psiMethod = JUnitUtil.getTestMethod(context.getLocation().getPsiElement());
             return true;
         }
         return false;

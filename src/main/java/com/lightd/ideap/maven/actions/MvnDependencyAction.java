@@ -18,15 +18,15 @@ import java.util.Collection;
 public class MvnDependencyAction extends MvnDiagramAction {
     private static final String MavenExtPluginId = "org.jetbrains.idea.maven.ext";
     private static final Collection<String> moduleKeys = Arrays.asList(
-            CommonDataKeys.PROJECT.getName(),
+            PlatformDataKeys.PROJECT.getName(),
             LangDataKeys.MODULE_CONTEXT.getName());
     private static final Collection<String> pomKeys = Arrays.asList(
             PlatformDataKeys.CONTEXT_COMPONENT.getName(),
-            CommonDataKeys.PROJECT.getName(),
+            PlatformDataKeys.PROJECT.getName(),
             MavenDataKeys.MAVEN_PROJECTS_TREE.getName(),
             LangDataKeys.FILE_EDITOR.getName(),
-            CommonDataKeys.VIRTUAL_FILE.getName(),
-            CommonDataKeys.PSI_FILE.getName());
+            PlatformDataKeys.VIRTUAL_FILE.getName(),
+            LangDataKeys.PSI_FILE.getName());
 
     @Override
     protected void wrap(@NotNull Project project, MockElement mockElement, AnActionEvent e) {

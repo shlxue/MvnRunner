@@ -1,7 +1,7 @@
 package com.lightd.ideap.maven.execution.server;
 
 import com.intellij.execution.actions.ConfigurationContext;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.psi.PsiFile;
 import com.lightd.ideap.maven.MvnBundle;
 import com.lightd.ideap.maven.execution.MavenModuleConfigurationProducer;
@@ -23,7 +23,7 @@ public abstract class MvnServerConfigurationProducer extends MavenModuleConfigur
     protected boolean isContext(ConfigurationContext context) {
         if (super.isContext(context) &&
                 MavenConstants.TYPE_WAR.equals(mavenProject.getPackaging()) && plugin != null) {
-            PsiFile psiFile = CommonDataKeys.PSI_FILE.getData(context.getDataContext());
+            PsiFile psiFile = LangDataKeys.PSI_FILE.getData(context.getDataContext());
             return psiFile != null && MavenConstants.POM_XML.equals(psiFile.getName());
         }
         return false;

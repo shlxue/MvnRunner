@@ -2,7 +2,7 @@ package com.lightd.ideap.maven.execution;
 
 import com.intellij.execution.actions.ConfigurationContext;
 import com.intellij.ide.highlighter.JavaFileType;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
@@ -46,7 +46,7 @@ public abstract class JavaElementConfigurationProducer extends MavenModuleConfig
     }
 
     private PsiPackage getPsiPackage(DataContext dataContext) {
-        PsiElement psiElement = CommonDataKeys.PSI_ELEMENT.getData(dataContext);
+        PsiElement psiElement = LangDataKeys.PSI_ELEMENT.getData(dataContext);
         if (psiElement instanceof PsiDirectory) {
             return JavaDirectoryService.getInstance().getPackage((PsiDirectory) psiElement);
         }

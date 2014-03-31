@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.4.2</version>
+    <version>0.2.8</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
@@ -24,16 +24,11 @@
     <change-notes><![CDATA[
         <b>0.4 update for IntelliJ IDEA 14.0</b>
         <ul>
-            <li><u>fixed NullException when not config jdk</u></li>
-        </ul>
-
-        <b>0.3 fixed a few bugs</b>
-        <ul>
-            <li><u>NullPointerException when right clicking in the 'Project' view</u></li>
+            <li><u>fixed a few bugs</u></li>
         </ul>]]>
     </change-notes>
 
-    <idea-version since-build="139.0"/>
+    <idea-version since-build="123.0" until-build="130.0"/>
 
     <depends>org.jetbrains.idea.maven</depends>
     <depends optional="true">com.intellij.diagram</depends>
@@ -41,13 +36,13 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <configurationType implementation="com.lightd.ideap.maven.MvnRunConfigurationType"/>
-        <runConfigurationProducer
+        <configurationProducer
                 implementation="com.lightd.ideap.maven.execution.MvnRunConfigurationProducer"/>
-        <runConfigurationProducer
+        <configurationProducer
                 implementation="com.lightd.ideap.maven.execution.MvnTestConfigurationProducer"/>
-        <runConfigurationProducer
+        <configurationProducer
                 implementation="com.lightd.ideap.maven.execution.server.MvnJettyConfigurationProducer"/>
-        <runConfigurationProducer
+        <configurationProducer
                 implementation="com.lightd.ideap.maven.execution.server.MvnTomcatConfigurationProducer"/>
         <console.folding
                 implementation="com.lightd.ideap.maven.execution.CommandLineFolding"/>

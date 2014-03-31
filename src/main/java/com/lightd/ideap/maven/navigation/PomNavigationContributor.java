@@ -1,6 +1,6 @@
 package com.lightd.ideap.maven.navigation;
 
-import com.intellij.navigation.ChooseByNameContributorEx;
+import com.intellij.navigation.ChooseByNameContributor;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
@@ -15,8 +15,6 @@ import com.intellij.psi.search.GlobalSearchScopes;
 import com.intellij.util.ArrayUtil;
 import com.intellij.util.CommonProcessors;
 import com.intellij.util.Processor;
-import com.intellij.util.indexing.FindSymbolParameters;
-import com.intellij.util.indexing.IdFilter;
 import com.lightd.ideap.maven.settings.MvnRunConfigurationSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.maven.dom.MavenDomUtil;
@@ -28,7 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PomNavigationContributor implements ChooseByNameContributorEx, DumbAware {
+public class PomNavigationContributor implements ChooseByNameContributor, DumbAware {
     private final Project project;
     private final boolean showPomLocation;
     private MavenProjectsManager projectsManager;
@@ -38,10 +36,9 @@ public class PomNavigationContributor implements ChooseByNameContributorEx, Dumb
         showPomLocation = MvnRunConfigurationSettings.getInstance().isShowPomLocation();
     }
 
-    @Override
     public void processNames(@NotNull final Processor<String> processor, @NotNull GlobalSearchScope scope, IdFilter filter) {
         projectsManager = MavenProjectsManager.getInstance(project);
-        List<MavenProject> mavenProjects = projectsManager.getRootProjects();
+        List<MavenProject> mavenProjects = projectsManager.getProjectsTreeForTests().getRootProjects();
         if (mavenProjects.size() > 0) {
             addProjectNames(processor, mavenProjects.get(0));
 
@@ -60,7 +57,6 @@ public class PomNavigationContributor implements ChooseByNameContributorEx, Dumb
         }
     }
 
-    @Override
     public void processElementsWithName(@NotNull String name,
                                         @NotNull final Processor<NavigationItem> processor,
                                         @NotNull FindSymbolParameters parameters) {
@@ -76,11 +72,11 @@ public class PomNavigationContributor implements ChooseByNameContributorEx, Dumb
         if (p != null) {
             pomFile = PsiManager.getInstance(project).findFile(p.getFile());
         } else if (parameters.isSearchInLibraries()) {
-            Map<MavenId, PsiFile> notImportPoms = getNotImportPoms(projectsManager.getRootProjects().get(0));
+            Map<MavenId, PsiFile> notImportPoms = getNotImportPoms(projectsManager.getProjects().get(0));
             pomFile = notImportPoms.get(mavenId);
         }
         if (pomFile != null) {
-            PomWrapper pomWrapper = new PomWrapper(pomFile, mavenId, project.getBasePath(), showPomLocation);
+            PomWrapper pomWrapper = new PomWrapper(pomFile, mavenId, project.getBasePath(), showPomLocation, p != null);
             processor.process(pomWrapper);
         }
     }

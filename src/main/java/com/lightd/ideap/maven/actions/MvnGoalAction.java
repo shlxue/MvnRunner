@@ -1,7 +1,7 @@
 package com.lightd.ideap.maven.actions;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
 import com.lightd.ideap.maven.MvnRunConfigurationType;
@@ -26,7 +26,7 @@ class MvnGoalAction extends MvnModuleContextAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        Project project =  e.getRequiredData(CommonDataKeys.PROJECT);
+        Project project =  e.getRequiredData(PlatformDataKeys.PROJECT);
         final MavenProject mavenProject = getProject(e.getDataContext());
 
         MavenRunnerParameters parameters = createParameters(mavenProject);
