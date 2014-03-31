@@ -58,8 +58,7 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
         if (DefaultDebugExecutor.EXECUTOR_ID.equals(executor.getId()) && RunType.Test.equals(runType)) {
             RunnerAndConfigurationSettings settings = env.getRunnerAndConfigurationSettings();
             if (settings != null && settings.getConfiguration() instanceof MvnRunConfiguration) {
-                List<String> goals = disableFork(((MvnRunConfiguration) settings.getConfiguration()).getGoals());
-                this.getRunnerParameters().setGoals(goals);
+                disableFork(((MvnRunConfiguration) settings.getConfiguration()).getGoals());
             }
         }
         return super.getState(executor, env);
