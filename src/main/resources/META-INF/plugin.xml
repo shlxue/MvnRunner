@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.2.7</version>
+    <version>0.2.8</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
@@ -29,8 +29,8 @@
             <li>run application server: jetty or tomcat(jetty-maven-plugin/tomcatx-maven-plugin)</li>
             <li>define shortcut for other platform(windows, linux)</li>
             <li>run plugin goals by quick switch menu</li>
-            <li><u>folding java command line using mvn command</u></li>
-            <li><u>fixed a few bugs</u></li>
+            <li>folding java command line using mvn command</li>
+            <li><u>fixed a bug: expanded fold region when click the region</u></li>
         </ul>]]>
     </change-notes>
 
