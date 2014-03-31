@@ -72,7 +72,7 @@ public class PomNavigationContributor implements ChooseByNameContributor, DumbAw
         if (p != null) {
             pomFile = PsiManager.getInstance(project).findFile(p.getFile());
         } else if (parameters.isSearchInLibraries()) {
-            Map<MavenId, PsiFile> notImportPoms = getNotImportPoms(projectsManager.getProjects().get(0));
+            Map<MavenId, PsiFile> notImportPoms = getNotImportPoms(projectsManager.getRootProjects().get(0));
             pomFile = notImportPoms.get(mavenId);
         }
         if (pomFile != null) {
