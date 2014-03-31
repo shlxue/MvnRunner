@@ -1,7 +1,6 @@
 package com.lightd.ideap.maven;
 
 import com.intellij.compiler.options.CompileStepBeforeRun;
-import com.intellij.compiler.options.CompileStepBeforeRunNoErrorCheck;
 import com.intellij.execution.*;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
@@ -59,12 +58,13 @@ public class MvnRunConfigurationType implements ConfigurationType {
                 params,
                 project);
 
-        ProgramRunner runner = DefaultJavaProgramRunner.getInstance();
+        ProgramRunner[] runners = DefaultJavaProgramRunner.PROGRAM_RUNNER_EP.getExtensions();
+        if (runners.length == 0) return;
         Executor executor = DefaultRunExecutor.getRunExecutorInstance();
-        ExecutionEnvironment env = new ExecutionEnvironment(executor, runner, configSettings, project);
+        ExecutionEnvironment env = new ExecutionEnvironment(runners[0], configSettings, project);
 
         try {
-           runner.execute(env, callback);
+           runners[0].execute(executor, env, callback);
         }
         catch (ExecutionException e) {
             MavenUtil.showError(project, "Failed to execute Maven goal", e);
@@ -179,7 +179,7 @@ public class MvnRunConfigurationType implements ConfigurationType {
 
         @Override
         public void configureBeforeRunTaskDefaults(Key<? extends BeforeRunTask> providerID, BeforeRunTask task) {
-            if (providerID == CompileStepBeforeRun.ID || providerID == CompileStepBeforeRunNoErrorCheck.ID) {
+            if (providerID == CompileStepBeforeRun.ID) {
                 task.setEnabled(false);
             }
         }

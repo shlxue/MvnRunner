@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.2.6</version>
+    <version>0.2.8</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
@@ -24,17 +24,11 @@
     <change-notes><![CDATA[
         <strong>0.2 maven helper</strong>
         <ul>
-            <li>quick open pom file by maven artifact</li>
-            <li>include non project pom files</li>
-            <li>run application server: jetty or tomcat(jetty-maven-plugin/tomcatx-maven-plugin)</li>
-            <li>define shortcut for other platform(windows, linux)</li>
-            <li>run plugin goals by quick switch menu</li>
-            <li><u>folding java command line using mvn command</u></li>
             <li><u>fixed a few bugs</u></li>
         </ul>]]>
     </change-notes>
 
-    <idea-version since-build="130.754"/>
+    <idea-version since-build="123.0" until-build="130.0"/>
 
     <depends>org.jetbrains.idea.maven</depends>
     <depends optional="true">com.intellij.diagram</depends>
@@ -42,13 +36,13 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <configurationType implementation="com.lightd.ideap.maven.MvnRunConfigurationType"/>
-        <runConfigurationProducer
+        <configurationProducer
                 implementation="com.lightd.ideap.maven.execution.MvnRunConfigurationProducer"/>
-        <runConfigurationProducer
+        <configurationProducer
                 implementation="com.lightd.ideap.maven.execution.MvnTestConfigurationProducer"/>
-        <runConfigurationProducer
+        <configurationProducer
                 implementation="com.lightd.ideap.maven.execution.server.MvnJettyConfigurationProducer"/>
-        <runConfigurationProducer
+        <configurationProducer
                 implementation="com.lightd.ideap.maven.execution.server.MvnTomcatConfigurationProducer"/>
         <console.folding
                 implementation="com.lightd.ideap.maven.execution.CommandLineFolding"/>

@@ -1,26 +1,29 @@
 package com.lightd.ideap.maven.navigation;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileSystemItem;
 import com.intellij.psi.impl.RenameableFakePsiElement;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.maven.model.MavenCoordinate;
+import org.jetbrains.idea.maven.model.MavenId;
 
 import javax.swing.*;
 
 public class PomWrapper extends RenameableFakePsiElement {
-    private final MavenCoordinate coordinate;
+    private final MavenId coordinate;
     private final String rootPath;
     private final boolean showLocation;
+    private final boolean imported;
     private final PsiFileSystemItem pomFile;
 
-    PomWrapper(PsiFileSystemItem pomFile, MavenCoordinate coordinate, String rootPath, boolean showLocation) {
+    PomWrapper(PsiFileSystemItem pomFile, MavenId coordinate, String rootPath, boolean showLocation, boolean imported) {
         super(pomFile.getParent());
         this.pomFile = pomFile;
         this.coordinate = coordinate;
         this.rootPath = rootPath;
         this.showLocation = showLocation;
+        this.imported = imported;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class PomWrapper extends RenameableFakePsiElement {
 
     @Override
     public Icon getIcon() {
-        return pomFile.getIcon(ICON_FLAG_VISIBILITY);
+        return imported ? pomFile.getIcon(ICON_FLAG_VISIBILITY) : AllIcons.FileTypes.Xml;
     }
 
     @Nullable

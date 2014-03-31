@@ -4,7 +4,7 @@ import com.intellij.featureStatistics.FeatureUsageTracker;
 import com.intellij.ide.actions.GotoActionBase;
 import com.intellij.ide.util.gotoByName.ChooseByNamePopup;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
@@ -20,7 +20,7 @@ public class GotoPomAction extends GotoActionBase {
     @Override
     protected void gotoActionPerformed(AnActionEvent e) {
         FeatureUsageTracker.getInstance().triggerFeatureUsed("navigation.popup.file");
-        final Project project = e.getData(CommonDataKeys.PROJECT);
+        final Project project = e.getData(PlatformDataKeys.PROJECT);
         if (project != null) {
             final GotoPomModel gotoPomModel = new GotoPomModel(project);
             showNavigationPopup(e, gotoPomModel, new GotoPomActionCallback(project), null, false);

@@ -2,10 +2,11 @@ package com.lightd.ideap.maven.execution;
 
 import com.intellij.execution.Location;
 import com.intellij.execution.PsiLocation;
+import com.intellij.execution.RunnerAndConfigurationSettings;
 import com.intellij.execution.actions.ConfigurationContext;
-import com.intellij.execution.actions.RunConfigurationProducer;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.execution.junit.RuntimeConfigurationProducer;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.Ref;
 import com.intellij.psi.PsiElement;
@@ -13,6 +14,8 @@ import com.intellij.psi.PsiFile;
 import com.lightd.ideap.maven.MvnRunConfiguration;
 import com.lightd.ideap.maven.MvnRunConfigurationType;
 import com.lightd.ideap.maven.RunType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
@@ -24,9 +27,10 @@ import java.util.List;
 /**
  * maven module support
  */
-public abstract class MavenModuleConfigurationProducer extends RunConfigurationProducer<MvnRunConfiguration> {
+public abstract class MavenModuleConfigurationProducer extends RuntimeConfigurationProducer {
 
     protected MavenProject mavenProject;
+    protected PsiElement sourceElement;
     protected PsiFile psiFile;
 
     protected MavenModuleConfigurationProducer() {
@@ -34,6 +38,38 @@ public abstract class MavenModuleConfigurationProducer extends RunConfigurationP
     }
 
     @Override
+    public PsiElement getSourceElement() {
+        return sourceElement;
+    }
+
+    @Nullable
+    @Override
+    protected RunnerAndConfigurationSettings createConfigurationByElement(Location location, ConfigurationContext context) {
+        RunnerAndConfigurationSettings settings = cloneTemplateConfiguration(location.getProject(), context);
+        sourceElement = location.getPsiElement();
+        final Ref<PsiElement> locationRef = new Ref<PsiElement>(location.getPsiElement());
+        if (setupConfigurationFromContext((MvnRunConfiguration) settings.getConfiguration(), context, locationRef)) {
+            return settings;
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    protected RunnerAndConfigurationSettings findExistingByElement(Location location, @NotNull RunnerAndConfigurationSettings[] configurations, ConfigurationContext context) {
+        for (RunnerAndConfigurationSettings config : configurations) {
+            if (!(config.getConfiguration() instanceof MvnRunConfiguration)) continue;
+            if (isConfigurationFromContext((MvnRunConfiguration)config.getConfiguration(), context))
+                return config;
+        }
+        return null;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return PREFERED;
+    }
+
     public boolean isConfigurationFromContext(MvnRunConfiguration config, ConfigurationContext context) {
         if (isContext(context)) {
             MavenRunnerParameters parameters = config.getRunnerParameters();
@@ -45,7 +81,6 @@ public abstract class MavenModuleConfigurationProducer extends RunConfigurationP
         return false;
     }
 
-    @Override
     protected boolean setupConfigurationFromContext(MvnRunConfiguration config, ConfigurationContext context, Ref<PsiElement> ref) {
         if (context == null) return false;
         if (!initContext(context) || !isContext(context)) return false;
@@ -60,7 +95,7 @@ public abstract class MavenModuleConfigurationProducer extends RunConfigurationP
 
     protected boolean initContext(ConfigurationContext context) {
         mavenProject = MavenActionUtil.getMavenProject(context.getDataContext());
-        psiFile = CommonDataKeys.PSI_FILE.getData(context.getDataContext());
+        psiFile = LangDataKeys.PSI_FILE.getData(context.getDataContext());
         return true;
     }
 

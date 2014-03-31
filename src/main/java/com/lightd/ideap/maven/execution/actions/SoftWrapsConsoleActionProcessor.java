@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-class SoftWrapsConsoleActionProcessor extends ConsoleActionsPostProcessor {
+class SoftWrapsConsoleActionProcessor implements ConsoleActionsPostProcessor {
 
     @NotNull
     public AnAction[] postProcess(@NotNull ConsoleView consoleView, @NotNull AnAction[] actions) {

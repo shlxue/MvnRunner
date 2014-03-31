@@ -55,16 +55,11 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
 
     @Override
     public RunProfileState getState(@NotNull Executor executor, final @NotNull ExecutionEnvironment env) throws ExecutionException {
-        if (DefaultDebugExecutor.EXECUTOR_ID.equals(executor.getId())) {
-            List<String> goals = null;
-            if (RunType.Test.equals(runType)) {
-                RunnerAndConfigurationSettings settings = env.getRunnerAndConfigurationSettings();
-                if (settings != null && settings.getConfiguration() instanceof MvnRunConfiguration) {
-                    goals = disableFork(((MvnRunConfiguration) settings.getConfiguration()).getGoals());
-                }
-            }
-            if ((RunType.Jetty.equals(runType) || RunType.Tomcat.equals(runType)) || goals != null) {
-                return new DebugServerCommandLineState(env, this, goals);
+        if (DefaultDebugExecutor.EXECUTOR_ID.equals(executor.getId()) && RunType.Test.equals(runType)) {
+            RunnerAndConfigurationSettings settings = env.getRunnerAndConfigurationSettings();
+            if (settings != null && settings.getConfiguration() instanceof MvnRunConfiguration) {
+                List<String> goals = disableFork(((MvnRunConfiguration) settings.getConfiguration()).getGoals());
+                this.getRunnerParameters().setGoals(goals);
             }
         }
         return super.getState(executor, env);
@@ -72,10 +67,6 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
 
     protected MvnRunConfiguration(Project project, ConfigurationFactory factory, String name) {
         super(project, factory, name);
-    }
-
-    public String getStopGoal() {
-        return stopGoal;
     }
 
     public void setStopGoal(String stopGoal) {
@@ -88,7 +79,6 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
     }
 
     @Nullable
-    @Override
     public String getActionName() {
         if (isTest()) {
             if (isAllTest())
@@ -96,7 +86,7 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
             if (isPackageTest())
                 return MvnBundle.message("action.test.package.text", getPackageName());
         }
-        return super.getActionName();
+        return "";
     }
 
     public void setRunType(RunType runType) {
@@ -164,7 +154,7 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
 
         if (regex != null) {
             Pattern pattern = Pattern.compile(regex);
-            if (pattern.matcher(param).find()) {
+            if (param!= null && pattern.matcher(param).find()) {
                 return match;
             }
         } else if (param != null)
