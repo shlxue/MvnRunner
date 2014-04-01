@@ -9,7 +9,7 @@ a IntelliJ plugin for maven module, building, run unit testing and main method, 
 
 需求
 ----
-IntelliJ 13 及更高版本
+IntelliJ IDEA 12 及更高版本
 
 依赖插件(__粗体__为必选插件):
 
