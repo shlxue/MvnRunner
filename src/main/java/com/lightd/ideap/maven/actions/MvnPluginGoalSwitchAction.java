@@ -2,7 +2,6 @@ package com.lightd.ideap.maven.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.util.text.StringUtil;
 import com.lightd.ideap.maven.MvnBundle;
 import com.lightd.ideap.maven.settings.MvnRunConfigurationSettings;
 import org.jetbrains.idea.maven.model.MavenId;
@@ -16,10 +15,8 @@ import java.util.*;
 
 public class MvnPluginGoalSwitchAction extends MvnQuickPopupAction {
 
-    private static final String[] ignoreWords = new String[]{"maven-", "-maven", "-"};
-    private static final String[] empties = new String[]{"", "", " "};
     public static final String defaultGroup = "org.apache.maven.plugins";
-    public static final List<String> corePlugins;
+    public static final List<String> defaultPlugins;
     private static final Map<MavenId, MavenPluginInfo> plugins = new HashMap<MavenId, MavenPluginInfo>();
 
     static {
@@ -27,7 +24,7 @@ public class MvnPluginGoalSwitchAction extends MvnQuickPopupAction {
         for (int i = 0; i < corePhases.length; i++) {
             corePhases[i] = "maven-" + corePhases[i] + "-plugin";
         }
-        corePlugins = Arrays.asList(corePhases);
+        defaultPlugins = Arrays.asList(corePhases);
     }
 
     @Override
@@ -37,41 +34,57 @@ public class MvnPluginGoalSwitchAction extends MvnQuickPopupAction {
 
     @Override
     protected void buildActions(DefaultActionGroup toGroup, MavenProject mavenProject) {
+        Map<MavenPlugin, AnAction[]> pluginActions = buildAllPlugins(mavenProject);
+
+        List<AnAction> defaultPluginGroups = new ArrayList<AnAction>();
+        List<AnAction> customPluginGroups = new ArrayList<AnAction>();
+        for (Map.Entry<MavenPlugin, AnAction[]> plgActions : pluginActions.entrySet()) {
+            String name = plgActions.getKey().getArtifactId();
+            AnAction popupGroup = addPopupGroup(name, plgActions.getValue());
+            if (defaultPlugins.contains(name))
+                defaultPluginGroups.add(popupGroup);
+            else
+                customPluginGroups.add(popupGroup);
+        }
+        if (!defaultPluginGroups.isEmpty())
+            addActionGroup(toGroup, "Default Plugins", defaultPluginGroups);
+        if (!customPluginGroups.isEmpty())
+            addActionGroup(toGroup, "Custom Plugins", customPluginGroups);
+    }
+
+    private Map<MavenPlugin, AnAction[]> buildAllPlugins(MavenProject mavenProject) {
         File localRepository = mavenProject.getLocalRepository();
         MvnRunConfigurationSettings settings = MvnRunConfigurationSettings.getInstance();
         boolean withPrefix = settings.isWithPrefix();
-        boolean onlyIgnoreCore = settings.isOnlyIgnoreCorePlugin();
+        boolean ignoreDefault = settings.isIgnoreCorePlugin();
 
+        Map<MavenPlugin, AnAction[]> pluginActions = new TreeMap<MavenPlugin, AnAction[]>(new MavenPluginComparator());
         for (MavenPlugin plugin : mavenProject.getDeclaredPlugins()) {
-            if (skipDefaultPlugin(localRepository, plugin.getMavenId(), onlyIgnoreCore))
+            loadPluginInfo(localRepository, plugin.getMavenId());
+            if (ignoreDefault && skipPlugin(plugin.getMavenId()))
                 continue;
 
             AnAction[] actions = buildPluginActions(plugin.getMavenId(), withPrefix);
-            if (actions.length > 0)
-                addActionGroup(toGroup, getShortGroupName(plugin), actions);
+            if (actions.length > 0) {
+                pluginActions.put(plugin, actions);
+            }
         }
+        return pluginActions;
     }
 
-    private boolean skipDefaultPlugin(File repos, final MavenId mavenId, boolean onlyIgnoreCore) {
-        if (defaultGroup.equals(mavenId.getGroupId())) {
-            if (!onlyIgnoreCore) return true;
-            if (corePlugins.contains(mavenId.getArtifactId())) return true;
-        }
+    private void loadPluginInfo(File repos, final MavenId mavenId) {
         if (!plugins.containsKey(mavenId)) {
             MavenPluginInfo info = MavenArtifactUtil.readPluginInfo(repos, mavenId);
             plugins.put(mavenId, info);
         }
-        MavenPluginInfo pluginInfo = plugins.get(mavenId);
-        return pluginInfo == null || pluginInfo.getMojos().isEmpty();
     }
 
-    private String getShortGroupName(MavenPlugin plugin) {
-        String groupName = plugin.getArtifactId();
-        if (groupName.endsWith("-plugin")) {
-            groupName = StringUtil.replace(groupName, ignoreWords, empties);
-            groupName = StringUtil.wordsToBeginFromUpperCase(groupName);
+    private boolean skipPlugin(final MavenId mavenId) {
+        if (defaultGroup.equals(mavenId.getGroupId())) {
+            if (defaultPlugins.contains(mavenId.getArtifactId())) return true;
         }
-        return groupName;
+        MavenPluginInfo pluginInfo = plugins.get(mavenId);
+        return pluginInfo == null || pluginInfo.getMojos().isEmpty();
     }
 
     private AnAction[] buildPluginActions(MavenId mavenId, boolean withPrefix) {
@@ -83,5 +96,16 @@ public class MvnPluginGoalSwitchAction extends MvnQuickPopupAction {
             actions.add(new MvnGoalAction(mojo, withPrefix));
         }
         return actions.toArray(new AnAction[actions.size()]);
+    }
+
+    class MavenPluginComparator implements Comparator<MavenPlugin> {
+        @Override
+        public int compare(MavenPlugin o1, MavenPlugin o2) {
+            if (defaultPlugins.contains(o1.getArtifactId()) && !defaultPlugins.contains(o2.getArtifactId()))
+                return -1;
+            if (!defaultPlugins.contains(o1.getArtifactId()) && defaultPlugins.contains(o2.getArtifactId()))
+                return 1;
+            return o1.getArtifactId().compareTo(o2.getArtifactId());
+        }
     }
 }
