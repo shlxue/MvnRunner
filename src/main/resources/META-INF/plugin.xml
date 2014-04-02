@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.2.8</version>
+    <version>0.2.9</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
@@ -30,7 +30,7 @@
             <li>define shortcut for other platform(windows, linux)</li>
             <li>run plugin goals by quick switch menu</li>
             <li>folding java command line using mvn command</li>
-            <li><u>fixed a bug: expanded fold region when click the region</u></li>
+            <li><u>refactor plugin popup menu, allow show maven core plugins</u></li>
         </ul>]]>
     </change-notes>
 
