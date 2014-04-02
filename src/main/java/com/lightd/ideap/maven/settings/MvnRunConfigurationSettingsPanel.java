@@ -11,7 +11,7 @@ class MvnRunConfigurationSettingsPanel extends JPanel {
     private final MvnRunConfigurationSettings settings;
     private JCheckBox cbShowPomLocation;
     private JCheckBox cbWithPrefix;
-    private JCheckBox cbOnlyIgnoreCorePlugin;
+    private JCheckBox cbIgnoreCorePlugin;
     private JCheckBox cbReuseForks;
     private JSpinner spForkCount;
 
@@ -29,7 +29,7 @@ class MvnRunConfigurationSettingsPanel extends JPanel {
         spForkCount = new JSpinner();
         cbReuseForks = new JCheckBox(MvnBundle.message("panel.reuse.forks.text"));
         cbWithPrefix = new JCheckBox(MvnBundle.message("panel.with.prefix.text"));
-        cbOnlyIgnoreCorePlugin = new JCheckBox(MvnBundle.message("panel.only.ignore.core.plugin.text"));
+        cbIgnoreCorePlugin = new JCheckBox(MvnBundle.message("panel.ignore.core.plugin.text"));
 
         int cpuCores = Runtime.getRuntime().availableProcessors();
         label.setText(MvnBundle.message("panel.fork.count.text", cpuCores));
@@ -48,7 +48,7 @@ class MvnRunConfigurationSettingsPanel extends JPanel {
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        this.add(cbOnlyIgnoreCorePlugin, gbc);
+        this.add(cbIgnoreCorePlugin, gbc);
 
         gbc = new GridBagConstraints();
         gbc.gridy = 3;
@@ -73,7 +73,7 @@ class MvnRunConfigurationSettingsPanel extends JPanel {
         settings.setReuseForks(cbReuseForks.isSelected());
         settings.setShowPomLocation(cbShowPomLocation.isSelected());
         settings.setWithPrefix(cbWithPrefix.isSelected());
-        settings.setOnlyIgnoreCorePlugin(cbOnlyIgnoreCorePlugin.isSelected());
+        settings.setIgnoreCorePlugin(cbIgnoreCorePlugin.isSelected());
     }
 
     void reset() {
@@ -81,7 +81,7 @@ class MvnRunConfigurationSettingsPanel extends JPanel {
         cbReuseForks.setSelected(settings.isReuseForks());
         cbShowPomLocation.setSelected(settings.isShowPomLocation());
         cbWithPrefix.setSelected(settings.isWithPrefix());
-        cbOnlyIgnoreCorePlugin.setSelected(settings.isOnlyIgnoreCorePlugin());
+        cbIgnoreCorePlugin.setSelected(settings.isIgnoreCorePlugin());
     }
 
     boolean isModified() {
@@ -89,6 +89,6 @@ class MvnRunConfigurationSettingsPanel extends JPanel {
                 settings.getForkCount() != (Integer) spForkCount.getValue() ||
                 settings.isShowPomLocation() != cbShowPomLocation.isSelected() ||
                 settings.isWithPrefix() != cbWithPrefix.isSelected() ||
-                settings.isOnlyIgnoreCorePlugin() != cbOnlyIgnoreCorePlugin.isSelected();
+                settings.isIgnoreCorePlugin() != cbIgnoreCorePlugin.isSelected();
     }
 }
