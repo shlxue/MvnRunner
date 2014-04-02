@@ -40,6 +40,7 @@ class MvnSoftWrapsAction extends ToggleUseSoftWrapsToolbarAction {
         final String placeholder = commandFolding.getPlaceHolder(text);
         final FoldingModel foldingModel = editor.getFoldingModel();
         FoldRegion[] foldRegions = foldingModel.getAllFoldRegions();
+        if (!state && foldRegions.length <= 0) return;
         Runnable foldTask = null;
 
         final int endFoldRegionOffset = editor.getDocument().getLineEndOffset(0);
@@ -52,9 +53,9 @@ class MvnSoftWrapsAction extends ToggleUseSoftWrapsToolbarAction {
                 }
             }
         };
-        if (foldRegions.length <= 0) {
-            if (!state) return;
-            foldTask = addCollapsedFoldRegionTask;
+        if (foldRegions.length <= 0 || state) {
+            if (endFoldRegionOffset > 0)
+                foldTask = addCollapsedFoldRegionTask;
         }
         else {
             final FoldRegion foldRegion = foldRegions[0];
@@ -62,12 +63,10 @@ class MvnSoftWrapsAction extends ToggleUseSoftWrapsToolbarAction {
                 foldTask = new Runnable() {
                     @Override
                     public void run() {
-                        foldRegion.setExpanded(!state);
+                        foldRegion.setExpanded(true);
                     }
                 };
             }
-            else if (state)
-                foldTask = addCollapsedFoldRegionTask;
         }
 
         if (foldTask != null)
