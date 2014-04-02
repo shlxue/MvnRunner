@@ -11,6 +11,8 @@ import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class MvnQuickPopupAction extends QuickSwitchSchemeAction implements DumbAware {
@@ -49,13 +51,22 @@ public abstract class MvnQuickPopupAction extends QuickSwitchSchemeAction implem
 
     protected abstract void buildActions(final DefaultActionGroup toGroup, final MavenProject mavenProject);
 
+
     protected final void addActionGroup(final DefaultActionGroup toGroup, String groupName, AnAction... actions) {
+        addActionGroup(toGroup, groupName, Arrays.asList(actions));
+    }
+
+    protected final void addActionGroup(final DefaultActionGroup toGroup, String groupName, Collection<AnAction> actions) {
         addSeparator(toGroup, null);
         if (!StringUtil.isEmptyOrSpaces(groupName))
             addSeparator(toGroup, groupName);
-        for (AnAction action : actions) {
-            toGroup.addAll(action);
-        }
+        toGroup.addAll(actions);
+    }
+
+    protected final AnAction addPopupGroup(String groupName, AnAction... actions) {
+        DefaultActionGroup actionGroup = new DefaultActionGroup(groupName, true);
+        actionGroup.addAll(actions);
+        return actionGroup;
     }
 
     protected final void addActionGroup(final DefaultActionGroup toGroup, String groupName, String... actionIds) {
@@ -67,7 +78,7 @@ public abstract class MvnQuickPopupAction extends QuickSwitchSchemeAction implem
         addActionGroup(toGroup, groupName, actions.toArray(new AnAction[actions.size()]));
     }
 
-    private void addSeparator(final DefaultActionGroup toGroup, final String title) {
+    protected void addSeparator(final DefaultActionGroup toGroup, final String title) {
         final Separator separator = title == null ? new Separator() : new Separator(title);
         toGroup.add(separator);
     }

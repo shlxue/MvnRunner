@@ -8,14 +8,14 @@ public class MvnRunConfigurationSettings implements Cloneable {
     public final String Key_ReuseForks = "reuseForks";
     public final String Key_ShowPomLocation = "showPomLocation";
     public final String Key_WithPrefix = "withPrefix";
-    public final String Key_OnlyIgnoreCore = "onlyIgnoreCore";
+    public final String Key_IgnoreCorePlugin = "ignoreCorePlugin";
 
     private static MvnRunConfigurationSettings instance;
     private int forkCount;
     private boolean reuseForks;
     private boolean showPomLocation;
     private boolean withPrefix;
-    private boolean onlyIgnoreCorePlugin;
+    private boolean ignoreCorePlugin;
 
     public static MvnRunConfigurationSettings getInstance() {
         if (instance == null) {
@@ -60,12 +60,12 @@ public class MvnRunConfigurationSettings implements Cloneable {
         this.withPrefix = withPrefix;
     }
 
-    public boolean isOnlyIgnoreCorePlugin() {
-        return onlyIgnoreCorePlugin;
+    public boolean isIgnoreCorePlugin() {
+        return ignoreCorePlugin;
     }
 
-    public void setOnlyIgnoreCorePlugin(boolean onlyIgnoreCorePlugin) {
-        this.onlyIgnoreCorePlugin = onlyIgnoreCorePlugin;
+    public void setIgnoreCorePlugin(boolean ignoreCorePlugin) {
+        this.ignoreCorePlugin = ignoreCorePlugin;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class MvnRunConfigurationSettings implements Cloneable {
                 settings.isReuseForks() == isReuseForks() &&
                 settings.isShowPomLocation() == isShowPomLocation() &&
                 settings.isWithPrefix() == isWithPrefix() &&
-                settings.isOnlyIgnoreCorePlugin() == isOnlyIgnoreCorePlugin();
+                settings.isIgnoreCorePlugin() == isIgnoreCorePlugin();
     }
 
     public void readSettings() {
@@ -87,7 +87,7 @@ public class MvnRunConfigurationSettings implements Cloneable {
         reuseForks = component.getBoolean(Key_ReuseForks, true);
         showPomLocation = component.getBoolean(Key_ShowPomLocation, false);
         withPrefix = component.getBoolean(Key_WithPrefix, false);
-        onlyIgnoreCorePlugin = component.getBoolean(Key_OnlyIgnoreCore, false);
+        ignoreCorePlugin = component.getBoolean(Key_IgnoreCorePlugin, false);
     }
 
     protected void saveSettings() {
@@ -96,7 +96,7 @@ public class MvnRunConfigurationSettings implements Cloneable {
         component.setValue(Key_ReuseForks, Boolean.toString(reuseForks));
         component.setValue(Key_ShowPomLocation, Boolean.toString(showPomLocation));
         component.setValue(Key_WithPrefix, Boolean.toString(withPrefix));
-        component.setValue(Key_OnlyIgnoreCore, Boolean.toString(onlyIgnoreCorePlugin));
+        component.setValue(Key_IgnoreCorePlugin, Boolean.toString(ignoreCorePlugin));
         instance = null;
     }
 }
