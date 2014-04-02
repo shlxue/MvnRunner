@@ -28,7 +28,7 @@
         </ul>]]>
     </change-notes>
 
-    <idea-version since-build="123.0" until-build="130.0"/>
+    <idea-version since-build="123.169" until-build="130.0"/>
 
     <depends>org.jetbrains.idea.maven</depends>
     <depends optional="true">com.intellij.diagram</depends>
