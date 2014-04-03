@@ -32,7 +32,9 @@ public class CommandLineFolding  extends ConsoleFolding implements MvnCommandFol
 
     @Override
     public String getPlaceholderText(List<String> lines) {
-        return "mvn " + goalStr;
+        if (!lines.isEmpty() && lines.get(0).contains(mainClass) && lines.get(0).endsWith(goalStr))
+            return "mvn " + goalStr;
+        return null;
     }
 
     @Override
