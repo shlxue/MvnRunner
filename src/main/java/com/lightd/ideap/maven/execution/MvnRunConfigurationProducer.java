@@ -24,7 +24,8 @@ public class MvnRunConfigurationProducer extends JavaElementConfigurationProduce
 
     @Override
     protected boolean isContext(ConfigurationContext context) {
-        return super.isContext(context) && PsiMethodUtil.hasMainMethod(psiClass) && !isTestScope;
+        return super.isContext(context) && !isTestScope &&
+                psiClass != null && PsiMethodUtil.hasMainMethod(psiClass);
     }
 
     @Override
