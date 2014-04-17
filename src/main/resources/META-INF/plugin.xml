@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.2.9</version>
+    <version>0.3.0</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
@@ -22,15 +22,9 @@
     </description>
 
     <change-notes><![CDATA[
-        <strong>0.2 maven helper</strong>
+        <strong>0.3 fixed a few bugs</strong>
         <ul>
-            <li>quick open pom file by maven artifact</li>
-            <li>include non project pom files</li>
-            <li>run application server: jetty or tomcat(jetty-maven-plugin/tomcatx-maven-plugin)</li>
-            <li>define shortcut for other platform(windows, linux)</li>
-            <li>run plugin goals by quick switch menu</li>
-            <li>folding java command line using mvn command</li>
-            <li><u>refactor plugin popup menu, allow show maven core plugins</u></li>
+            <li><u>NullPointerException when right clicking in the 'Project' view</u></li>
         </ul>]]>
     </change-notes>
 
