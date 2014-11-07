@@ -164,7 +164,7 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
 
         if (regex != null) {
             Pattern pattern = Pattern.compile(regex);
-            if (pattern.matcher(param).find()) {
+            if (param != null && pattern.matcher(param).find()) {
                 return match;
             }
         } else if (param != null)
@@ -192,6 +192,9 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
     }
 
     private void foldMavenCommand(JavaParameters params) {
+        if (params == null) {
+            return;
+        }
         List<MvnCommandFolding> list = ContainerUtil.findAll(ConsoleFolding.EP_NAME.getExtensions(), MvnCommandFolding.class);
         if (list.isEmpty()) return;
         try {
