@@ -7,6 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.lightd.ideap.maven.MvnRunConfigurationType;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
 import org.jetbrains.idea.maven.execution.MavenRunnerSettings;
+import org.jetbrains.idea.maven.model.MavenExplicitProfiles;
 import org.jetbrains.idea.maven.project.MavenGeneralSettings;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.utils.MavenPluginInfo;
@@ -42,7 +43,6 @@ class MvnGoalAction extends MvnModuleContextAction {
     }
 
     private MavenRunnerParameters createParameters(MavenProject project) {
-        System.out.println(project.getDirectory());
-        return new MavenRunnerParameters(true, project.getDirectory(), Arrays.asList(mojo.getDisplayName()), null);
+        return new MavenRunnerParameters(true, project.getDirectory(), Arrays.asList(mojo.getDisplayName()), MavenExplicitProfiles.NONE);
     }
 }

@@ -14,11 +14,11 @@ import com.lightd.ideap.maven.MvnRunConfiguration;
 import com.lightd.ideap.maven.MvnRunConfigurationType;
 import com.lightd.ideap.maven.RunType;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
+import org.jetbrains.idea.maven.model.MavenExplicitProfiles;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -75,7 +75,7 @@ public abstract class MavenModuleConfigurationProducer extends RunConfigurationP
 
     protected MavenRunnerParameters createMavenParameters(Location l, DataContext dataContext) {
         if (l instanceof PsiLocation) {
-            Collection<String> profiles = MavenActionUtil.getProjectsManager(dataContext).getExplicitProfiles();
+            MavenExplicitProfiles profiles = MavenActionUtil.getProjectsManager(dataContext).getExplicitProfiles();
             return new MavenRunnerParameters(true, mavenProject.getDirectory(), null, profiles);
         }
         return null;

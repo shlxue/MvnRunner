@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.lightd.ideap.maven.MvnRunConfigurationType;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
 import org.jetbrains.idea.maven.execution.MavenRunnerSettings;
+import org.jetbrains.idea.maven.model.MavenExplicitProfiles;
 import org.jetbrains.idea.maven.project.MavenGeneralSettings;
 import org.jetbrains.idea.maven.project.MavenProject;
 
@@ -33,6 +34,6 @@ public class MvnPhaseGoalAction extends MvnModuleContextAction {
     }
 
     private MavenRunnerParameters createParameters(MavenProject project) {
-        return new MavenRunnerParameters(true, project.getDirectory(), Arrays.asList(getPhase()), null);
+        return new MavenRunnerParameters(true, project.getDirectory(), Arrays.asList(getPhase()), MavenExplicitProfiles.NONE);
     }
 }
