@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.3.0</version>
+    <version>0.4.1</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
@@ -22,13 +22,18 @@
     </description>
 
     <change-notes><![CDATA[
-        <strong>0.3 fixed a few bugs</strong>
+        <b>0.4 fixed a bug</b>
+        <ul>
+            <li><u>fixed NullException when not config jdk</u></li>
+        </ul>
+
+        <b>0.3 fixed a few bugs</b>
         <ul>
             <li><u>NullPointerException when right clicking in the 'Project' view</u></li>
         </ul>]]>
     </change-notes>
 
-    <idea-version since-build="130.754" until-build="134.0"/>
+    <idea-version since-build="133.0" until-build="135.0"/>
 
     <depends>org.jetbrains.idea.maven</depends>
     <depends optional="true">com.intellij.diagram</depends>
