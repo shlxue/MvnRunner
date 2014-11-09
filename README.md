@@ -86,3 +86,10 @@ Screenshot
 * Quick open pom
 
     ![Quick open pom](https://raw.github.com/ShlXue/MvnRunner/master/docs/images/quick_open_pom.png)
+
+
+相关资源
+----
+
+1. [IntelliJ IDEA Build Number Ranges](http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges)
+* [Previous IntelliJ IDEA Releases](http://confluence.jetbrains.com/display/IntelliJIDEA/Previous+IntelliJ+IDEA+Releases)
