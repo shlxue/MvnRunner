@@ -3,11 +3,7 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
-<<<<<<< 36a3ed63a3e9529f6dc07acddf70e7396ea548f2
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IU-139.224.1" project-jdk-type="IDEA JDK">
-=======
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IU-123.169" project-jdk-type="IDEA JDK">
->>>>>>> using plugin version 123.169 on IDEA 12.0.4
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="IntelliJ IDEA IU-143.382.35" project-jdk-type="IDEA JDK">
     <output url="file://$PROJECT_DIR$/target" />
   </component>
 </project>
