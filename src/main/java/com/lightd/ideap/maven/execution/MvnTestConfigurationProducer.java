@@ -89,21 +89,23 @@ public class MvnTestConfigurationProducer extends JavaElementConfigurationProduc
 
     protected List<String> generateMvnParameters() {
         List<String> testParameters = new ArrayList<String>();
-        testParameters.add(MvnBundle.message("mvn.param.test.compile"));
         testParameters.add(MvnBundle.message("mvn.param.test"));
 
         if (!isTestAll) {
-            String mvnTestParam;
-            if (psiPackage != null) {
-                mvnTestParam = MvnBundle.message("mvn.package.test.suffix", psiPackage.getQualifiedName());
-            } else {
+            String mvnTestParam = null;
+            if (psiClass != null) {
                 PsiJavaFile psiJavaFile = (PsiJavaFile) psiClass.getScope();
                 mvnTestParam = getJavaClassName(psiJavaFile.getPackageName(), psiClass.getName());
                 if (psiMethod != null) {
                     mvnTestParam = MvnBundle.message("mvn.method.test.suffix", mvnTestParam, psiMethod.getName());
                 }
+
+            } else if (psiPackage != null) {
+                mvnTestParam = MvnBundle.message("mvn.package.test.suffix", psiPackage.getQualifiedName());
             }
+            if (Objects.nonNull(mvnTestParam)) {
             testParameters.add(MvnBundle.message("mvn.param.test.object", mvnTestParam));
+        }
         }
 
         if (Boolean.valueOf(mavenProject.getProperties().getProperty("maven.test.skip", "false")))
