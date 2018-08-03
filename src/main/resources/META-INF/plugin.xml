@@ -38,7 +38,8 @@
                 implementation="com.lightd.ideap.maven.execution.server.MvnTomcatConfigurationProducer"/>
         <console.folding
                 implementation="com.lightd.ideap.maven.execution.CommandLineFolding"/>
-        <consoleActionsPostProcessor implementation="com.lightd.ideap.maven.execution.actions.SoftWrapsConsoleActionProcessor"/>
+        <consoleActionsPostProcessor
+                implementation="com.lightd.ideap.maven.execution.actions.SoftWrapsConsoleActionProcessor"/>
     </extensions>
     <extensions defaultExtensionNs="org.jetbrains.idea.maven">
         <additional.importing.settings id="mvnRunConfiguration"
@@ -84,7 +85,7 @@
                 text="Deploy" icon="/images/phase_deploy.png"/>
 
         <action id="Maven.Pom.Open" class="com.lightd.ideap.maven.actions.MvnOpenPomAction"
-                />
+                icon="MavenIcons.MavenLogo"/>
 
         <action id="Maven.Pom.Diagram" class="com.lightd.ideap.maven.actions.MvnDependencyAction"
                 text="Show Dependencies..." icon="/images/mvn_diagram.png">
@@ -108,6 +109,7 @@
             <reference ref="Maven.Install"/>
             <reference ref="Maven.Deploy"/>
             <reference ref="Maven.Pom.Open"/>
+            <reference ref="Maven.ReimportProject"/>
             <reference ref="Maven.Pom.Diagram"/>
             <reference ref="Maven.Plugin.Goal"/>
             <separator/>
