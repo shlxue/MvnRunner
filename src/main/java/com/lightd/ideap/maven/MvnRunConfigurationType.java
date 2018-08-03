@@ -34,7 +34,7 @@ public class MvnRunConfigurationType implements ConfigurationType {
     public static MvnRunConfigurationType getInstance() {
         ConfigurationType[] types = Extensions.getExtensions(ConfigurationType.CONFIGURATION_TYPE_EP);
         for (ConfigurationType type : types) {
-            if (MvnRunConfigurationType.class.isInstance(type)) {
+            if (type instanceof MvnRunConfigurationType) {
                 return (MvnRunConfigurationType) type;
             }
         }
@@ -48,7 +48,7 @@ public class MvnRunConfigurationType implements ConfigurationType {
         runConfiguration(project, params, settings, runnerSettings, null);
     }
 
-    public static void runConfiguration(Project project,
+    private static void runConfiguration(Project project,
                                         @NotNull MavenRunnerParameters params,
                                         @Nullable MavenGeneralSettings settings,
                                         @Nullable MavenRunnerSettings runnerSettings,

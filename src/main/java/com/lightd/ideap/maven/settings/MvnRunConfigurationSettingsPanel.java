@@ -1,6 +1,7 @@
 package com.lightd.ideap.maven.settings;
 
 import com.intellij.ui.IdeBorderFactory;
+import com.intellij.util.ui.JBUI;
 import com.lightd.ideap.maven.MvnBundle;
 
 import javax.swing.*;
@@ -9,13 +10,13 @@ import java.awt.*;
 class MvnRunConfigurationSettingsPanel extends JPanel {
 
     private final MvnRunConfigurationSettings settings;
-    private JCheckBox cbShowPomLocation;
-    private JCheckBox cbWithPrefix;
-    private JCheckBox cbIgnoreCorePlugin;
-    private JCheckBox cbReuseForks;
-    private JSpinner spForkCount;
+    private JCheckBox cbShowPomLocation = new JCheckBox(MvnBundle.message("panel.show.pom.location.text"));
+    private JCheckBox cbWithPrefix = new JCheckBox(MvnBundle.message("panel.with.prefix.text"));
+    private JCheckBox cbIgnoreCorePlugin = new JCheckBox(MvnBundle.message("panel.ignore.core.plugin.text"));
+    private JCheckBox cbReuseForks = new JCheckBox(MvnBundle.message("panel.reuse.forks.text"));
+    private JSpinner spForkCount = new JSpinner();
 
-    public MvnRunConfigurationSettingsPanel(MvnRunConfigurationSettings settings) {
+    MvnRunConfigurationSettingsPanel(MvnRunConfigurationSettings settings) {
         super(new GridBagLayout());
         this.settings = settings;
         initComponents();
@@ -24,12 +25,7 @@ class MvnRunConfigurationSettingsPanel extends JPanel {
     private void initComponents() {
         this.setBorder(IdeBorderFactory.createTitledBorder(MvnBundle.message("panel.runner.layout.title"), false));
 
-        cbShowPomLocation = new JCheckBox(MvnBundle.message("panel.show.pom.location.text"));
         final JLabel label = new JLabel();
-        spForkCount = new JSpinner();
-        cbReuseForks = new JCheckBox(MvnBundle.message("panel.reuse.forks.text"));
-        cbWithPrefix = new JCheckBox(MvnBundle.message("panel.with.prefix.text"));
-        cbIgnoreCorePlugin = new JCheckBox(MvnBundle.message("panel.ignore.core.plugin.text"));
 
         int cpuCores = Runtime.getRuntime().availableProcessors();
         label.setText(MvnBundle.message("panel.fork.count.text", cpuCores));
@@ -53,7 +49,7 @@ class MvnRunConfigurationSettingsPanel extends JPanel {
         gbc = new GridBagConstraints();
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, 26, 0, 0);
+        gbc.insets = JBUI.insetsLeft(26);
         this.add(label, gbc);
 
         gbc = new GridBagConstraints();

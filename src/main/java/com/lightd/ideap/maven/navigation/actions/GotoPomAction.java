@@ -44,20 +44,17 @@ public class GotoPomAction extends GotoActionBase {
         @Override
         public void elementChosen(final ChooseByNamePopup popup, final Object element) {
             if (element == null) return;
-            ApplicationManager.getApplication().invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    if (!(element instanceof PomWrapper)) {
-                        return;
-                    }
-                    PomWrapper wrapper = (PomWrapper) element;
-                    if (wrapper.getVirtualFile() == null) return;
-                    Navigatable n = new OpenFileDescriptor(project, wrapper.getVirtualFile(), popup.getLinePosition(),
-                            popup.getColumnPosition()).setUseCurrentWindow(popup.isOpenInCurrentWindowRequested());
-
-                    if (!n.canNavigate()) return;
-                    n.navigate(true);
+            ApplicationManager.getApplication().invokeLater(() -> {
+                if (!(element instanceof PomWrapper)) {
+                    return;
                 }
+                PomWrapper wrapper = (PomWrapper) element;
+                if (wrapper.getVirtualFile() == null) return;
+                Navigatable n = new OpenFileDescriptor(project, wrapper.getVirtualFile(), popup.getLinePosition(),
+                        popup.getColumnPosition()).setUseCurrentWindow(popup.isOpenInCurrentWindowRequested());
+
+                if (!n.canNavigate()) return;
+                n.navigate(true);
             }, ModalityState.NON_MODAL);
         }
     }
