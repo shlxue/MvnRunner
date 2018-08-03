@@ -7,7 +7,9 @@ import com.lightd.ideap.maven.MvnBundle;
 import com.lightd.ideap.maven.RunType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class MvnRunConfigurationProducer extends JavaElementConfigurationProducer {
     protected boolean isTestScope;
@@ -40,7 +42,10 @@ public class MvnRunConfigurationProducer extends JavaElementConfigurationProduce
 
     @Override
     protected List<String> generateMvnParameters() {
-        List<String> parameters = new ArrayList<String>();
+        if (psiClass == null || Objects.isNull(psiClass.getQualifiedName())) {
+            return Collections.emptyList();
+        }
+        List<String> parameters = new ArrayList<>();
         if (isTestScope)
             parameters.add(MvnBundle.message("mvn.param.test.compile"));
         else
