@@ -49,10 +49,10 @@ public class MvnRunConfigurationType implements ConfigurationType {
     }
 
     private static void runConfiguration(Project project,
-                                        @NotNull MavenRunnerParameters params,
-                                        @Nullable MavenGeneralSettings settings,
-                                        @Nullable MavenRunnerSettings runnerSettings,
-                                        @Nullable ProgramRunner.Callback callback) {
+                                         @NotNull MavenRunnerParameters params,
+                                         @Nullable MavenGeneralSettings settings,
+                                         @Nullable MavenRunnerSettings runnerSettings,
+                                         @Nullable ProgramRunner.Callback callback) {
         RunnerAndConfigurationSettings configSettings = createRunnerAndConfigurationSettings(settings,
                 runnerSettings,
                 params,
@@ -61,23 +61,22 @@ public class MvnRunConfigurationType implements ConfigurationType {
         ProgramRunner[] runners = DefaultJavaProgramRunner.PROGRAM_RUNNER_EP.getExtensions();
         if (runners.length == 0) return;
         Executor executor = DefaultRunExecutor.getRunExecutorInstance();
-        ExecutionEnvironment env = new ExecutionEnvironment(runners[0], configSettings, project);
+        ExecutionEnvironment env = new ExecutionEnvironment(executor, runners[0], configSettings, project);
 
         try {
-           runners[0].execute(executor, env, callback);
-        }
-        catch (ExecutionException e) {
+            runners[0].execute(env, callback);
+        } catch (ExecutionException e) {
             MavenUtil.showError(project, "Failed to execute Maven goal", e);
         }
     }
 
     private static RunnerAndConfigurationSettings createRunnerAndConfigurationSettings(@Nullable MavenGeneralSettings generalSettings,
-                                                                                      @Nullable MavenRunnerSettings runnerSettings,
-                                                                                      MavenRunnerParameters params,
-                                                                                      Project project) {
+                                                                                       @Nullable MavenRunnerSettings runnerSettings,
+                                                                                       MavenRunnerParameters params,
+                                                                                       Project project) {
         MvnRunConfigurationType type = ConfigurationTypeUtil.findConfigurationType(MvnRunConfigurationType.class);
         final RunnerAndConfigurationSettings settings = RunManagerEx.getInstanceEx(project).createRunConfiguration(generateName(project, params), type.myFactory);
-        MvnRunConfiguration runConfiguration = (MvnRunConfiguration)settings.getConfiguration();
+        MvnRunConfiguration runConfiguration = (MvnRunConfiguration) settings.getConfiguration();
         runConfiguration.setRunType(getPhaseRunType(params.getGoals()));
         runConfiguration.setRunnerParameters(params);
         runConfiguration.setGeneralSettings(generalSettings);
@@ -102,7 +101,9 @@ public class MvnRunConfigurationType implements ConfigurationType {
             param.append(s).append(",");
         }
         if (param.length() > 40) param.setLength(37);
-        if (param.charAt(param.length() - 1) == ',') param.setLength(param.length() - 1);
+        if (param.length() > 0 && param.charAt(param.length() - 1) == ',') {
+            param.setLength(param.length() - 1);
+        }
         return MvnBundle.message("mvn.build.name", name, param);
     }
 
@@ -136,7 +137,7 @@ public class MvnRunConfigurationType implements ConfigurationType {
         return new ConfigurationFactory[]{myFactory};
     }
 
-    private class MvnRunConfigurationFactory extends ConfigurationFactory{
+    private class MvnRunConfigurationFactory extends ConfigurationFactory {
         MvnRunConfigurationFactory(MvnRunConfigurationType configurationType) {
             super(configurationType);
         }
@@ -152,11 +153,10 @@ public class MvnRunConfigurationType implements ConfigurationType {
 
         @Override
         public RunConfiguration createConfiguration(String name, RunConfiguration template) {
-            MvnRunConfiguration cfg = (MvnRunConfiguration)super.createConfiguration(name, template);
+            MvnRunConfiguration cfg = (MvnRunConfiguration) super.createConfiguration(name, template);
             if (!StringUtil.isEmptyOrSpaces(cfg.getRunnerParameters().getWorkingDirPath())) return cfg;
 
             Project project = cfg.getProject();
-            if (project == null) return cfg;
 
             MavenProjectsManager projectsManager = MavenProjectsManager.getInstance(project);
 

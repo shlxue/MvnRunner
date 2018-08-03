@@ -1,7 +1,11 @@
 package com.lightd.ideap.maven.execution;
 
 import com.intellij.execution.ConsoleFolding;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.lightd.ideap.maven.MvnCommandFolding;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +16,7 @@ public class CommandLineFolding  extends ConsoleFolding implements MvnCommandFol
     private String goalStr;
 
     @Override
-    public boolean shouldFoldLine(String line) {
+    public boolean shouldFoldLine(@NotNull Project project, @NotNull String line) {
         if (jdkHome != null && line.startsWith(jdkHome) && line.contains(mainClass)) {
             jdkHome = null;
             return true;
@@ -31,7 +35,8 @@ public class CommandLineFolding  extends ConsoleFolding implements MvnCommandFol
     }
 
     @Override
-    public String getPlaceholderText(List<String> lines) {
+    @Nullable
+    public String getPlaceholderText(@NotNull Project project, @NotNull List<String> lines) {
         if (!lines.isEmpty() && lines.get(0).contains(mainClass) && lines.get(0).endsWith(goalStr))
             return "mvn " + goalStr;
         return null;

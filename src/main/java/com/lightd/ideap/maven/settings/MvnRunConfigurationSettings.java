@@ -83,7 +83,7 @@ public class MvnRunConfigurationSettings implements Cloneable {
 
     public void readSettings() {
         final PropertiesComponent component = PropertiesComponent.getInstance();
-        forkCount = (byte)component.getOrInitInt(Key_ForkCount, Runtime.getRuntime().availableProcessors());
+        forkCount = (byte)component.getInt(Key_ForkCount, Runtime.getRuntime().availableProcessors());
         reuseForks = component.getBoolean(Key_ReuseForks, true);
         showPomLocation = component.getBoolean(Key_ShowPomLocation, false);
         withPrefix = component.getBoolean(Key_WithPrefix, false);

@@ -13,6 +13,7 @@ import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.utils.MavenPluginInfo;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 class MvnGoalAction extends MvnModuleContextAction {
 
@@ -43,6 +44,7 @@ class MvnGoalAction extends MvnModuleContextAction {
     }
 
     private MavenRunnerParameters createParameters(MavenProject project) {
-        return new MavenRunnerParameters(true, project.getDirectory(), Arrays.asList(mojo.getDisplayName()), MavenExplicitProfiles.NONE);
+        return new MavenRunnerParameters(true, project.getDirectory(), project.getFile().getName(),
+                Collections.singletonList(mojo.getDisplayName()), MavenExplicitProfiles.NONE);
     }
 }

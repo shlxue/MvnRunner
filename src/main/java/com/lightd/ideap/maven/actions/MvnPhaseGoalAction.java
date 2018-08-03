@@ -11,6 +11,7 @@ import org.jetbrains.idea.maven.project.MavenGeneralSettings;
 import org.jetbrains.idea.maven.project.MavenProject;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class MvnPhaseGoalAction extends MvnModuleContextAction {
     private String phase;
@@ -34,6 +35,7 @@ public class MvnPhaseGoalAction extends MvnModuleContextAction {
     }
 
     private MavenRunnerParameters createParameters(MavenProject project) {
-        return new MavenRunnerParameters(true, project.getDirectory(), Arrays.asList(getPhase()), MavenExplicitProfiles.NONE);
+        return new MavenRunnerParameters(true, project.getDirectory(), project.getFile().getName(),
+                Collections.singletonList(getPhase()), MavenExplicitProfiles.NONE);
     }
 }

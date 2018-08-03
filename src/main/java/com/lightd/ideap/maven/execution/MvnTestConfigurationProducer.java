@@ -111,18 +111,6 @@ public class MvnTestConfigurationProducer extends JavaElementConfigurationProduc
         if (Boolean.valueOf(mavenProject.getProperties().getProperty("maven.test.skip", "false")))
             testParameters.add(MvnBundle.message("mvn.param.skip"));
         MvnRunConfigurationSettings settings = MvnRunConfigurationSettings.getInstance();
-        if (isForking()) {
-            testParameters.add(MvnBundle.message("mvn.param.fork.count", settings.getForkCount()));
-            if (settings.getForkCount() == 1)
-                testParameters.add(MvnBundle.message("mvn.param.reuse.forks", settings.isReuseForks()));
-        } else {
-            testParameters.add(MvnBundle.message("mvn.param.fork.mode",
-                    getForkMode(settings.getForkCount(), settings.isReuseForks())));
-            if (testParameters.get(testParameters.size() - 1).contains("perthread")) {
-                testParameters.add(MvnBundle.message("mvn.param.fork.thread", settings.getForkCount()));
-            }
-        }
-
         return testParameters;
     }
 

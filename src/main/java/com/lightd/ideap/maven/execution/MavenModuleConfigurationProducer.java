@@ -2,13 +2,18 @@ package com.lightd.ideap.maven.execution;
 
 import com.intellij.execution.Location;
 import com.intellij.execution.PsiLocation;
+import com.intellij.execution.RunManager;
 import com.intellij.execution.RunnerAndConfigurationSettings;
 import com.intellij.execution.actions.ConfigurationContext;
-import com.intellij.execution.junit.RuntimeConfigurationProducer;
+import com.intellij.execution.actions.ConfigurationFromContext;
+import com.intellij.execution.actions.ConfigurationFromContextImpl;
+import com.intellij.execution.actions.RunConfigurationProducer;
+import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.Ref;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.lightd.ideap.maven.MvnRunConfiguration;
@@ -16,18 +21,20 @@ import com.lightd.ideap.maven.MvnRunConfigurationType;
 import com.lightd.ideap.maven.RunType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.idea.maven.execution.MavenGoalLocation;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
 import org.jetbrains.idea.maven.model.MavenExplicitProfiles;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * maven module support
  */
-public abstract class MavenModuleConfigurationProducer extends RuntimeConfigurationProducer {
+public abstract class MavenModuleConfigurationProducer extends RunConfigurationProducer<MvnRunConfiguration> {
 
     protected MavenProject mavenProject;
     protected PsiElement sourceElement;
@@ -37,26 +44,23 @@ public abstract class MavenModuleConfigurationProducer extends RuntimeConfigurat
         super(MvnRunConfigurationType.getInstance());
     }
 
-    @Override
-    public PsiElement getSourceElement() {
-        return sourceElement;
-    }
-
     @Nullable
     @Override
-    protected RunnerAndConfigurationSettings createConfigurationByElement(Location location, ConfigurationContext context) {
-        RunnerAndConfigurationSettings settings = cloneTemplateConfiguration(location.getProject(), context);
-        sourceElement = location.getPsiElement();
-        final Ref<PsiElement> locationRef = new Ref<PsiElement>(location.getPsiElement());
-        if (setupConfigurationFromContext((MvnRunConfiguration) settings.getConfiguration(), context, locationRef)) {
-            return settings;
+    public ConfigurationFromContext createConfigurationFromContext(ConfigurationContext context) {
+        RunnerAndConfigurationSettings settings = cloneTemplateConfiguration(context);
+        sourceElement = context.getPsiLocation();
+        final Ref<PsiElement> ref = new Ref<>(context.getPsiLocation());
+        if (setupConfigurationFromContext((MvnRunConfiguration) settings.getConfiguration(), context, ref)) {
+            return new ConfigurationFromContextImpl(this, settings, ref.get());
         }
         return null;
     }
 
     @Nullable
     @Override
-    protected RunnerAndConfigurationSettings findExistingByElement(Location location, @NotNull RunnerAndConfigurationSettings[] configurations, ConfigurationContext context) {
+    public RunnerAndConfigurationSettings findExistingConfiguration(ConfigurationContext context) {
+        final RunManager runManager = RunManager.getInstance(context.getProject());
+        final List<RunnerAndConfigurationSettings> configurations = getConfigurationSettingsList(runManager);
         for (RunnerAndConfigurationSettings config : configurations) {
             if (!(config.getConfiguration() instanceof MvnRunConfiguration)) continue;
             if (isConfigurationFromContext((MvnRunConfiguration)config.getConfiguration(), context))
@@ -65,11 +69,8 @@ public abstract class MavenModuleConfigurationProducer extends RuntimeConfigurat
         return null;
     }
 
-    @Override
-    public int compareTo(Object o) {
-        return PREFERED;
-    }
 
+    @Override
     public boolean isConfigurationFromContext(MvnRunConfiguration config, ConfigurationContext context) {
         if (isContext(context)) {
             MavenRunnerParameters parameters = config.getRunnerParameters();
@@ -81,6 +82,7 @@ public abstract class MavenModuleConfigurationProducer extends RuntimeConfigurat
         return false;
     }
 
+    @Override
     protected boolean setupConfigurationFromContext(MvnRunConfiguration config, ConfigurationContext context, Ref<PsiElement> ref) {
         if (context == null) return false;
         if (!initContext(context) || !isContext(context)) return false;
@@ -111,7 +113,7 @@ public abstract class MavenModuleConfigurationProducer extends RuntimeConfigurat
     protected MavenRunnerParameters createMavenParameters(Location l, DataContext dataContext) {
         if (l instanceof PsiLocation) {
             MavenExplicitProfiles profiles = MavenActionUtil.getProjectsManager(dataContext).getExplicitProfiles();
-            return new MavenRunnerParameters(true, mavenProject.getDirectory(), null, profiles);
+            return new MavenRunnerParameters(true, mavenProject.getDirectory(), mavenProject.getFile().getName(), Collections.emptyList(), profiles);
         }
         return null;
     }
