@@ -2,8 +2,8 @@ package com.lightd.ideap.maven.execution;
 
 import com.intellij.execution.actions.ConfigurationContext;
 import com.intellij.ide.highlighter.JavaFileType;
-import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -20,7 +20,7 @@ public abstract class JavaElementConfigurationProducer extends MavenModuleConfig
     protected boolean initContext(ConfigurationContext context) {
         psiClass = null;
         psiPackage = null;
-        if (super.initContext(context) && mavenProject!= null) {
+        if (super.initContext(context) && mavenProject != null) {
             psiClass = getPsiClass();
             if (psiClass == null) {
                 psiPackage = getPsiPackage(context.getDataContext());
@@ -32,7 +32,7 @@ public abstract class JavaElementConfigurationProducer extends MavenModuleConfig
 
     @Override
     protected String generateName() {
-        return psiClass.getName();
+        return psiClass != null ? psiClass.getName() : "";
     }
 
     private PsiClass getPsiClass() {
