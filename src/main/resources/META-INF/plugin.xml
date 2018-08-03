@@ -1,7 +1,6 @@
-<idea-plugin version="2" url="https://github.com/ShlXue/MvnRunner">
+<idea-plugin url="https://github.com/ShlXue/MvnRunner">
     <id>MvnRunner</id>
     <name>Maven Runner</name>
-    <version>0.4.1</version>
     <vendor email="XueShuiliang@gmail.com" url="https://github.com/shlXue"/>
 
     <description><![CDATA[
@@ -21,19 +20,7 @@
         ]]>
     </description>
 
-    <change-notes><![CDATA[
-        <b>0.4 fixed a bug</b>
-        <ul>
-            <li><u>fixed NullException when not config jdk</u></li>
-        </ul>
-
-        <b>0.3 fixed a few bugs</b>
-        <ul>
-            <li><u>NullPointerException when right clicking in the 'Project' view</u></li>
-        </ul>]]>
-    </change-notes>
-
-    <idea-version since-build="123.0" until-build="133.0"/>
+    <idea-version since-build="180.0"/>
 
     <depends>org.jetbrains.idea.maven</depends>
     <depends optional="true">com.intellij.diagram</depends>
@@ -41,13 +28,13 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <configurationType implementation="com.lightd.ideap.maven.MvnRunConfigurationType"/>
-        <configurationProducer
+        <runConfigurationProducer
                 implementation="com.lightd.ideap.maven.execution.MvnRunConfigurationProducer"/>
-        <configurationProducer
+        <runConfigurationProducer
                 implementation="com.lightd.ideap.maven.execution.MvnTestConfigurationProducer"/>
-        <configurationProducer
+        <runConfigurationProducer
                 implementation="com.lightd.ideap.maven.execution.server.MvnJettyConfigurationProducer"/>
-        <configurationProducer
+        <runConfigurationProducer
                 implementation="com.lightd.ideap.maven.execution.server.MvnTomcatConfigurationProducer"/>
         <console.folding
                 implementation="com.lightd.ideap.maven.execution.CommandLineFolding"/>
@@ -97,7 +84,7 @@
                 text="Deploy" icon="/images/phase_deploy.png"/>
 
         <action id="Maven.Pom.Open" class="com.lightd.ideap.maven.actions.MvnOpenPomAction"
-                icon="MavenIcons.MavenLogo"/>
+                />
 
         <action id="Maven.Pom.Diagram" class="com.lightd.ideap.maven.actions.MvnDependencyAction"
                 text="Show Dependencies..." icon="/images/mvn_diagram.png">

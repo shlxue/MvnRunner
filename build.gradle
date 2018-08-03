@@ -7,6 +7,7 @@
 
 plugins {
     id 'java'
+    id 'idea'
     id 'org.jetbrains.intellij' version '0.3.5'
 }
 
@@ -36,12 +37,19 @@ intellij {
 //    version '14.1.2'
 //    intellij.localPath '/Applications/IntelliJ IDEA20182.app'
 //    pluginName 'MvnRunner'
+    type 'IU'
     updateSinceUntilBuild false
-    plugins = ['maven', 'junit']// , 'maven-ext', 'uml'] // 'coverage'
+    plugins = ['maven', 'junit', 'maven-ext', 'uml'] // 'coverage'
+}
+
+publishPlugin {
+    username publishUsername
+    password publishPassword
 }
 
 patchPluginXml {
     changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+    <ul>
+        <li><u>Fixed bug for idea-2018</u></li>
+    </ul>"""
 }
