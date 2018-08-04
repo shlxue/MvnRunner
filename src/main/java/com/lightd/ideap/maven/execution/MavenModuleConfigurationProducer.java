@@ -1,27 +1,21 @@
 package com.lightd.ideap.maven.execution;
 
-import com.intellij.execution.Location;
-import com.intellij.execution.PsiLocation;
-import com.intellij.execution.RunManager;
-import com.intellij.execution.RunnerAndConfigurationSettings;
+import com.intellij.execution.*;
 import com.intellij.execution.actions.ConfigurationContext;
 import com.intellij.execution.actions.ConfigurationFromContext;
 import com.intellij.execution.actions.ConfigurationFromContextImpl;
 import com.intellij.execution.actions.RunConfigurationProducer;
-import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.lightd.ideap.maven.MvnRunConfiguration;
 import com.lightd.ideap.maven.MvnRunConfigurationType;
 import com.lightd.ideap.maven.RunType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.maven.execution.MavenGoalLocation;
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters;
 import org.jetbrains.idea.maven.model.MavenExplicitProfiles;
 import org.jetbrains.idea.maven.project.MavenProject;
@@ -63,7 +57,7 @@ public abstract class MavenModuleConfigurationProducer extends RunConfigurationP
         final List<RunnerAndConfigurationSettings> configurations = getConfigurationSettingsList(runManager);
         for (RunnerAndConfigurationSettings config : configurations) {
             if (!(config.getConfiguration() instanceof MvnRunConfiguration)) continue;
-            if (isConfigurationFromContext((MvnRunConfiguration)config.getConfiguration(), context))
+            if (isConfigurationFromContext((MvnRunConfiguration) config.getConfiguration(), context)) {
                 return config;
         }
         return null;
@@ -72,14 +66,31 @@ public abstract class MavenModuleConfigurationProducer extends RunConfigurationP
 
     @Override
     public boolean isConfigurationFromContext(MvnRunConfiguration config, ConfigurationContext context) {
-        if (isContext(context)) {
+        final Location contextLocation = context.getLocation();
+        if (contextLocation == null) {
+            return false;
+        }
+        Location location = JavaExecutionUtil.stepIntoSingleClass(contextLocation);
+        if (location == null) {
+            return false;
+        }
+        final PsiElement element = location.getPsiElement();
+        if (element instanceof PsiClass) {
             MavenRunnerParameters parameters = config.getRunnerParameters();
-            if (Comparing.strEqual(mavenProject.getDirectory(), parameters.getWorkingDirPath())) {
+            if (isSameConfigByElement(config.getRunnerParameters().getGoals(), (PsiClass) element) &&
+                    Comparing.strEqual(mavenProject.getDirectory(), parameters.getWorkingDirPath())) {
                 List<String> testParameters = generateMvnParameters();
                 return isSameParameters(testParameters, parameters.getGoals());
             }
         }
         return false;
+    }
+
+    private boolean isSameConfigByElement(List<String> goals, PsiClass psiClass) {
+        String runClass = "=" + psiClass.getQualifiedName();
+        return goals.stream()
+                .map(s -> s.endsWith(runClass))
+                .findAny().orElse(false);
     }
 
     @Override
