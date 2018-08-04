@@ -24,16 +24,14 @@ apply plugin: 'org.jetbrains.intellij'
 
 intellij {
     version '2018.2'
-//    pluginName 'MvnRunner'
     type 'IU'
     updateSinceUntilBuild false
-    plugins = ['maven', 'junit', 'coverage', 'maven-ext', 'uml']
+    plugins = type == 'IU' ? ['maven', 'junit', 'maven-ext', 'uml', 'coverage'] : ['maven', 'junit']
 }
 
 publishPlugin {
     username publishUsername
     password publishPassword
-//    host publishPluginSite
 }
 
 patchPluginXml {
