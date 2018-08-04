@@ -2,12 +2,11 @@ package com.lightd.ideap.maven.execution;
 
 import com.intellij.execution.ConsoleFolding;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
 import com.lightd.ideap.maven.MvnCommandFolding;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CommandLineFolding  extends ConsoleFolding implements MvnCommandFolding {
@@ -25,8 +24,8 @@ public class CommandLineFolding  extends ConsoleFolding implements MvnCommandFol
     }
 
     @Override
-    public String getPlaceHolder(String text) {
-        return getPlaceholderText(Arrays.asList(text));
+    public String getPlaceHolder(@NotNull Project project, String text) {
+        return getPlaceholderText(project, Collections.singletonList(text));
     }
 
     @Override

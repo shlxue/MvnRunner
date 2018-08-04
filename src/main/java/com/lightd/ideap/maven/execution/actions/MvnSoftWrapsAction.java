@@ -37,7 +37,7 @@ class MvnSoftWrapsAction extends ToggleUseSoftWrapsToolbarAction {
         String text = EditorHyperlinkSupport.getLineText(editor.getDocument(), 0, false);
         if (state && text == null) return;
 
-        final String placeholder = commandFolding.getPlaceHolder(text);
+        final String placeholder = commandFolding.getPlaceHolder(Objects.requireNonNull(MvnModuleContextAction.getEventProject(event)), text);
         if (placeholder == null) return;
         final FoldingModel foldingModel = editor.getFoldingModel();
         FoldRegion[] foldRegions = foldingModel.getAllFoldRegions();
