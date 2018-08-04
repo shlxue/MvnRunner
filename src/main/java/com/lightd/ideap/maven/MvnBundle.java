@@ -29,7 +29,7 @@ public class MvnBundle {
         if (ourBundle != null) bundle = ourBundle.get();
         if (bundle == null) {
             bundle = ResourceBundle.getBundle(PATH_TO_BUNDLE);
-            ourBundle = new SoftReference<ResourceBundle>(bundle);
+            ourBundle = new SoftReference<>(bundle);
         }
         return bundle;
     }

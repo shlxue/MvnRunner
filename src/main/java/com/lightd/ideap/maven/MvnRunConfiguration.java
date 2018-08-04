@@ -162,8 +162,8 @@ public class MvnRunConfiguration extends MavenRunConfiguration {
     }
 
     private static List<String> disableFork(List<String> goals) {
-        List<String> bakGoals = new ArrayList<String>(goals.size());
-        List<String> clone = new ArrayList<String>(goals.size());
+        List<String> bakGoals = new ArrayList<>(goals.size());
+        List<String> clone = new ArrayList<>(goals.size());
         bakGoals.addAll(goals);
         clone.addAll(goals);
         goals.clear();

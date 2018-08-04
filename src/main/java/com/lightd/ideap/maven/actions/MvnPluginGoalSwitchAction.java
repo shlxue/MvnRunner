@@ -17,7 +17,7 @@ public class MvnPluginGoalSwitchAction extends MvnQuickPopupAction {
 
     public static final String defaultGroup = "org.apache.maven.plugins";
     public static final List<String> defaultPlugins;
-    private static final Map<MavenId, MavenPluginInfo> plugins = new HashMap<MavenId, MavenPluginInfo>();
+    private static final Map<MavenId, MavenPluginInfo> plugins = new HashMap<>();
 
     static {
         String[] corePhases = new String[]{"clean", "compiler", "deploy", "failsafe", "install", "resources", "site", "surefire", "verifier"};
@@ -36,8 +36,8 @@ public class MvnPluginGoalSwitchAction extends MvnQuickPopupAction {
     protected void buildActions(DefaultActionGroup toGroup, MavenProject mavenProject) {
         Map<MavenPlugin, AnAction[]> pluginActions = buildAllPlugins(mavenProject);
 
-        List<AnAction> defaultPluginGroups = new ArrayList<AnAction>();
-        List<AnAction> customPluginGroups = new ArrayList<AnAction>();
+        List<AnAction> defaultPluginGroups = new ArrayList<>();
+        List<AnAction> customPluginGroups = new ArrayList<>();
         for (Map.Entry<MavenPlugin, AnAction[]> plgActions : pluginActions.entrySet()) {
             String name = plgActions.getKey().getArtifactId();
             AnAction popupGroup = addPopupGroup(name, plgActions.getValue());
@@ -58,7 +58,7 @@ public class MvnPluginGoalSwitchAction extends MvnQuickPopupAction {
         boolean withPrefix = settings.isWithPrefix();
         boolean ignoreDefault = settings.isIgnoreCorePlugin();
 
-        Map<MavenPlugin, AnAction[]> pluginActions = new TreeMap<MavenPlugin, AnAction[]>(new MavenPluginComparator());
+        Map<MavenPlugin, AnAction[]> pluginActions = new TreeMap<>(new MavenPluginComparator());
         for (MavenPlugin plugin : mavenProject.getDeclaredPlugins()) {
             loadPluginInfo(localRepository, plugin.getMavenId());
             if (ignoreDefault && skipPlugin(plugin.getMavenId()))
@@ -91,7 +91,7 @@ public class MvnPluginGoalSwitchAction extends MvnQuickPopupAction {
         MavenPluginInfo pluginInfo = plugins.get(mavenId);
         if (pluginInfo == null || pluginInfo.getMojos().isEmpty()) return new AnAction[0];
 
-        List<AnAction> actions = new ArrayList<AnAction>(pluginInfo.getMojos().size());
+        List<AnAction> actions = new ArrayList<>(pluginInfo.getMojos().size());
         for (MavenPluginInfo.Mojo mojo : pluginInfo.getMojos()) {
             actions.add(new MvnGoalAction(mojo, withPrefix));
         }

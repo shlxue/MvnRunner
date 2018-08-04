@@ -88,7 +88,7 @@ public class MvnTestConfigurationProducer extends JavaElementConfigurationProduc
     }
 
     protected List<String> generateMvnParameters() {
-        List<String> testParameters = new ArrayList<String>();
+        List<String> testParameters = new ArrayList<>();
         testParameters.add(MvnBundle.message("mvn.param.test"));
 
         if (!isTestAll) {

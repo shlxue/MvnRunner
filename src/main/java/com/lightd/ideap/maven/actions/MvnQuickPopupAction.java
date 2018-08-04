@@ -70,7 +70,7 @@ public abstract class MvnQuickPopupAction extends QuickSwitchSchemeAction implem
     }
 
     protected final void addActionGroup(final DefaultActionGroup toGroup, String groupName, String... actionIds) {
-        List<AnAction> actions = new ArrayList<AnAction>(actionIds.length);
+        List<AnAction> actions = new ArrayList<>(actionIds.length);
         for (String actionId : actionIds) {
             final AnAction action = ActionManager.getInstance().getAction(actionId);
             if (action != null) actions.add(action);

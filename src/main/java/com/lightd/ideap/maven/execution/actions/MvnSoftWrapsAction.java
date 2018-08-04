@@ -9,12 +9,15 @@ import com.intellij.openapi.editor.FoldingModel;
 import com.intellij.openapi.editor.actions.ToggleUseSoftWrapsToolbarAction;
 import com.intellij.openapi.editor.impl.softwrap.SoftWrapAppliancePlaces;
 import com.lightd.ideap.maven.MvnCommandFolding;
+import com.lightd.ideap.maven.actions.MvnModuleContextAction;
+
+import java.util.Objects;
 
 class MvnSoftWrapsAction extends ToggleUseSoftWrapsToolbarAction {
 
     private final MvnCommandFolding commandFolding;
 
-    public MvnSoftWrapsAction(MvnCommandFolding commandFolding) {
+    MvnSoftWrapsAction(MvnCommandFolding commandFolding) {
         super(SoftWrapAppliancePlaces.CONSOLE);
         this.commandFolding = commandFolding;
     }
@@ -35,7 +38,6 @@ class MvnSoftWrapsAction extends ToggleUseSoftWrapsToolbarAction {
         if (editor == null) return;
 
         String text = EditorHyperlinkSupport.getLineText(editor.getDocument(), 0, false);
-        if (state && text == null) return;
 
         final String placeholder = commandFolding.getPlaceHolder(Objects.requireNonNull(MvnModuleContextAction.getEventProject(event)), text);
         if (placeholder == null) return;
@@ -45,13 +47,10 @@ class MvnSoftWrapsAction extends ToggleUseSoftWrapsToolbarAction {
         Runnable foldTask = null;
 
         final int endFoldRegionOffset = editor.getDocument().getLineEndOffset(0);
-        Runnable addCollapsedFoldRegionTask = new Runnable() {
-            @Override
-            public void run() {
-                FoldRegion foldRegion = foldingModel.addFoldRegion(0, endFoldRegionOffset, placeholder);
-                if (foldRegion != null) {
-                    foldRegion.setExpanded(false);
-                }
+        Runnable addCollapsedFoldRegionTask = () -> {
+            FoldRegion foldRegion = foldingModel.addFoldRegion(0, endFoldRegionOffset, placeholder);
+            if (foldRegion != null) {
+                foldRegion.setExpanded(false);
             }
         };
         if (foldRegions.length <= 0 || state) {
@@ -61,12 +60,7 @@ class MvnSoftWrapsAction extends ToggleUseSoftWrapsToolbarAction {
         else {
             final FoldRegion foldRegion = foldRegions[0];
             if (foldRegion.getStartOffset() == 0 && foldRegion.getEndOffset() == endFoldRegionOffset) {
-                foldTask = new Runnable() {
-                    @Override
-                    public void run() {
-                        foldRegion.setExpanded(true);
-                    }
-                };
+                foldTask = () -> foldRegion.setExpanded(true);
             }
         }
 

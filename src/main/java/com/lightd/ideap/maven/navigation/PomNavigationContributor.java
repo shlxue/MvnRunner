@@ -84,7 +84,7 @@ public class PomNavigationContributor implements ChooseByNameContributor, DumbAw
     @NotNull
     @Override
     public String[] getNames(Project project, boolean includeNonProjectItems) {
-        CommonProcessors.CollectProcessor<String> processor = new CommonProcessors.CollectProcessor<String>();
+        CommonProcessors.CollectProcessor<String> processor = new CommonProcessors.CollectProcessor<>();
         GlobalSearchScope scope = includeNonProjectItems ? GlobalSearchScope.allScope(project) : GlobalSearchScope.projectScope(project);
         processNames(processor, scope, IdFilter.getProjectIdFilter(project, includeNonProjectItems));
         return ArrayUtil.toStringArray(processor.getResults());
@@ -93,7 +93,7 @@ public class PomNavigationContributor implements ChooseByNameContributor, DumbAw
     @NotNull
     @Override
     public NavigationItem[] getItemsByName(String name, final String pattern, Project project, boolean includeNonProjectItems) {
-        CommonProcessors.CollectProcessor<NavigationItem> processor = new CommonProcessors.CollectProcessor<NavigationItem>();
+        CommonProcessors.CollectProcessor<NavigationItem> processor = new CommonProcessors.CollectProcessor<>();
         processElementsWithName(name, processor, FindSymbolParameters.wrap(pattern, project, includeNonProjectItems));
         return processor.toArray(new NavigationItem[processor.getResults().size()]);
     }
@@ -101,7 +101,7 @@ public class PomNavigationContributor implements ChooseByNameContributor, DumbAw
     private Map<MavenId, PsiFile> getNotImportPoms(MavenProject mavenProject) {
         GlobalSearchScope pomScope = GlobalSearchScopes.directoryScope(project, mavenProject.getDirectoryFile(), true);
         PsiFile[] psiFiles = FilenameIndex.getFilesByName(project, "pom.xml", pomScope);
-        Map<MavenId, PsiFile> poms = new LinkedHashMap<MavenId, PsiFile>(psiFiles.length);
+        Map<MavenId, PsiFile> poms = new LinkedHashMap<>(psiFiles.length);
         for (PsiFile psiFile : psiFiles) {
             if (projectsManager.findProject(psiFile.getVirtualFile()) == null) {
                 MavenId mavenId = MavenDomUtil.describe(psiFile);

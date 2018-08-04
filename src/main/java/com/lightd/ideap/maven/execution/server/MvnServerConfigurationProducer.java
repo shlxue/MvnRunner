@@ -43,7 +43,7 @@ public abstract class MvnServerConfigurationProducer extends MavenModuleConfigur
     }
     @Override
     protected List<String> generateMvnParameters() {
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
         parameters.add(getStartGoal());
         return parameters;
     }

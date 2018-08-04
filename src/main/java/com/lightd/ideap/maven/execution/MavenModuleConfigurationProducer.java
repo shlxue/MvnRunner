@@ -24,6 +24,7 @@ import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * maven module support
@@ -35,7 +36,7 @@ public abstract class MavenModuleConfigurationProducer extends RunConfigurationP
     protected PsiFile psiFile;
 
     protected MavenModuleConfigurationProducer() {
-        super(MvnRunConfigurationType.getInstance());
+        super(Objects.requireNonNull(MvnRunConfigurationType.getInstance()));
     }
 
     @Nullable
@@ -59,6 +60,7 @@ public abstract class MavenModuleConfigurationProducer extends RunConfigurationP
             if (!(config.getConfiguration() instanceof MvnRunConfiguration)) continue;
             if (isConfigurationFromContext((MvnRunConfiguration) config.getConfiguration(), context)) {
                 return config;
+            }
         }
         return null;
     }

@@ -35,7 +35,7 @@ public abstract class MvnModuleContextAction extends MavenAction {
 
     protected final MavenRunnerSettings createRunnerSettings(Project project) {
         MavenRunnerSettings runnerSettings = MavenRunner.getInstance(project).getSettings().clone();
-        runnerSettings.setMavenProperties(new LinkedHashMap<String, String>());
+        runnerSettings.setMavenProperties(new LinkedHashMap<>());
         return runnerSettings;
     }
 }
